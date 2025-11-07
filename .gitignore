@@ -3,30 +3,69 @@ node_modules/
 
 # Build output
 dist/
-
-# Env files
-.env
+build/
+out/
 
 # Logs
 logs/
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment files
+.env
+.env.local
+.env.*.local
 
 # OS files
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# IDE / Editor files
+# IDE / Editor
 .vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace
+*.code-workspace
 
-# npm logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# GitHub / workflow
+.github/
 
-# Optional: temporary files
+# Husky hooks
+.husky/
+
+# TypeScript
+*.tsbuildinfo
+
+# Optional / temp files
 *.tmp
 *.temp
+*.swp
+*.lock
+*.bak
+
+# Git
+*.orig
+*.rej
+*.patch
+
+# Coverage / test
+coverage/
+.nyc_output/
+jest-coverage/
+
+# npm / package manager
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# FTP / Deployment
 .ftpignore
+
+# Misc
+*.tgz
+*.zip
+*.tar.gz
