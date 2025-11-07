@@ -12,8 +12,8 @@ app.get('/api/v1/', (req: Request, res: Response) => {
     status: 200,
     success: true,
     data: null,
-    message: "عملیات با موفقیت انجام شد."
-  })
+    message: 'عملیات با موفیت انجام شد.',
+  });
 });
 
 export default app;
