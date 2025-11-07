@@ -1,0 +1,73 @@
+{
+  "name": "miora_ecommerce",
+  "version": "1.0.0",
+  "description": "Miora is an e-commerce backend built with Express, TypeScript, and Prisma. It provides APIs for managing users, products, and orders with clean architecture and scalable modular design.",
+  "type": "module",
+  "main": "src/server.ts",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc && tsc-alias",
+    "start": "node dist/server.js",
+    "lint": "eslint 'src/**/*.{ts,js}' --fix",
+    "format": "prettier --write 'src/**/*.{ts,js,json,md}'",
+    "prepare": "husky install",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "morgan": "^1.10.1",
+    "prisma": "^6.19.0",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
+    "@types/module-alias": "^2.0.4",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^24.10.0",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6",
+    "prettier": "^3.6.2",
+    "tsc-alias": "^1.8.16",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Erfan-Abouei/Miora-Ecommerce.git"
+  },
+  "keywords": [
+    "express",
+    "typescript",
+    "prisma",
+    "ecommerce",
+    "api",
+    "clean-architecture",
+    "nodejs"
+  ],
+  "author": "Kara Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Erfan-Abouei/Miora-Ecommerce/issues"
+  },
+  "homepage": "https://github.com/Erfan-Abouei/Miora-Ecommerce#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{ts,js}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "_moduleAliases": {
+    "@": "dist"
+  }
+}
