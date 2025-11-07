@@ -7,38 +7,6 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
-const data = [
-  {
-    id: 123,
-    product_name: 'محصول تستلی',
-    product_description: '',
-    product_images: ['/image.png', '/image.png', '/image.png'],
-    category: {},
-    product_price: 2345235,
-    has_product_offer: false,
-    product_offer: 0,
-  },
-  {
-    id: 123,
-    product_name: 'محصول تستلی',
-    product_description: '',
-    product_images: [],
-    category: {},
-    product_price: 2345235,
-    has_product_offer: false,
-    product_offer: 0,
-  },
-  {
-    id: 123,
-    product_name: 'محصول تستلی',
-    product_description: '',
-    product_images: [],
-    category: {},
-    product_price: 2345235,
-    has_product_offer: false,
-    product_offer: 0,
-  },
-];
 app.get('/api/v1/', (req: Request, res: Response) => {
   res.status(200).send({
     status: 200,

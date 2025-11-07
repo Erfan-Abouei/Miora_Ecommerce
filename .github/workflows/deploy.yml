@@ -1,0 +1,24 @@
+name: FTP Deploy to cPanel
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  ftp-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: api.karaflow.com
+          username: ${{ secrets.FTP_USERNAME }}  # ErFaNK@api.karaflow.com
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: /home/gdpcabpt/api.karaflow.com/
