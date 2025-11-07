@@ -1,20 +1,23 @@
+import { corsOptions } from '@/config/index.js';
+import { requestLogger } from './middlewares/logger.middleware.js';
+import { routeNotFoundHandler } from './middlewares/route-not-found.middleware.js';
+import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
-import express, { Request, Response } from 'express';
+import v1Routes from './modules/v1/routes.js';
 
 const app = express();
-app.use(cors());
-app.use(express.json());
-app.use(morgan('dev'));
 
-app.get('/api/v1/', (req: Request, res: Response) => {
-  res.status(200).send({
-    status: 200,
-    success: true,
-    data: null,
-    message: 'عملیات با موفیت انجام شد.',
-    author: "Kara TeaM!"
-  });
-});
+// Core middleware
+app.use(express.json());
+app.use(cors(corsOptions));
+app.use(morgan('dev'));
+app.use(requestLogger);
+
+// API Routes
+app.use('/api/v1/', v1Routes);
+
+// 404 handler
+app.use(routeNotFoundHandler);
 
 export default app;
