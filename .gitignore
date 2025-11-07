@@ -29,3 +29,4 @@ yarn-error.log*
 # Optional: temporary files
 *.tmp
 *.temp
+.ftpignore

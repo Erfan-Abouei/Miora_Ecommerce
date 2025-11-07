@@ -1,5 +1,7 @@
+src/
+node_modules/
+*.ts
 .idea/
 .vscode/
-node_modules/
 .git/
 *.log
