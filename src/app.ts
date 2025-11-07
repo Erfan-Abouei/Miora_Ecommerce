@@ -13,6 +13,7 @@ app.get('/api/v1/', (req: Request, res: Response) => {
     success: true,
     data: null,
     message: 'عملیات با موفیت انجام شد.',
+    author: "Kara TeaM!"
   });
 });
 
