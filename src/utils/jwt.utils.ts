@@ -1,4 +1,4 @@
-import jwt, { type SignOptions } from 'jsonwebtoken';
+import jwt, { JwtPayload, type SignOptions } from 'jsonwebtoken';
 import { Response } from 'express';
 import { ENV } from '@/config/env.config.js';
 import { TokenPayload } from '@/types/basic-type/basic.types.js';
@@ -13,7 +13,7 @@ const createRefreshToken = (payload: TokenPayload): string => {
   return jwt.sign(payload, process.env.JWT_REFRESH_SECRET!, options);
 };
 
-export const setRefreshTokenCookie = (res: Response, token: string) => {
+const setRefreshTokenCookie = (res: Response, token: string) => {
   res.cookie('refresh_token', token, {
     httpOnly: true,
     secure: ENV.NODE_ENV === 'production',
@@ -22,7 +22,7 @@ export const setRefreshTokenCookie = (res: Response, token: string) => {
   });
 };
 
-export const setAccessTokenCookie = (res: Response, token: string) => {
+const setAccessTokenCookie = (res: Response, token: string) => {
   res.cookie('access_token', token, {
     httpOnly: true,
     secure: ENV.NODE_ENV === 'production',
@@ -31,10 +31,31 @@ export const setAccessTokenCookie = (res: Response, token: string) => {
   });
 };
 
-export const setTokens = (res: Response, payload: TokenPayload) => {
+const setTokens = (res: Response, payload: TokenPayload) => {
   const accessToken = createAccessToken(payload);
   const refreshToken = createRefreshToken(payload);
 
   setAccessTokenCookie(res, accessToken);
   setRefreshTokenCookie(res, refreshToken);
 };
+
+// verify token
+const verifyAccessToken = (token: string): string | JwtPayload | null => {
+  try {
+    const tokenPayload = jwt.verify(token, ENV.JWT_ACCESS_SECRET!);
+    return tokenPayload;
+  } catch (error) {
+    return null;
+  }
+};
+
+const verifyRefreshToken = (token: string): string | JwtPayload | null => {
+  try {
+    const tokenPayload = jwt.verify(token, ENV.JWT_REFRESH_SECRET!);
+    return tokenPayload;
+  } catch (error) {
+    return null;
+  }
+};
+
+export { createAccessToken, createRefreshToken, setRefreshTokenCookie, setAccessTokenCookie, setTokens, verifyAccessToken };
