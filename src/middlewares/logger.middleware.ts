@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { logger } from '@/config/logger.config.js';
 
-export const requestLogger = (req: Request, res: Response, next: NextFunction) => {
+export const requestLoggerHandler = (req: Request, res: Response, next: NextFunction) => {
   const start = Date.now();
 
   res.on('finish', () => {

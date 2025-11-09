@@ -1,0 +1,183 @@
+// This is your Prisma schema file.
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                    Int                     @id @default(autoincrement())
+  firstName             String
+  lastName              String
+  phoneNumber           String                  @unique
+  email                 String                  @unique
+  birthDate             DateTime
+  gender                String
+  bankAccountNumber     String
+  shebaNumber           String
+  isVerified            Boolean                 @default(false)
+  newsletterSubscribed  Boolean                 @default(false)
+  role                  Role                   @default(CUSTOMER)
+  permissions           String[]
+  walletTransactions    WalletTransaction[]
+  walletBalance         Float                  @default(0)
+  addresses             Address[]
+  orders                Order[]
+  favorites             Product[]              @relation("UserFavorites")
+}
+
+enum Role {
+  ADMIN
+  CUSTOMER
+  CEO
+}
+
+model Address {
+  id          Int     @id @default(autoincrement())
+  userId      Int
+  province    String
+  city        String
+  street      String
+  alley       String
+  unit        String
+  postalCode  String
+  user        User    @relation(fields: [userId], references: [id])
+}
+
+model Order {
+  id            Int          @id @default(autoincrement())
+  orderNumber   String       @unique
+  orderStatus   OrderStatus
+  orderDate     DateTime     @default(now())
+  totalPrice    Float
+  items         OrderItem[]
+  userId        Int
+  user          User         @relation(fields: [userId], references: [id])
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model OrderItem {
+  id        Int      @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int
+  product   Product  @relation(fields: [productId], references: [id])
+  order     Order    @relation(fields: [orderId], references: [id])
+}
+
+model Product {
+  id              Int           @id @default(autoincrement())
+  name            String
+  description     String
+  price           Float
+  isDiscounted    Boolean       @default(false)
+  discountType    DiscountType
+  discountValue   Float        
+  isNew           Boolean       @default(true) // محصول جدید
+  createdAt       DateTime      @default(now())
+  images          ProductImage[]
+  sizes           ProductSize[]
+  colors          ProductColor[]
+  reviews         Review[]
+  questions       Question[]
+  categoryId      Int
+  category        Category      @relation(fields: [categoryId], references: [id])
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FLAT
+}
+
+model ProductImage {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  url       String
+  product   Product  @relation(fields: [productId], references: [id])
+}
+
+model ProductSize {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  size      String
+  product   Product  @relation(fields: [productId], references: [id])
+}
+
+model ProductColor {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  color     String
+  product   Product  @relation(fields: [productId], references: [id])
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String
+  imageUrl  String
+  gender    Gender
+  products  Product[]
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  KIDS
+  UNISEX
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  userId    Int
+  rating    Int     
+  comment   String
+  createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Question {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  userId    Int
+  question  String
+  answer    String?
+  createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Slider {
+  id        Int      @id @default(autoincrement())
+  title     String
+  imageUrl  String
+  link      String
+  createdAt DateTime @default(now())
+}
+
+model WalletTransaction {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  amount    Float
+  type      TransactionType
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+}
