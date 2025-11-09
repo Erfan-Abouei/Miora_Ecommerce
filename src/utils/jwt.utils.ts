@@ -39,7 +39,6 @@ const setTokens = (res: Response, payload: TokenPayload) => {
   setRefreshTokenCookie(res, refreshToken);
 };
 
-// verify token
 const verifyAccessToken = (token: string): string | JwtPayload | null => {
   try {
     const tokenPayload = jwt.verify(token, ENV.JWT_ACCESS_SECRET!);
@@ -58,4 +57,4 @@ const verifyRefreshToken = (token: string): string | JwtPayload | null => {
   }
 };
 
-export { createAccessToken, createRefreshToken, setRefreshTokenCookie, setAccessTokenCookie, setTokens, verifyAccessToken };
+export { createAccessToken, createRefreshToken, setRefreshTokenCookie, setAccessTokenCookie, setTokens, verifyAccessToken, verifyRefreshToken };
