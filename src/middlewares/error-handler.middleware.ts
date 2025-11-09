@@ -10,17 +10,19 @@ const isAppError = (err: unknown): err is AppError => {
   return typeof err === 'object' && err !== null && 'message' in err;
 };
 
-export const errorHandler = (err: unknown, req: Request, res: Response, next: NextFunction): void => {
+const errorHandler = (err: unknown, req: Request, res: Response, next: NextFunction): void => {
   if (err instanceof ZodError) {
     errorResponse(res, 400, 'خطایی در اعتبارسنجی به وجود آمده است.', ErrorCode.VALIDATION_ERROR, zodIssuesToObject(err.issues));
     return;
   }
 
   if (isAppError(err)) {
-    errorResponse(res, err.statusCode ?? 500, undefined, ErrorCode.INTERNAL_SERVER_ERROR, appErrorToObject(err));
+    errorResponse(res, err.statusCode ?? 500, err.message, err.errorCode ?? ErrorCode.INTERNAL_SERVER_ERROR, appErrorToObject(err));
     return;
   }
 
   // Unknown Error
   errorResponse(res, 500, undefined, ErrorCode.UNKNOWN_ERROR, { error: [String(err) || 'خطای داخلی سرور'] });
 };
+
+export { errorHandler };

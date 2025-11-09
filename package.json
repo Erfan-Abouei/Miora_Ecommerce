@@ -8,7 +8,7 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc && tsc-alias",
     "start": "node dist/server.js",
-    "lint": "eslint 'src/**/*.{ts,js}' --fix",
+    "lint": "eslint \"src/**/*.{ts,js}\" --fix",
     "format": "prettier --write 'src/**/*.{ts,js,json,md}'",
     "prepare": "husky install",
     "test": "echo \"No tests specified\" && exit 0"
@@ -16,9 +16,11 @@
   "dependencies": {
     "@prisma/client": "^6.19.0",
     "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "helmet": "^8.1.0",
     "morgan": "^1.10.1",
     "prisma": "^6.19.0",
     "swagger-ui-express": "^5.0.1",
@@ -27,6 +29,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.5",
     "@types/module-alias": "^2.0.4",

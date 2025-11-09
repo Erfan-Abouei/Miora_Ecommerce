@@ -1,6 +1,6 @@
 import { AppError } from '@/types/basic-type/basic.types.js';
 
-export const appErrorToObject = (err: AppError | string): Record<string, string[]> => {
+const appErrorToObject = (err: AppError | string): Record<string, string[]> => {
   if (typeof err === 'string') return { error: [err] };
   if (typeof err.details === 'object' && err.details !== null) {
     const result: Record<string, string[]> = {};
@@ -12,3 +12,5 @@ export const appErrorToObject = (err: AppError | string): Record<string, string[
   }
   return { error: [err.message ?? 'خطایی به وجود آمده است.'] };
 };
+
+export { appErrorToObject };

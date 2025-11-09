@@ -9,23 +9,32 @@ datasource db {
 }
 
 model User {
-  id                    Int      @id @default(uuid()) 
+  id                    String              @id @default(uuid())
   first_name            String?
   last_name             String?
-  phone_number          String   @unique
-  email                 String   @unique
+  phone_number          String              @unique
+  phone_verified        Boolean             @default(false)
+  email                 String              @unique
+  email_verified        Boolean             @default(false)
+  password              String
   birth_date            DateTime?
   gender                String?
   bank_account_number   String?
   sheba_number          String?
-  is_verified           Boolean  @default(false)
-  newsletter_subscribed Boolean? @default(false)
-  role                  Role     @default(CUSTOMER)
+  is_verified           Boolean             @default(false)
+  newsletter_subscribed Boolean?            @default(false)
+  role                  Role                @default(CUSTOMER)
+  wallet_balance        Float               @default(0)
   wallet_transactions   WalletTransaction[]
-  wallet_balance        Float    @default(0)
-  addresses             Address[]?
-  orders                Order[]?
-  favorites             Product[] @relation("UserFavorites")
+  addresses             Address[]
+  orders                Order[]
+  favorites             Product[]           @relation("UserFavorites")
+  reviews               Review[]
+  questions             Question[]
+  created_at            DateTime            @default(now())
+  updated_at            DateTime            @updatedAt
+  deleted_at            DateTime?
+  notifications         Notification[]
 }
 
 enum Role {
@@ -35,26 +44,32 @@ enum Role {
 }
 
 model Address {
-  id          Int     @id @default(autoincrement())
-  user_id     Int
+  id          Int       @id @default(autoincrement())
+  user_id     String
   province    String
   city        String
   street      String
   alley       String
   unit        String
   postal_code String
-  user        User    @relation(fields: [user_id], references: [id])
+  user        User      @relation(fields: [user_id], references: [id])
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
 }
 
 model Order {
-  id            Int          @id @default(autoincrement())
-  order_number  String       @unique
-  order_status  OrderStatus
-  order_date    DateTime     @default(now())
-  total_price   Float
-  items         OrderItem[]
-  user_id       Int
-  user          User         @relation(fields: [user_id], references: [id])
+  id           Int         @id @default(autoincrement())
+  order_number String      @unique
+  order_status OrderStatus
+  order_date   DateTime    @default(now())
+  total_price  Float
+  items        OrderItem[]
+  user_id      String
+  user         User        @relation(fields: [user_id], references: [id])
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @updatedAt
+  deleted_at   DateTime?
 }
 
 enum OrderStatus {
@@ -66,31 +81,38 @@ enum OrderStatus {
 }
 
 model OrderItem {
-  id        Int      @id @default(autoincrement())
-  order_id  Int
+  id         Int       @id @default(autoincrement())
+  order_id   Int
   product_id Int
-  quantity  Int
-  product   Product  @relation(fields: [product_id], references: [id])
-  order     Order    @relation(fields: [order_id], references: [id])
+  quantity   Int
+  product    Product   @relation(fields: [product_id], references: [id])
+  order      Order     @relation(fields: [order_id], references: [id])
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
 }
 
 model Product {
-  id              Int           @id @default(autoincrement())
-  name            String
-  description     String
-  price           Float
-  is_discounted   Boolean       @default(false)
-  discount_type   DiscountType
-  discount_value  Float        
-  is_new          Boolean       @default(true) // محصول جدید
-  created_at      DateTime      @default(now())
-  images          ProductImage[]
-  sizes           ProductSize[]
-  colors          ProductColor[]
-  reviews         Review[]
-  questions       Question[]
-  category_id     Int
-  category        Category      @relation(fields: [category_id], references: [id])
+  id             Int            @id @default(autoincrement())
+  name           String
+  description    String
+  price          Float
+  is_discounted  Boolean        @default(false)
+  discount_type  DiscountType
+  discount_value Float
+  is_new         Boolean        @default(true)
+  created_at     DateTime       @default(now())
+  updated_at     DateTime       @updatedAt
+  deleted_at     DateTime?
+  images         ProductImage[]
+  sizes          ProductSize[]
+  colors         ProductColor[]
+  reviews        Review[]
+  questions      Question[]
+  orderItems     OrderItem[]
+  favoritedBy    User[]         @relation("UserFavorites")
+  category_id    Int
+  category       Category       @relation(fields: [category_id], references: [id])
 }
 
 enum DiscountType {
@@ -99,32 +121,44 @@ enum DiscountType {
 }
 
 model ProductImage {
-  id        Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   product_id Int
-  url       String
-  product   Product  @relation(fields: [product_id], references: [id])
+  url        String
+  product    Product   @relation(fields: [product_id], references: [id])
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
 }
 
 model ProductSize {
-  id        Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   product_id Int
-  size      String
-  product   Product  @relation(fields: [product_id], references: [id])
+  size       String
+  product    Product   @relation(fields: [product_id], references: [id])
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
 }
 
 model ProductColor {
-  id        Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   product_id Int
-  color     String
-  product   Product  @relation(fields: [product_id], references: [id])
+  color      String
+  product    Product   @relation(fields: [product_id], references: [id])
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
 }
 
 model Category {
-  id        Int       @id @default(autoincrement())
-  name      String
-  image_url String
-  gender    Gender
-  products  Product[]
+  id         Int       @id @default(autoincrement())
+  name       String
+  image_url  String
+  gender     Gender
+  products   Product[]
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
 }
 
 enum Gender {
@@ -135,45 +169,73 @@ enum Gender {
 }
 
 model Review {
-  id        Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   product_id Int
-  user_id    Int
-  rating    Int     
-  comment   String
-  created_at DateTime @default(now())
-  product   Product  @relation(fields: [product_id], references: [id])
-  user      User     @relation(fields: [user_id], references: [id])
+  user_id    String
+  rating     Int
+  comment    String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+  product    Product   @relation(fields: [product_id], references: [id])
+  user       User      @relation(fields: [user_id], references: [id])
 }
 
 model Question {
-  id        Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   product_id Int
-  user_id    Int
-  question  String
-  answer    String?
-  created_at DateTime @default(now())
-  product   Product  @relation(fields: [product_id], references: [id])
-  user      User     @relation(fields: [user_id], references: [id])
+  user_id    String
+  question   String
+  answer     String?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+  product    Product   @relation(fields: [product_id], references: [id])
+  user       User      @relation(fields: [user_id], references: [id])
 }
 
 model Slider {
-  id        Int      @id @default(autoincrement())
-  title     String
-  image_url String
-  link      String
-  created_at DateTime @default(now())
+  id         Int       @id @default(autoincrement())
+  title      String
+  image_url  String
+  link       String
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+}
+
+model Notification {
+  id         Int       @id @default(autoincrement())
+  user_id    String
+  title      String
+  message    String
+  link       String?
+  is_read    Boolean   @default(false)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  deleted_at DateTime?
+  user       User      @relation(fields: [user_id], references: [id])
 }
 
 model WalletTransaction {
-  id        Int      @id @default(autoincrement())
-  user_id    Int
-  amount    Float
-  type      TransactionType
-  created_at DateTime @default(now())
-  user      User     @relation(fields: [user_id], references: [id])
+  id         Int               @id @default(autoincrement())
+  user_id    String
+  amount     Float
+  type       TransactionType
+  status     TransactionStatus @default(PENDING)
+  created_at DateTime          @default(now())
+  updated_at DateTime          @updatedAt
+  deleted_at DateTime?
+  user       User              @relation(fields: [user_id], references: [id])
 }
 
 enum TransactionType {
   DEPOSIT
   WITHDRAWAL
+}
+
+enum TransactionStatus {
+  PENDING
+  SUCCESS
+  FAILED
 }

@@ -1,6 +1,6 @@
 import { type ZodError } from 'zod';
 
-export const zodIssuesToObject = (issues: ZodError['issues']): Record<string, string[]> => {
+const zodIssuesToObject = (issues: ZodError['issues']): Record<string, string[]> => {
   const result: Record<string, string[]> = {};
   issues.forEach((issue) => {
     const path = issue.path.join('.') || 'root';
@@ -9,3 +9,5 @@ export const zodIssuesToObject = (issues: ZodError['issues']): Record<string, st
   });
   return result;
 };
+
+export { zodIssuesToObject };
