@@ -50,7 +50,7 @@ const verifyAccessToken = (token: string): string | JwtPayload | null => {
 
 const verifyRefreshToken = (token: string): string | JwtPayload | null => {
   try {
-    const tokenPayload = jwt.verify(token, ENV.JWT_REFRESH_SECRET!);
+    const tokenPayload = jwt.verify(token, ENV.JWT_REFRESH_SECRET);
     return tokenPayload;
   } catch (error) {
     return null;

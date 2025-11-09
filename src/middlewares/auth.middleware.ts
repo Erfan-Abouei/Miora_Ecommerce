@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { ENV } from '@/config/env.config.js';
-import { setAccessTokenCookie } from '@/utils/jwt.utils.js';
+import { createAccessToken, createRefreshToken, setAccessTokenCookie, verifyAccessToken, verifyRefreshToken } from '@/utils/jwt.utils.js';
 import { TokenPayload } from '@/types/basic-type/basic.types.js';
 import { errorResponse } from '@/utils/api-response-handler.utils.js';
 import { ErrorCode } from '@/constants/error-constants/ERROR_CODE.constants.js';
@@ -16,7 +16,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
   }
 
   try {
-    const payload = jwt.verify(accessToken, ENV.JWT_ACCESS_SECRET) as TokenPayload;
+    const payload = verifyAccessToken(accessToken) as TokenPayload;
     req.user = payload;
     return next();
   } catch (err) {
@@ -26,9 +26,9 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
     }
 
     try {
-      const refreshPayload = jwt.verify(refreshToken, ENV.JWT_REFRESH_SECRET) as TokenPayload;
+      const refreshPayload = verifyRefreshToken(refreshToken) as TokenPayload;
 
-      const newAccessToken = jwt.sign(refreshPayload, ENV.JWT_ACCESS_SECRET, { expiresIn: '1h' });
+      const newAccessToken = createAccessToken(refreshPayload);
       setAccessTokenCookie(res, newAccessToken);
 
       req.user = refreshPayload;
