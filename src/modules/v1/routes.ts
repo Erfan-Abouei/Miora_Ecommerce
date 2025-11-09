@@ -1,17 +1,17 @@
-import publicRoutes from './public/routes.js';
-import userRoutes from './user/routes.js';
-import adminRoutes from './admin/routes.js';
+import { publicRouter } from './public/routes.js';
+import { userRouter } from './user/routes.js';
+import { adminRouter } from './admin/routes.js';
 import { Router } from 'express';
 
-const v1Routes = Router();
+const router = Router();
 
 // public routes ( everyone access )
-v1Routes.use('/public', publicRoutes);
+router.use('/public', publicRouter);
 
 // user routes ( need to login to access )
-v1Routes.use('/user', userRoutes);
+router.use('/user', userRouter);
 
 // admin routes ( need to login with admin access )
-v1Routes.use('/admin', adminRoutes);
+router.use('/admin', adminRouter);
 
-export default v1Routes;
+export { router as v1Router };

@@ -1,4 +1,4 @@
-import { ErrorCode } from "@/constants/error-constants/ERROR_CODE.constants.js";
+import { ErrorCode } from '@/constants/error-constants/ERROR_CODE.constants.js';
 
 export type ApiSuccessResponse<T> = {
   success: true;
@@ -21,4 +21,9 @@ export interface AppError extends Error {
   statusCode?: number;
   errorCode?: ErrorCode;
   details?: any;
+}
+
+export interface TokenPayload {
+  userId: string;
+  role: string;
 }
