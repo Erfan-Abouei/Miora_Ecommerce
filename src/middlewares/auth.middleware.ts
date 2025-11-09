@@ -1,7 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import { ENV } from '@/config/env.config.js';
-import { createAccessToken, createRefreshToken, setAccessTokenCookie, verifyAccessToken, verifyRefreshToken } from '@/utils/jwt.utils.js';
+import { createAccessToken, setAccessTokenCookie, verifyAccessToken, verifyRefreshToken } from '@/utils/jwt.utils.js';
 import { TokenPayload } from '@/types/basic-type/basic.types.js';
 import { errorResponse } from '@/utils/api-response-handler.utils.js';
 import { ErrorCode } from '@/constants/error-constants/ERROR_CODE.constants.js';
