@@ -1,12 +1,17 @@
-import { Router, Request, Response } from 'express';
-import { successResponse } from '@/utils/api-response-handler.utils.js';
-import { healthCheckRouter } from './health-check/index.js';
+import publicRoutes from './public/routes.js';
+import userRoutes from './user/routes.js';
+import adminRoutes from './admin/routes.js';
+import { Router } from 'express';
 
 const v1Routes = Router();
 
-// for test (entry point)
-v1Routes.get('/', (_: Request, res: Response) => successResponse<{ pour_ghasemi: string }>(res, 200, { pour_ghasemi: 'ساخته شده با عشق برای عشق ❤️' }));
+// public routes ( everyone access )
+v1Routes.use('/public', publicRoutes);
 
-// check server health and check connection
-v1Routes.use(healthCheckRouter);
+// user routes ( need to login to access )
+v1Routes.use('/user', userRoutes);
+
+// admin routes ( need to login with admin access )
+v1Routes.use('/admin', adminRoutes);
+
 export default v1Routes;
