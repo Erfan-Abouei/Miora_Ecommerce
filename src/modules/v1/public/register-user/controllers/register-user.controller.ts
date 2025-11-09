@@ -4,6 +4,7 @@ import { CreateUserDto } from '../interfaces/register-user.interface.js';
 import { successResponse } from '@/utils/api-response-handler.utils.js';
 import { setTokens } from '@/utils/jwt.utils.js';
 import { TokenPayload } from '@/types/basic-type/basic.types.js';
+import { User } from '@/generated/prisma/client.js';
 
 export const registerUserController = async (req: Request<{}, {}, CreateUserDto>, res: Response, next: NextFunction) => {
   try {
@@ -15,7 +16,7 @@ export const registerUserController = async (req: Request<{}, {}, CreateUserDto>
         role: user.role,
       };
       setTokens(res, tokenPayload);
-      successResponse(res, 201, userWithoutPassword, 'عملیات ثبت نام با موفقیت انجام شد.');
+      successResponse<typeof userWithoutPassword>(res, 201, userWithoutPassword, 'عملیات ثبت نام با موفقیت انجام شد.');
     }
   } catch (error) {
     next(error);
