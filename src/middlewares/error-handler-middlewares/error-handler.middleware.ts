@@ -10,6 +10,8 @@ import { AppError } from '@/types/basic-type/basic.type.js';
 
 const isAppError = (err: unknown): err is AppError => typeof err === 'object' && err !== null && 'message' in err;
 
+// for remove eslint unused _ error
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const errorHandler = (err: unknown, _req: Request, res: Response, _next: NextFunction): void => {
   if (err instanceof ZodError) {
     errorResponse<ErrorsResponse>(
