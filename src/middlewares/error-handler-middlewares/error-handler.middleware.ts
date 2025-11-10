@@ -1,6 +1,6 @@
 import { type ErrorsResponse } from '@/types/error-type/error-response.type.js';
 import { ZodError } from 'zod';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { ErrorCode } from '@/constants/error-constants/ERROR_CODE.constant.js';
 import { ErrorResponseMessage } from '@/constants/error-constants/ERROR_MESSAGE.constant.js';
 import { errorResponse } from '@/utils/api-response-handler.util.js';
@@ -10,7 +10,7 @@ import { AppError } from '@/types/basic-type/basic.type.js';
 
 const isAppError = (err: unknown): err is AppError => typeof err === 'object' && err !== null && 'message' in err;
 
-const errorHandler = (err: unknown, _: Request, res: Response): void => {
+const errorHandler = (err: unknown, _req: Request, res: Response, _next: NextFunction): void => {
   if (err instanceof ZodError) {
     errorResponse<ErrorsResponse>(
       res,
