@@ -1,7 +1,7 @@
 import jwt, { JwtPayload, type SignOptions } from 'jsonwebtoken';
 import { Response } from 'express';
 import { ENV } from '@/config/env.config.js';
-import { TokenPayload } from '@/types/basic-type/basic.types.js';
+import { TokenPayload } from '@/types/basic-type/basic.type.js';
 
 const createAccessToken = (payload: TokenPayload): string => {
   const options: SignOptions = { expiresIn: '1h' };
@@ -43,7 +43,7 @@ const verifyAccessToken = (token: string): string | JwtPayload | null => {
   try {
     const tokenPayload = jwt.verify(token, ENV.JWT_ACCESS_SECRET!);
     return tokenPayload;
-  } catch (error) {
+  } catch {
     return null;
   }
 };
@@ -52,9 +52,17 @@ const verifyRefreshToken = (token: string): string | JwtPayload | null => {
   try {
     const tokenPayload = jwt.verify(token, ENV.JWT_REFRESH_SECRET);
     return tokenPayload;
-  } catch (error) {
+  } catch {
     return null;
   }
 };
 
-export { createAccessToken, createRefreshToken, setRefreshTokenCookie, setAccessTokenCookie, setTokens, verifyAccessToken, verifyRefreshToken };
+export {
+  createAccessToken,
+  createRefreshToken,
+  setRefreshTokenCookie,
+  setAccessTokenCookie,
+  setTokens,
+  verifyAccessToken,
+  verifyRefreshToken,
+};

@@ -1,7 +1,7 @@
+import { Router } from 'express';
 import { publicRouter } from './public/routes.js';
 import { userRouter } from './user/routes.js';
 import { adminRouter } from './admin/routes.js';
-import { Router } from 'express';
 
 const router = Router();
 

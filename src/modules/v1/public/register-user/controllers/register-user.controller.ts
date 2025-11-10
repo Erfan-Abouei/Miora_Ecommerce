@@ -1,21 +1,22 @@
 import { Request, Response, NextFunction } from 'express';
-import { registerUserService } from '../services/register-user.service.js';
-import { CreateUserDto } from '../interfaces/register-user.interface.js';
-import { successResponse } from '@/utils/api-response-handler.utils.js';
-import { setTokens } from '@/utils/jwt.utils.js';
-import { TokenPayload } from '@/types/basic-type/basic.types.js';
+import { successResponse } from '@/utils/api-response-handler.util.js';
+import { registerUserService } from '../services/index.js';
+import { RegisterUserDto, RegisterUserServerDto } from '../interfaces/register-user.interface.js';
 
-export const registerUserController = async (req: Request<{}, {}, CreateUserDto>, res: Response, next: NextFunction) => {
+export const registerUserController = async (
+  req: Request<unknown, unknown, RegisterUserDto>,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
   try {
-    const user = await registerUserService(req.body);
-    if (user) {
-      const { password, ...userWithoutPassword } = user;
-      const tokenPayload: TokenPayload = {
-        userId: user.id,
-        role: user.role,
-      };
-      setTokens(res, tokenPayload);
-      successResponse<typeof userWithoutPassword>(res, 201, userWithoutPassword, 'عملیات ثبت نام با موفقیت انجام شد.');
+    const aboutRegisterAndOtpData = await registerUserService(req.body);
+    if (aboutRegisterAndOtpData) {
+      successResponse<RegisterUserServerDto>(
+        res,
+        200,
+        aboutRegisterAndOtpData,
+        'عملیات با موفقیت انجام شد و کد تایید ارسال شد.',
+      );
     }
   } catch (error) {
     next(error);

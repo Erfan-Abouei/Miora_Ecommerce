@@ -1,7 +1,8 @@
+import { type ErrorsResponse } from '@/types/error-type/error-response.type.js';
 import { type ZodError } from 'zod';
 
-const zodIssuesToObject = (issues: ZodError['issues']): Record<string, string[]> => {
-  const result: Record<string, string[]> = {};
+const zodIssuesToObject = (issues: ZodError['issues']): ErrorsResponse => {
+  const result: ErrorsResponse = {};
   issues.forEach((issue) => {
     const path = issue.path.join('.') || 'root';
     if (!result[path]) result[path] = [];

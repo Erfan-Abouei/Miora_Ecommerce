@@ -1,4 +1,3 @@
-// src/config/error-codes.ts
 export enum ErrorCode {
   VALIDATION_ERROR = 'خطای اعتبارسنجی',
   NOT_FOUND = 'یافت نشد',
@@ -9,4 +8,5 @@ export enum ErrorCode {
   CONFLICT = 'تداخل داده',
   BAD_REQUEST = 'درخواست نامعتبر',
   UNKNOWN_ERROR = 'خطای نامشخص',
+  TO_MANY_REQUEST = 'درخواست بیش از اندازه',
 }

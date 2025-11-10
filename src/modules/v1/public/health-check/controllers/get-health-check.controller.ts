@@ -1,10 +1,14 @@
-import { type GetHealthCheckQuery } from '@/types/query-type/get-health-check-query.types.js';
+import { type GetHealthCheckQuery } from '@/types/query-type/get-health-check-query.type.js';
 import { NextFunction, Request, Response } from 'express';
-import { successResponse } from '@/utils/api-response-handler.utils.js';
+import { successResponse } from '@/utils/api-response-handler.util.js';
+import { HealthCheckData } from '@/types/data-type/health-check-data.type.js';
 import { getHealthCheckDataService } from '../services/index.js';
-import { HealthCheckData } from '@/types/data-type/health-check-data.types.js';
 
-const getHealthCheckDataController = async (req: Request<{}, {}, {}, GetHealthCheckQuery>, res: Response, next: NextFunction): Promise<void> => {
+const getHealthCheckDataController = async (
+  req: Request<unknown, unknown, unknown, GetHealthCheckQuery>,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
   try {
     let healthCheckData: HealthCheckData | null = null;
     const withSystemData = req.query.has_system_data;
@@ -13,7 +17,6 @@ const getHealthCheckDataController = async (req: Request<{}, {}, {}, GetHealthCh
   } catch (error: unknown) {
     next(error);
   }
-  
 };
 
 export { getHealthCheckDataController };
