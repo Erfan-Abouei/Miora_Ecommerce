@@ -8,7 +8,8 @@ const successResponse = <T>(
   data?: T,
   message = 'عملیات با موفقیت انجام شد.',
   author = 'Kara Team',
-): Response<ApiSuccessResponse<T>> => res.status(status).json({
+): Response<ApiSuccessResponse<T>> =>
+  res.status(status).json({
     success: true,
     status,
     author,
@@ -23,7 +24,8 @@ const errorResponse = <T>(
   message = 'مشکلی به وجود آمده است.',
   errorCode = ErrorCode.UNKNOWN_ERROR,
   author = 'Kara Team',
-): Response<ApiErrorResponse<T>> => res.status(status).json({
+): Response<ApiErrorResponse<T>> =>
+  res.status(status).json({
     success: false,
     status,
     author,
