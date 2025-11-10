@@ -1,7 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import {
-  createAccessToken, setAccessTokenCookie, verifyAccessToken, verifyRefreshToken,
-} from '@/utils/jwt.util.js';
+import { createAccessToken, setAccessTokenCookie, verifyAccessToken, verifyRefreshToken } from '@/utils/jwt.util.js';
 import { errorResponse } from '@/utils/api-response-handler.util.js';
 import { TokenPayload } from '@/types/basic-type/basic.type.js';
 import { ErrorCode } from '@/constants/error-constants/ERROR_CODE.constant.js';
