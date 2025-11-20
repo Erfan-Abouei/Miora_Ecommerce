@@ -1,6 +1,6 @@
 import { type ErrorsResponse } from '@/types/error-type/error-response.type.js';
 import prisma from '@/config/database/database.config.js';
-import redis from '@/config/database/redis.config.js';
+import cache from '@/config/database/cache.config.js';
 import { throwValidationError } from '@/utils/throw-validation-error.util.js';
 import { hashPassword } from '@/utils/password.util.js';
 import { RegisterUserDto, RegisterUserServerDto } from '../interfaces/register-user.interface.js';
@@ -10,14 +10,15 @@ export const registerUserRepository = async ({
   password,
   phone_number,
 }: RegisterUserDto): Promise<RegisterUserServerDto> => {
-  // Check if the user has already requested an OTP and it is still valid
-  const existingOtp: number | null = await redis.get(`otp:${phone_number}`);
-  if (existingOtp) {
-    // Get the remaining TTL for the OTP
-    const otpTtl: number | null = await redis.ttl(`otp:${phone_number}`);
+  const existingOtp: number | undefined = cache.get(`otp:${phone_number}`);
+  if (existingOtp !== undefined) {
+    const otpTtl: number = cache.getTtl(`otp:${phone_number}`)!;
+    const now = Date.now();
+    const expire_otp_timer = Math.floor((otpTtl - now) / 1000); // convert to second
+
     return {
-      expire_otp_timer: otpTtl,
-      otp: existingOtp, // For development purposes
+      expire_otp_timer,
+      otp: existingOtp, // for development
     };
   }
 
@@ -44,16 +45,13 @@ export const registerUserRepository = async ({
 
   const randomFourDigits: number = Math.floor(1000 + Math.random() * 9000);
 
-  // Cache user data and OTP in Redis for 3 minutes (180 seconds)
-  await Promise.all([
-    redis.set(`phone_number:${phone_number}`, phone_number, { ex: 180 }),
-    redis.set(`email:${phone_number}`, email, { ex: 180 }),
-    redis.set(`password:${phone_number}`, hashedPassword, { ex: 180 }),
-    redis.set(`otp:${phone_number}`, randomFourDigits, { ex: 180 }),
-  ]);
+  cache.set(`phone_number:${phone_number}`, phone_number, 180);
+  cache.set(`email:${phone_number}`, email, 180);
+  cache.set(`password:${phone_number}`, hashedPassword, 180);
+  cache.set(`otp:${phone_number}`, randomFourDigits, 180);
 
   return {
     expire_otp_timer: 180,
-    otp: randomFourDigits, // For development purposes
+    otp: randomFourDigits, // for development
   };
 };

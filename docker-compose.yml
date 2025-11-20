@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # سرویس برای اپلیکیشن Node.js
+  app:
+    build: .
+    container_name: miora_ecommerce_app
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=mysql://ErFaNK:ErFaN_KiNg138787@mysql:3306/miora_ecommerce
+    depends_on:
+      - mysql
+    networks:
+      - miora_network
+
+  # سرویس برای پایگاه داده MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: miora_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: miora_ecommerce
+      MYSQL_USER: ErFaNK
+      MYSQL_PASSWORD: ErFaN_KiNg138787
+    ports:
+      - "3306:3306"
+    networks:
+      - miora_network
+
+networks:
+  miora_network:
+    driver: bridge
