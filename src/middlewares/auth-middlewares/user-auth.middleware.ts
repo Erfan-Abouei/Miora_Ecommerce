@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
-import { createAccessToken, setAccessTokenCookie, verifyAccessToken, verifyRefreshToken } from '@/utils/jwt.util.js';
-import { errorResponse } from '@/utils/api-response-handler.util.js';
+import { createAccessToken, setAccessTokenCookie, verifyAccessToken, verifyRefreshToken } from '@/utils/auth-utils/jwt.util.js';
+import { errorResponse } from '@/utils/error-utils/api-response-handler.util.js';
 import { TokenPayload } from '@/types/basic-type/basic.type.js';
 import { ErrorCode } from '@/constants/error-constants/ERROR_CODE.constant.js';
 import { ErrorResponseMessage } from '@/constants/error-constants/ERROR_MESSAGE.constant.js';
 
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+const userAuthMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const accessToken = req.cookies.access_token;
   const refreshToken = req.cookies.refresh_token;
 
@@ -38,4 +38,4 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { authMiddleware };
+export { userAuthMiddleware };

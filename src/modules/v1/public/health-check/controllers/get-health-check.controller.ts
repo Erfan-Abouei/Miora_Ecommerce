@@ -1,6 +1,6 @@
 import { type GetHealthCheckQuery } from '@/types/query-type/get-health-check-query.type.js';
 import { NextFunction, Request, Response } from 'express';
-import { successResponse } from '@/utils/api-response-handler.util.js';
+import { successResponse } from '@/utils/error-utils/api-response-handler.util.js';
 import { HealthCheckData } from '@/types/data-type/health-check-data.type.js';
 import { getHealthCheckDataService } from '../services/index.js';
 

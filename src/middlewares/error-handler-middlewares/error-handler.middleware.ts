@@ -3,9 +3,9 @@ import { ZodError } from 'zod';
 import { NextFunction, Request, Response } from 'express';
 import { ErrorCode } from '@/constants/error-constants/ERROR_CODE.constant.js';
 import { ErrorResponseMessage } from '@/constants/error-constants/ERROR_MESSAGE.constant.js';
-import { errorResponse } from '@/utils/api-response-handler.util.js';
-import { zodIssuesToObject } from '@/utils/zod-issues-to-object.util.js';
-import { appErrorToObject } from '@/utils/app-error-to-object.util.js';
+import { errorResponse } from '@/utils/error-utils/api-response-handler.util.js';
+import { zodIssuesToObject } from '@/utils/error-utils/zod-issues-to-object.util.js';
+import { appErrorToObject } from '@/utils/error-utils/app-error-to-object.util.js';
 import { AppError } from '@/types/basic-type/basic.type.js';
 
 const isAppError = (err: unknown): err is AppError => typeof err === 'object' && err !== null && 'message' in err;

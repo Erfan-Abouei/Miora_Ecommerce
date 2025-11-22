@@ -1,7 +1,7 @@
 import { ZodType } from 'zod';
 import { Request, Response, NextFunction } from 'express';
 import { ErrorCode } from '@/constants/error-constants/ERROR_CODE.constant.js';
-import { errorResponse } from '@/utils/api-response-handler.util.js';
+import { errorResponse } from '@/utils/error-utils/api-response-handler.util.js';
 
 const validate =
   (schema: ZodType) =>

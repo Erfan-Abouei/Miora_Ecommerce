@@ -1,6 +1,6 @@
 import rateLimit from 'express-rate-limit';
 import { Request, Response } from 'express';
-import { errorResponse } from '@/utils/api-response-handler.util.js';
+import { errorResponse } from '@/utils/error-utils/api-response-handler.util.js';
 import { ErrorCode } from '@/constants/error-constants/ERROR_CODE.constant.js';
 import { ErrorResponseMessage } from '@/constants/error-constants/ERROR_MESSAGE.constant.js';
 

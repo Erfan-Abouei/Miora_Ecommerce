@@ -10,8 +10,8 @@ const successResponse = <T>(
   author = 'Kara Team',
 ): Response<ApiSuccessResponse<T>> =>
   res.status(status).json({
-    success: true,
     status,
+    success: true,
     author,
     message,
     data: data ?? null,
@@ -26,8 +26,8 @@ const errorResponse = <T>(
   author = 'Kara Team',
 ): Response<ApiErrorResponse<T>> =>
   res.status(status).json({
-    success: false,
     status,
+    success: false,
     author,
     message,
     errorCode,

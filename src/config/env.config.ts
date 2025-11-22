@@ -4,6 +4,10 @@ import path from 'path';
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
 const ENV = {
+  // initial config 
+  APP_NAME: process.env.APP_NAME!,
+  APP_URL: process.env.APP_URL!,
+
   // node env
   NODE_ENV: process.env.NODE_ENV!,
   PORT: process.env.PORT ? Number(process.env.PORT) : 3000,

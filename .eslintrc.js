@@ -1,0 +1,43 @@
+export default {
+  env: {
+    node: true,
+    es2021: true
+  },
+  extends: [
+    "airbnb-base",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    ecmaVersion: 2021,
+    sourceType: "module"
+  },
+  plugins: [
+    "@typescript-eslint"
+  ],
+  settings: {
+    "import/resolver": {
+      "typescript": {
+        alwaysTryTypes: true,
+        project: "./tsconfig.json"
+      },
+      "node": {
+        extensions: [".js", ".ts"]
+      }
+    }
+  },
+  rules: {
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "ts": "never",
+        "js": "never"
+      }
+    ],
+    "import/prefer-default-export": "off",
+    "no-console": "off",
+    "max-len": ["error", { "code": 120 }],
+    "camelcase": "off"
+  }
+};

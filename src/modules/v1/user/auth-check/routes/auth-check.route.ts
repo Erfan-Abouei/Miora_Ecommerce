@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { authMiddleware } from '@/middlewares/auth-middlewares/auth.middleware.js';
+import { userAuthMiddleware } from '@/middlewares/auth-middlewares/user-auth.middleware.js';
 import authCheckController from '../controllers/auth-check.controller.js';
 
 const router = Router();
 
-router.get('/', authMiddleware, authCheckController);
+router.get('/', userAuthMiddleware, authCheckController);
 
 export { router as authCheckRouter };

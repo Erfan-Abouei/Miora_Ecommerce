@@ -2,7 +2,7 @@ import { type User } from '@/generated/prisma/client.js';
 import { type ErrorsResponse } from '@/types/error-type/error-response.type.js';
 import prisma from '@/config/database/database.config.js';
 import cache from '@/config/database/cache.config.js';
-import { throwValidationError } from '@/utils/throw-validation-error.util.js';
+import { throwValidationError } from '@/utils/error-utils/throw-validation-error.util.js';
 import { RegisterUserConfirmDto } from '../interfaces/register-user-confirm.interface.js';
 
 export const registerUserConfirmRepository = async ({
@@ -28,6 +28,7 @@ export const registerUserConfirmRepository = async ({
       phone_number: phoneNumber!,
       email: email!,
       password: password!,
+      phone_verified: true
     },
   });
 
