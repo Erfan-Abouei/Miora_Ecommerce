@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-  # سرویس برای اپلیکیشن Node.js
   app:
     build: .
     container_name: miora_ecommerce_app
@@ -14,7 +13,6 @@ services:
     networks:
       - miora_network
 
-  # سرویس برای پایگاه داده MySQL
   mysql:
     image: mysql:8.0
     container_name: miora_mysql
