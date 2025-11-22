@@ -6,7 +6,8 @@
   "main": "src/server.ts",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc && tsc-alias",
+    "build": "tsc && tsc-alias && npm run copy-files",
+    "copy-files": "cpx \"docker-compose.yml\" dist/ && cpx \"Dockerfile\" dist/ && cpx \"package.json\" dist/ && cpx \"package-lock.json\" dist/ && cpx \".env\" dist/",
     "start": "node dist/server.js",
     "lint": "eslint src/**/*.{ts,js} --fix --config .eslintrc.js",
     "format": "prettier --write 'src/**/*.{ts,js,json,md}'",
@@ -43,6 +44,7 @@
     "@types/swagger-ui-express": "4.1.8",
     "@typescript-eslint/eslint-plugin": "8.47.0",
     "@typescript-eslint/parser": "8.47.0",
+    "cpx": "^1.5.0",
     "eslint": "9.39.1",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-prettier": "10.1.8",
