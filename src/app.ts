@@ -23,7 +23,7 @@ app.use(morgan('dev'));
 app.use(requestLoggerHandler);
 
 // health check route for c-panel
-app.get('/', (_: Request, res: Response) => res.status(200).json({kara: "کارا یک برند نیست یک دنیاست :)"}))
+app.get('/', (_: Request, res: Response) => res.status(200).json({ kara: 'Made by @Erfan_Abouei' }));
 // API Routes V1
 app.use('/api/v1/', v1Router);
 

@@ -1,3 +1,4 @@
+import { ResponseMessage } from '@/constants/error-constants/RESPONSE_MESSAGE.constant.js';
 import type { AppError } from '@/types/basic-type/basic.type.js';
 import type { ErrorsResponse } from '@/types/error-type/error-response.type.js';
 
@@ -14,7 +15,7 @@ const appErrorToObject = (err: AppError | string): ErrorsResponse => {
     return result;
   }
 
-  return { error: [err.message ?? 'خطایی به وجود آمده است.'] };
+  return { error: [err.message ?? ResponseMessage.ERROR_MESSAGE] };
 };
 
 export { appErrorToObject };

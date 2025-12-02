@@ -5,24 +5,21 @@ import { setTokens } from '@/utils/auth-utils/jwt.util.js';
 import { TokenPayload } from '@/types/basic-type/basic.type.js';
 import { registerUserConfrimService } from '../services/index.js';
 import { RegisterUserConfirmDto } from '../interfaces/register-user-confirm.interface.js';
+import { removeSecureData } from '@/utils/user-utils/remove-secure-data.utils.js';
 
-export const registerUserConfrimController = async (
-  req: Request<unknown, unknown, RegisterUserConfirmDto>,
-  res: Response,
-  next: NextFunction,
-) => {
+export const registerUserConfrimController = async (req: Request<unknown, unknown, RegisterUserConfirmDto>, res: Response, next: NextFunction) => {
   try {
     const user = await registerUserConfrimService(req.body);
     if (user) {
-      const { password, role, id, ...userWithoutPassword } = user;
+      const userWithoutPassword = removeSecureData(user);
       const tokenPayload: TokenPayload = {
         userId: user.id,
-        role,
+        role: user.role,
       };
       setTokens(res, tokenPayload);
-      successResponse<Omit<UserData, 'password' | 'role' | 'id'>>(res, 201, userWithoutPassword, 'عملیات ثبت نام با موفقیت انجام شد.');
+      successResponse<Omit<UserData, 'password' | 'role' | 'id'>>(res, 201, userWithoutPassword);
     }
-  } catch (error) {
+  } catch (error: unknown) {
     next(error);
   }
 };

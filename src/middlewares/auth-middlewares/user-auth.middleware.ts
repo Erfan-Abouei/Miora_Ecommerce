@@ -3,14 +3,14 @@ import { createAccessToken, setAccessTokenCookie, verifyAccessToken, verifyRefre
 import { errorResponse } from '@/utils/error-utils/api-response-handler.util.js';
 import { TokenPayload } from '@/types/basic-type/basic.type.js';
 import { ErrorCode } from '@/constants/error-constants/ERROR_CODE.constant.js';
-import { ErrorResponseMessage } from '@/constants/error-constants/ERROR_MESSAGE.constant.js';
+import { ResponseMessage } from '@/constants/error-constants/RESPONSE_MESSAGE.constant.js';
 
 const userAuthMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const accessToken = req.cookies.access_token;
   const refreshToken = req.cookies.refresh_token;
 
   if (!accessToken) {
-    errorResponse<null>(res, 401, null, ErrorResponseMessage.UNAUTH_MESSAGE, ErrorCode.FORBIDDEN);
+    errorResponse<null>(res, 401, null, ResponseMessage.UNAUTH_MESSAGE, ErrorCode.FORBIDDEN);
     return;
   }
 
@@ -20,7 +20,7 @@ const userAuthMiddleware = (req: Request, res: Response, next: NextFunction) => 
     next();
   } catch {
     if (!refreshToken) {
-      errorResponse<null>(res, 401, null, ErrorResponseMessage.UNAUTH_MESSAGE, ErrorCode.FORBIDDEN);
+      errorResponse<null>(res, 401, null, ResponseMessage.UNAUTH_MESSAGE, ErrorCode.FORBIDDEN);
       return;
     }
 
@@ -33,7 +33,7 @@ const userAuthMiddleware = (req: Request, res: Response, next: NextFunction) => 
       req.user = refreshPayload;
       next();
     } catch {
-      errorResponse<null>(res, 401, null, ErrorResponseMessage.UNAUTH_MESSAGE, ErrorCode.FORBIDDEN);
+      errorResponse<null>(res, 401, null, ResponseMessage.UNAUTH_MESSAGE, ErrorCode.FORBIDDEN);
     }
   }
 };

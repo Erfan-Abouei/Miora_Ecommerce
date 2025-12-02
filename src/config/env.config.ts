@@ -4,7 +4,7 @@ import path from 'path';
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
 const ENV = {
-  // initial config 
+  // initial config
   APP_NAME: process.env.APP_NAME!,
   APP_URL: process.env.APP_URL!,
 

@@ -4,11 +4,7 @@ import { successResponse } from '@/utils/error-utils/api-response-handler.util.j
 import { HealthCheckData } from '@/types/data-type/health-check-data.type.js';
 import { getHealthCheckDataService } from '../services/index.js';
 
-const getHealthCheckDataController = async (
-  req: Request<unknown, unknown, unknown, GetHealthCheckQuery>,
-  res: Response,
-  next: NextFunction,
-): Promise<void> => {
+const getHealthCheckDataController = async (req: Request<unknown, unknown, unknown, GetHealthCheckQuery>, res: Response, next: NextFunction): Promise<void> => {
   try {
     let healthCheckData: HealthCheckData | null = null;
     const withSystemData = req.query.has_system_data;

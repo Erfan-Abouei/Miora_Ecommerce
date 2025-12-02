@@ -5,11 +5,7 @@ import { throwValidationError } from '@/utils/error-utils/throw-validation-error
 import { hashPassword } from '@/utils/auth-utils/password.util.js';
 import { RegisterUserDto, RegisterUserServerDto } from '../interfaces/register-user.interface.js';
 
-export const registerUserRepository = async ({
-  email,
-  password,
-  phone_number,
-}: RegisterUserDto): Promise<RegisterUserServerDto> => {
+export const registerUserRepository = async ({ email, password, phone_number }: RegisterUserDto): Promise<RegisterUserServerDto | void> => {
   const existingOtp: number | undefined = cache.get(`otp:${phone_number}`);
   if (existingOtp !== undefined) {
     const otpTtl: number = cache.getTtl(`otp:${phone_number}`)!;
@@ -39,7 +35,10 @@ export const registerUserRepository = async ({
     }
   }
 
-  if (Object.keys(errors).length > 0) throwValidationError(errors);
+  if (Object.keys(errors).length > 0) {
+    throwValidationError({ details: errors });
+    return;
+  }
 
   const hashedPassword = await hashPassword(password);
 

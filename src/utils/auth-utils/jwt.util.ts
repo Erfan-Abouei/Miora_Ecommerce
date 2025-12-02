@@ -57,12 +57,4 @@ const verifyRefreshToken = (token: string): string | JwtPayload | null => {
   }
 };
 
-export {
-  createAccessToken,
-  createRefreshToken,
-  setRefreshTokenCookie,
-  setAccessTokenCookie,
-  setTokens,
-  verifyAccessToken,
-  verifyRefreshToken,
-};
+export { createAccessToken, createRefreshToken, setRefreshTokenCookie, setAccessTokenCookie, setTokens, verifyAccessToken, verifyRefreshToken };

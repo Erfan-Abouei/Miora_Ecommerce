@@ -2,7 +2,7 @@ import { type ErrorsResponse } from '@/types/error-type/error-response.type.js';
 import { ZodError } from 'zod';
 import { NextFunction, Request, Response } from 'express';
 import { ErrorCode } from '@/constants/error-constants/ERROR_CODE.constant.js';
-import { ErrorResponseMessage } from '@/constants/error-constants/ERROR_MESSAGE.constant.js';
+import { ResponseMessage } from '@/constants/error-constants/RESPONSE_MESSAGE.constant.js';
 import { errorResponse } from '@/utils/error-utils/api-response-handler.util.js';
 import { zodIssuesToObject } from '@/utils/error-utils/zod-issues-to-object.util.js';
 import { appErrorToObject } from '@/utils/error-utils/app-error-to-object.util.js';
@@ -14,29 +14,17 @@ const isAppError = (err: unknown): err is AppError => typeof err === 'object' &&
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const errorHandler = (err: unknown, _req: Request, res: Response, _next: NextFunction): void => {
   if (err instanceof ZodError) {
-    errorResponse<ErrorsResponse>(
-      res,
-      400,
-      zodIssuesToObject(err.issues),
-      ErrorResponseMessage.VALIDATION_ERROR_MESSAGE,
-      ErrorCode.VALIDATION_ERROR,
-    );
+    errorResponse<ErrorsResponse>(res, 400, zodIssuesToObject(err.issues), ResponseMessage.VALIDATION_ERROR_MESSAGE, ErrorCode.VALIDATION_ERROR);
     return;
   }
 
   if (isAppError(err)) {
-    errorResponse(
-      res,
-      err.statusCode ?? 500,
-      appErrorToObject(err),
-      ErrorResponseMessage.UNKNOWN_MESSAGE,
-      err.errorCode ?? ErrorCode.INTERNAL_SERVER_ERROR,
-    );
+    errorResponse(res, err.statusCode ?? 500, appErrorToObject(err), ResponseMessage.UNKNOWN_MESSAGE, err.errorCode ?? ErrorCode.INTERNAL_SERVER_ERROR);
     return;
   }
 
   // Unknown Error
-  errorResponse<null>(res, 500, null, ErrorResponseMessage.UNKNOWN_MESSAGE, ErrorCode.UNKNOWN_ERROR);
+  errorResponse<null>(res, 500, null, ResponseMessage.UNKNOWN_MESSAGE, ErrorCode.UNKNOWN_ERROR);
 };
 
 export { errorHandler };
