@@ -3,5 +3,5 @@ import { registerUserRepository } from '../repositories/register-user.repository
 
 export const registerUserService = async (userData: RegisterUserDto): Promise<RegisterUserServerDto> => {
   const aboutRegisterAndOtpData = await registerUserRepository(userData);
-  return aboutRegisterAndOtpData;
+  return aboutRegisterAndOtpData!;
 };

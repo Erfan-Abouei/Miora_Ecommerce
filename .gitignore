@@ -71,3 +71,5 @@ pnpm-lock.yaml
 *.tar.gz
 
 /src/generated/prisma
+
+/generated/prisma

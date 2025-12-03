@@ -20,6 +20,9 @@ const ENV = {
   JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET!,
   ACCESS_TOKEN_EXPIRES_IN: process.env.ACCESS_TOKEN_EXPIRES_IN!,
   REFRESH_TOKEN_EXPIRES_IN: process.env.REFRESH_TOKEN_EXPIRES_IN!,
+
+  // database env
+  DB_URL: process.env.DATABASE_URL!,
 };
 
 export { ENV };

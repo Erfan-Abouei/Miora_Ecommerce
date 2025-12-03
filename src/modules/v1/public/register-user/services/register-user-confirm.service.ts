@@ -1,4 +1,4 @@
-import { type User } from '@/generated/prisma/client.js';
+import { type User } from "@prisma/client";
 import { registerUserConfirmRepository } from '../repositories/register-user-confirm.repository.js';
 import { RegisterUserConfirmDto } from '../interfaces/register-user-confirm.interface.js';
 

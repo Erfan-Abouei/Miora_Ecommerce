@@ -1,9 +1,9 @@
 import { type ErrorsResponse } from '@/types/error-type/error-response.type.js';
-import prisma from '@/config/database/database.config.js';
-import cache from '@/config/database/cache.config.js';
 import { throwValidationError } from '@/utils/error-utils/throw-validation-error.util.js';
 import { hashPassword } from '@/utils/auth-utils/password.util.js';
 import { RegisterUserDto, RegisterUserServerDto } from '../interfaces/register-user.interface.js';
+import prisma from '@/config/database/database.config.js';
+import cache from '@/config/database/cache.config.js';
 
 export const registerUserRepository = async ({ email, password, phone_number }: RegisterUserDto): Promise<RegisterUserServerDto | void> => {
   const existingOtp: number | undefined = cache.get(`otp:${phone_number}`);

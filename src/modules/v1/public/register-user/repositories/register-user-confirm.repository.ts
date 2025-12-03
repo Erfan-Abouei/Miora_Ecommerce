@@ -1,9 +1,9 @@
-import { type User } from '@/generated/prisma/client.js';
+import { type User } from "@prisma/client";
 import { type ErrorsResponse } from '@/types/error-type/error-response.type.js';
-import prisma from '@/config/database/database.config.js';
-import cache from '@/config/database/cache.config.js';
 import { throwValidationError } from '@/utils/error-utils/throw-validation-error.util.js';
 import { RegisterUserConfirmDto } from '../interfaces/register-user-confirm.interface.js';
+import prisma from '@/config/database/database.config.js';
+import cache from '@/config/database/cache.config.js';
 
 export const registerUserConfirmRepository = async ({ phone_number, otp }: RegisterUserConfirmDto): Promise<User | void> => {
   const errors: ErrorsResponse = {};
@@ -26,6 +26,7 @@ export const registerUserConfirmRepository = async ({ phone_number, otp }: Regis
       email: email!,
       password: password!,
       phone_verified: true,
+      
     },
   });
 

@@ -3,6 +3,6 @@ import { authCheckRouter } from './auth-check/index.js';
 
 const router = Router();
 
-router.get('/auth-check', authCheckRouter);
+router.use('/auth-check', authCheckRouter);
 
 export { router as userRouter };

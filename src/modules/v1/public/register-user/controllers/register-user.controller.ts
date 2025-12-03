@@ -7,7 +7,7 @@ export const registerUserController = async (req: Request<unknown, unknown, Regi
   try {
     const aboutRegisterAndOtpData = await registerUserService(req.body);
     if (aboutRegisterAndOtpData) {
-      successResponse<RegisterUserServerDto>(res, 200, aboutRegisterAndOtpData, 'عملیات با موفقیت انجام شد و کد تایید ارسال شد.');
+      successResponse<RegisterUserServerDto>(res, 200, aboutRegisterAndOtpData);
     }
   } catch (error: unknown) {
     next(error);
