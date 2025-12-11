@@ -1,13 +1,14 @@
-import { Op } from 'sequelize';
+import { Op, WhereOptions } from 'sequelize';
 
 type Credentials = Record<string, any>;
 
-export const buildWhereConditions = (filters: Credentials) => {
+export const buildWhereConditions = (filters: Credentials): WhereOptions => {
   const whereConditions: any[] = [];
 
   Object.keys(filters).forEach((key) => {
-    if (filters[key]) {
-      whereConditions.push({ [key]: filters[key] });
+    const value = filters[key];
+    if (value !== undefined && value !== null) {
+      whereConditions.push({ [key]: value });
     }
   });
 
