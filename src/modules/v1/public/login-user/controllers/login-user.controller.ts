@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { LoginUserDTO } from '@/types/modules/v1/user/dto/user-dto.type';
-import { loginUserRegister } from '../services/login-user.service';
+import { loginUserService } from '../services/login-user.service';
 import { successResponse } from '@/utils/error/api-response-handler.util';
 import { removeSecureData } from '@/modules/v1/shared/utils/remove-secure-data.utils';
 import { TokenPayload } from '@/types/common/basic.type';
@@ -10,7 +10,7 @@ import { HttpStatus } from '@/constants';
 
 export const loginUserController = async (req: Request<unknown, unknown, LoginUserDTO>, res: Response, next: NextFunction) => {
   try {
-    const createdUserData = await loginUserRegister(req.body);
+    const createdUserData = await loginUserService(req.body);
     const userWithoutPassword = removeSecureData(createdUserData);
     const tokenPayload: TokenPayload = {
       userId: createdUserData.id,
