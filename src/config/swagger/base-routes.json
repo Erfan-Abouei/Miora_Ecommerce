@@ -156,6 +156,30 @@
           }
         }
       }
+    },
+    "/user/auth-check": {
+      "get": {
+        "summary": "Check if the user is authenticated",
+        "tags": ["User"],
+        "responses": {
+          "200": {
+            "description": "User is authenticated",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiSuccessResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "User is not authenticated",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiErrorResponse" }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
