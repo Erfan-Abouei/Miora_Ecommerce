@@ -8,7 +8,7 @@ export enum ValidationMessage {
   PASSWORD_REQUIRED = 'گذرواژه اجباری است و باید از نوع رشته باشد.',
   PASSWORD_INCORRECT = 'گذرواژه ارسال شده معتبر نمیباشد.',
   OTP_INVALID = 'کد ورود باید حداکثر 4 رقم باشد.',
-  EMAIL_CONFLICT = 'ایمیل ارسال شده قبلا ثبت شده است',
+  EMAIL_CONFLICT = 'ایمیل ارسال شده قبلا ثبت شده است.',
   PHONE_NUMBER_CONFLICT = 'شماره تماس ارسال شده قبلا ثبت شده است.',
   OTP_INVALID_OR_EXPIRED = 'کد ورود اشتباه است یا منقضی شده است.',
   PHONE_NUMBER_INVALID_OR_EXPIRED = 'شماره تملس اشتباه است یا منقضی شده است.',
