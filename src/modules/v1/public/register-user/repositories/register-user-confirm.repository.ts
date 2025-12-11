@@ -25,7 +25,7 @@ export const registerUserConfirmRepository = async ({ phone_number, otp }: Regis
     phone_number: phoneNumber!,
     email: email!,
     password: password!,
-    is_phone_veryfied: !!phoneNumber,
+    is_phone_verified: !!phoneNumber,
   });
 
   cache.del([`phone_number:${phone_number}`, `email:${phone_number}`, `password:${phone_number}`, `otp:${phone_number}`]);
