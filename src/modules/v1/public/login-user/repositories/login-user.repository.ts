@@ -7,9 +7,9 @@ import { UserData } from '@/types/modules/v1/user/data/user-date.type';
 import { ErrorCode, HttpStatus, ValidationMessage } from '@/constants';
 import { buildWhereConditions } from '@/modules/v1/shared/utils/build-where-conditions.utils';
 
-export const loginUserRepository = async (credentials: LoginUserDTO): Promise<UserData | null> => {
+export const loginUserRepository = async ({ password, phone_number, email }: LoginUserDTO): Promise<UserData | null> => {
   const user = await UserModel.findOne({
-    where: buildWhereConditions(credentials),
+    where: buildWhereConditions({ phone_number, email }),
   });
 
   // user not found
@@ -24,7 +24,7 @@ export const loginUserRepository = async (credentials: LoginUserDTO): Promise<Us
   }
 
   // password incorrect
-  const isValidPassword = await bcrypt.compare(credentials.password, user.getDataValue('password') as string);
+  const isValidPassword = await bcrypt.compare(password, user.getDataValue('password') as string);
 
   if (!isValidPassword) {
     throwValidationError({
