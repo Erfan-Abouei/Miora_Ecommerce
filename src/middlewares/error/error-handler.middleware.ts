@@ -15,7 +15,7 @@ const isAppError = (err: unknown): err is AppError => typeof err === 'object' &&
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const errorHandler = (err: unknown, _req: Request, res: Response, _next: NextFunction): void => {
   if (err instanceof ZodError) {
-    errorResponse<ErrorsResponse>(res, HttpStatus.BAD_REQUEST, zodIssuesToObject(err.issues), err.message as ResponseMessage, ErrorCode.VALIDATION_ERROR);
+    errorResponse<ErrorsResponse>(res, HttpStatus.BAD_REQUEST, zodIssuesToObject(err.issues), ResponseMessage.VALIDATION_ERROR, ErrorCode.VALIDATION_ERROR);
     return;
   }
 

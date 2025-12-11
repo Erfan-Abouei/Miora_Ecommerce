@@ -1,4 +1,3 @@
-import { Op, ValidationError } from 'sequelize';
 import bcrypt from 'bcryptjs';
 import { LoginUserDTO } from '@/types/modules/v1/user/dto/user-dto.type';
 import { UserModel } from '@/database/models/v1/user/index';
@@ -6,12 +5,11 @@ import { throwValidationError } from '@/utils/error/throw-validation-error.util'
 import { ResponseMessage } from '@/constants/error/RESPONSE_MESSAGE.constant';
 import { UserData } from '@/types/modules/v1/user/data/user-date.type';
 import { ErrorCode, HttpStatus, ValidationMessage } from '@/constants';
+import { buildWhereConditions } from '@/modules/v1/shared/utils/build-where-conditions.utils';
 
 export const loginUserRepository = async (credentials: LoginUserDTO): Promise<UserData | null> => {
   const user = await UserModel.findOne({
-    where: {
-      [Op.or]: [{ phone_number: credentials.phone_number ?? undefined }, { email: credentials.email ?? undefined }],
-    },
+    where: buildWhereConditions(credentials),
   });
 
   // user not found

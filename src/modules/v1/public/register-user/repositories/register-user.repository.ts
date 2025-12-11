@@ -1,4 +1,3 @@
-import { Op } from 'sequelize';
 import { type ErrorsResponse } from '@/types/error/error-response.type';
 import cache from '@/database/cache/cache.config';
 import { throwValidationError } from '@/utils/error/throw-validation-error.util';
@@ -6,6 +5,7 @@ import { hashPassword } from '@/utils/auth/password.util';
 import { RegisterUserDTO, RegisterUserServerDTO } from '@/types/modules/v1/user/dto/user-dto.type';
 import { UserModel } from '@/database/models/v1/user/index';
 import { ErrorCode, HttpStatus, ResponseMessage, ValidationMessage } from '@/constants';
+import { buildWhereConditions } from '@/modules/v1/shared/utils/build-where-conditions.utils';
 
 export const registerUserRepository = async ({ email, password, phone_number }: RegisterUserDTO): Promise<RegisterUserServerDTO | void> => {
   const existingOtp: number | undefined = cache.get(`otp:${phone_number}`);
@@ -23,9 +23,7 @@ export const registerUserRepository = async ({ email, password, phone_number }: 
   const errors: ErrorsResponse = {};
 
   const existingUser = await UserModel.findOne({
-    where: {
-      [Op.or]: [{ email: email ?? undefined }, { phone_number: phone_number ?? undefined }],
-    },
+    where: buildWhereConditions({ email, phone_number }),
   });
 
   if (existingUser) {
