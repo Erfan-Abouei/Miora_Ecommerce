@@ -6,6 +6,7 @@ export interface ApiSuccessResponse<T> {
   author: string;
   message: string;
   data: T | null;
+  version: string;
 }
 
 export interface ApiErrorResponse<T> {
@@ -15,4 +16,5 @@ export interface ApiErrorResponse<T> {
   message: string;
   errorCode: ErrorCode;
   errors: T | null;
+  version: string;
 }
