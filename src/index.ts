@@ -1,2 +1,3 @@
 import '@/config/env/env.config';
-import './server';
+import '@/modules/v1/listeners/index';
+import '@/server';

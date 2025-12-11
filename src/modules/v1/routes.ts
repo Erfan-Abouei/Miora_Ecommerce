@@ -20,7 +20,7 @@ router.use('/admin', adminRouter);
 
 // __________ VERSION 1 | API DOCUMENTION __________
 if (ENV.SWAGGER_ENABLED) {
-  router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { customSiteTitle: 'Miora Api V1 | Docuemention' }));
+  router.use(ENV.SWAGGER_URL || '/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { customSiteTitle: 'Miora Api V1 | Docuemention' }));
 }
 
 export { router as v1Router };
