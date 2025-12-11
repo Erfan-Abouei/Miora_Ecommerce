@@ -1,11 +1,13 @@
-import { type ErrorsResponse } from '@/types/error-type/error-response.type.js';
-import { throwValidationError } from '@/utils/error-utils/throw-validation-error.util.js';
-import { hashPassword } from '@/utils/auth-utils/password.util.js';
-import { RegisterUserDto, RegisterUserServerDto } from '../interfaces/register-user.interface.js';
-import prisma from '@/config/database/database.config.js';
-import cache from '@/config/database/cache.config.js';
+import { Op } from 'sequelize';
+import { type ErrorsResponse } from '@/types/error/error-response.type';
+import cache from '@/database/cache/cache.config';
+import { throwValidationError } from '@/utils/error/throw-validation-error.util';
+import { hashPassword } from '@/utils/auth/password.util';
+import { RegisterUserDTO, RegisterUserServerDTO } from '@/types/modules/v1/user/dto/user-dto.type';
+import { UserModel } from '@/database/models/v1/user/index';
+import { ErrorCode, HttpStatus, ResponseMessage, ValidationMessage } from '@/constants';
 
-export const registerUserRepository = async ({ email, password, phone_number }: RegisterUserDto): Promise<RegisterUserServerDto | void> => {
+export const registerUserRepository = async ({ email, password, phone_number }: RegisterUserDTO): Promise<RegisterUserServerDTO | void> => {
   const existingOtp: number | undefined = cache.get(`otp:${phone_number}`);
   if (existingOtp !== undefined) {
     const otpTtl: number = cache.getTtl(`otp:${phone_number}`)!;
@@ -20,23 +22,23 @@ export const registerUserRepository = async ({ email, password, phone_number }: 
 
   const errors: ErrorsResponse = {};
 
-  const existingUser = await prisma.user.findFirst({
+  const existingUser = await UserModel.findOne({
     where: {
-      OR: [{ email }, { phone_number }],
+      [Op.or]: [{ email: email ?? undefined }, { phone_number: phone_number ?? undefined }],
     },
   });
 
   if (existingUser) {
-    if (existingUser.email === email) {
-      errors.email = ['ایمیل وارد شده قبلا ثبت شده است.'];
+    if (existingUser.getDataValue('email') === email) {
+      errors.email = [ValidationMessage.EMAIL_CONFLICT];
     }
-    if (existingUser.phone_number === phone_number) {
-      errors.phone_number = ['شماره تلفن وارد شده قبلا ثبت شده است.'];
+    if (existingUser.getDataValue('phone_number') === phone_number) {
+      errors.phone_number = [ValidationMessage.PHONE_NUMBER_CONFLICT];
     }
   }
 
   if (Object.keys(errors).length > 0) {
-    throwValidationError({ details: errors });
+    throwValidationError({ details: errors, errorCode: ErrorCode.DATA_CONFLICT, message: ResponseMessage.DATA_CONFLICT, statusCode: HttpStatus.CONFLICT });
     return;
   }
 

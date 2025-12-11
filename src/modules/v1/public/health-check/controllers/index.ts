@@ -1,1 +1,1 @@
-export * from './get-health-check.controller.js';
+export * from './get-health-check.controller';

@@ -1,1 +1,1 @@
-export * from './login-user.service.js';
+export * from './login-user.service';

@@ -1,9 +1,0 @@
-node_modules
-dist
-*.log
-*.tsbuildinfo
-*.swp
-.vscode
-.idea
-.git
-.env

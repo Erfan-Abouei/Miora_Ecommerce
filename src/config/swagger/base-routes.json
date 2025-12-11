@@ -1,0 +1,260 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Miora API Documentation",
+    "version": "1.0.0",
+    "description": "The Miora API documentation helps you understand how to work with the API developed by our team and experience the best quality from Kara."
+  },
+  "servers": [{ "url": "https://miora-api.karaflow.com/api/v1" }],
+  "tags": [
+    { "name": "Public", "description": "Routes requiring no access" },
+    { "name": "User", "description": "Routes requiring user login" },
+    { "name": "Admin", "description": "Routes requiring admin access" }
+  ],
+  "paths": {
+    "/public/health-check": {
+      "get": {
+        "summary": "System Health Check",
+        "tags": ["Public"],
+        "parameters": [
+          {
+            "name": "has_system_data",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "boolean", "enum": ["true", "false"] },
+            "description": "If 'true', system information (CPU, memory, disk, network) will be returned."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "System health data",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiSuccessResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public/register": {
+      "post": {
+        "summary": "User Registration",
+        "tags": ["Public"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RegisterUserRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful registration (OTP sent)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiSuccessResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiErrorResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public/register/confirm": {
+      "post": {
+        "summary": "Confirm Registration and Create User",
+        "tags": ["Public"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RegisterUserConfirmRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiSuccessResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error or invalid OTP",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiErrorResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/public/login": {
+      "post": {
+        "summary": "User Login",
+        "tags": ["Public"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LoginUserRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiSuccessResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Incorrect email or password",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiSuccessResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "integer", "example": 200 },
+          "success": { "type": "boolean", "example": true },
+          "author": { "type": "string", "example": "Kara Team" },
+          "message": { "type": "string", "example": "عملیات با موفقیت انجام شد." },
+          "data": { "type": "object", "nullable": true, "example": [] }
+        },
+        "required": ["status", "success", "author", "message", "data"]
+      },
+      "ApiErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "integer", "example": 400 },
+          "success": { "type": "boolean", "example": false },
+          "author": { "type": "string", "example": "Kara Team" },
+          "message": { "type": "string", "example": "عملیات با مشکل مواجه شده است." },
+          "errorCode": { "type": "string", "example": "Unknown error" },
+          "errors": {
+            "type": "object",
+            "nullable": true,
+            "example": {
+              "field_name": ["این یک پیغام تستی برای خطای این فیلد است"]
+            }
+          }
+        },
+        "required": ["status", "success", "author", "message", "errorCode", "errors"]
+      },
+      "RegisterUserRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "example@test.com",
+            "description": "User's email address"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123",
+            "minLength": 6,
+            "description": "User's password"
+          },
+          "phone_number": {
+            "type": "string",
+            "example": "09121234567",
+            "pattern": "^09\\d{9}$",
+            "description": "User's phone number"
+          }
+        },
+        "required": ["email", "password", "phone_number"]
+      },
+      "RegisterUserConfirmRequest": {
+        "type": "object",
+        "properties": {
+          "phone_number": {
+            "type": "string",
+            "example": "09121234567",
+            "description": "User's phone number",
+            "pattern": "^09\\d{9}$"
+          },
+          "otp": {
+            "type": "string",
+            "example": "1234",
+            "minLength": 4,
+            "maxLength": 4,
+            "description": "OTP sent to the user"
+          }
+        },
+        "required": ["phone_number", "otp"]
+      },
+      "LoginUserRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "example@test.com",
+            "description": "User's email address"
+          },
+          "phone_number": {
+            "type": "string",
+            "example": "09121234567",
+            "description": "User's phone number",
+            "pattern": "^09\\d{9}$"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123",
+            "description": "User's password",
+            "minLength": 6
+          }
+        },
+        "required": ["password"],
+        "oneOf": [{ "required": ["email"] }, { "required": ["phone_number"] }]
+      }
+    }
+  }
+}

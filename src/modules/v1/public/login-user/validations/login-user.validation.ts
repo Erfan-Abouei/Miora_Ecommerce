@@ -1,16 +1,16 @@
+import { Pattern } from '@/constants';
+import { ValidationMessage } from '@/constants/error/VALIDATION_ERROR.constanst';
 import { z } from 'zod';
 
 export const loginUserSchema = z
   .object({
-    phone_number: z
-      .string('شماره تماس اجباری است و باید از نوع رشته باشد.')
-      .regex(/^09\d{9}$/, 'شماره تلفن باید با 09 شروع شود و 10.')
-      .optional(),
+    phone_number: z.string(ValidationMessage.PHONE_REQUIRED).regex(new RegExp(Pattern.PHONE_NUMBER), ValidationMessage.PHONE_INVALID).optional(),
 
-    email: z.string('ایمیل اجباری است و باید از نوع رشته باشد.').email('فرمت ایمیل وارد شده درست نمی‌باشد.').optional(),
-    password: z.string('گذرواژه اجباری است و باید از نوع رشته باشد.').min(6, 'گذرواژه حداقل باید 6 نویسه باشد.'),
+    email: z.string(ValidationMessage.EMAIL_REQUIRED).email(ValidationMessage.EMAIL_INVALID).optional(),
+
+    password: z.string(ValidationMessage.PASSWORD_REQUIRED).min(6, ValidationMessage.PASSWORD_INVALID),
   })
   .refine((data) => data.phone_number || data.email, {
-    message: 'ایمیل یا شماره تماس باید حداقل یکی وارد شود.',
+    message: ValidationMessage.PHONE_OR_EMAIL_REQUIRED,
     path: ['error'],
   });

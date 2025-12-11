@@ -1,1 +1,1 @@
-export * from './login-user.controller.js';
+export * from './login-user.controller';

@@ -1,6 +1,6 @@
 import os from 'os';
 import si from 'systeminformation';
-import { HealthCheckData } from '@/types/data-type/health-check-data.type.js';
+import { HealthCheckData } from '@/types/modules/v1/health-check/data/health-check-data.type';
 
 export const getHealthCheckDataService = async (): Promise<HealthCheckData> => {
   // CPU Usage

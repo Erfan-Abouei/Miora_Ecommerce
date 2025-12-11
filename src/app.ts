@@ -5,11 +5,11 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { Request, Response } from 'express';
 import { corsOptions } from '@/config/index.js';
-import { apiLimiter } from '@/config/rate-limiter.config.js';
+import { apiLimiter } from '@/config/rate-limitter/rate-limiter.config.js';
 import { v1Router } from '@/modules/v1/routes.js';
-import { requestLoggerHandler } from '@/middlewares/logger-middlewares/logger.middleware.js';
-import { routeNotFoundHandler } from '@/middlewares/error-handler-middlewares/route-not-found.middleware.js';
-import { errorHandler } from '@/middlewares/error-handler-middlewares/error-handler.middleware.js';
+import { requestLoggerHandler } from '@/middlewares/logger/logger.middleware';
+import { routeNotFoundHandler } from '@/middlewares/error/route-not-found.middleware.js';
+import { errorHandler } from '@/middlewares/error/error-handler.middleware.js';
 
 const app = express();
 

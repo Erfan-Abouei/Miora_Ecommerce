@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import authCheckController from '../controllers/auth-check.controller.js';
+import authCheckController from '../controllers/auth-check.controller';
 
 const router = Router();
 

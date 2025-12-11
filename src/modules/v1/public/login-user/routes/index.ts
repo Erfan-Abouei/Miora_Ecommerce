@@ -1,1 +1,1 @@
-export * from './login-user.route.js';
+export * from './login-user.route';

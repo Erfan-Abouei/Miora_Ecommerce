@@ -1,13 +1,14 @@
-import { type UserData } from '@/types/data-type/user-data.type.js';
 import { Request, Response, NextFunction } from 'express';
-import { successResponse } from '@/utils/error-utils/api-response-handler.util.js';
-import { setTokens } from '@/utils/auth-utils/jwt.util.js';
-import { TokenPayload } from '@/types/basic-type/basic.type.js';
-import { registerUserConfrimService } from '../services/index.js';
-import { RegisterUserConfirmDto } from '../interfaces/register-user-confirm.interface.js';
-import { removeSecureData } from '@/utils/user-utils/remove-secure-data.utils.js';
+import { successResponse } from '@/utils/error/api-response-handler.util';
+import { setTokens } from '@/utils/auth/jwt.util';
+import { TokenPayload } from '@/types/common/basic.type';
+import { registerUserConfrimService } from '../services/index';
+import { RegisterUserConfirmDTO } from '@/types/modules/v1/user/dto/user-dto.type';
+import { removeSecureData } from '@/modules/v1/shared/utils/remove-secure-data.utils';
+import { UserData } from '@/types/modules/v1/user/data/user-date.type';
+import { HttpStatus } from '@/constants';
 
-export const registerUserConfrimController = async (req: Request<unknown, unknown, RegisterUserConfirmDto>, res: Response, next: NextFunction) => {
+export const registerUserConfrimController = async (req: Request<unknown, unknown, RegisterUserConfirmDTO>, res: Response, next: NextFunction) => {
   try {
     const user = await registerUserConfrimService(req.body);
     if (user) {
@@ -17,7 +18,7 @@ export const registerUserConfrimController = async (req: Request<unknown, unknow
         role: user.role,
       };
       setTokens(res, tokenPayload);
-      successResponse<Omit<UserData, 'password' | 'role' | 'id'>>(res, 201, userWithoutPassword);
+      successResponse<Omit<UserData, 'password' | 'role' | 'id'>>(res, HttpStatus.CREATED, userWithoutPassword);
     }
   } catch (error: unknown) {
     next(error);

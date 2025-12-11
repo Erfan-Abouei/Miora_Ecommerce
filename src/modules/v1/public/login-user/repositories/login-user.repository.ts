@@ -1,36 +1,42 @@
-import { type LoginUserDTO } from '../interfaces/login-user.interface.js';
-import { User } from '@prisma/client';
-import { throwValidationError } from '@/utils/error-utils/throw-validation-error.util.js';
-import { ResponseMessage } from '@/constants/error-constants/RESPONSE_MESSAGE.constant.js';
-import { ensureUserExists } from '@/utils/user-utils/ensure-user.utils.js';
-import prisma from '@/config/database/database.config.js';
+import { Op, ValidationError } from 'sequelize';
 import bcrypt from 'bcryptjs';
+import { LoginUserDTO } from '@/types/modules/v1/user/dto/user-dto.type';
+import { UserModel } from '@/database/models/v1/user/index';
+import { throwValidationError } from '@/utils/error/throw-validation-error.util';
+import { ResponseMessage } from '@/constants/error/RESPONSE_MESSAGE.constant';
+import { UserData } from '@/types/modules/v1/user/data/user-date.type';
+import { ErrorCode, HttpStatus, ValidationMessage } from '@/constants';
 
-export const loginUserRepository = async (credentials: LoginUserDTO): Promise<User | void> => {
-  const user = await prisma.user.findFirst({
+export const loginUserRepository = async (credentials: LoginUserDTO): Promise<UserData | null> => {
+  const user = await UserModel.findOne({
     where: {
-      OR: [{ phone_number: credentials.phone_number ?? undefined }, { email: credentials.email ?? undefined }],
+      [Op.or]: [{ phone_number: credentials.phone_number ?? undefined }, { email: credentials.email ?? undefined }],
     },
   });
 
   // user not found
-  if (!ensureUserExists(user)) {
+  if (!user) {
     throwValidationError({
-      details: { error: ['کاربری با این مشخصات وجود ندارد.'] },
-      statusCode: 404,
-      message: ResponseMessage.NOT_FOUND_MESSAGE,
+      details: { error: [ValidationMessage.USER_NOT_FOUND] },
+      statusCode: HttpStatus.NOT_FOUND,
+      message: ResponseMessage.NOT_FOUND,
+      errorCode: ErrorCode.NOT_FOUND,
     });
-    return;
+    return null;
   }
 
   // password incorrect
-  const isValidPassword = await bcrypt.compare(credentials?.password, user.password);
+  const isValidPassword = await bcrypt.compare(credentials.password, user.getDataValue('password') as string);
+
   if (!isValidPassword) {
     throwValidationError({
-      details: { password: ['گذرواژه وارد شده صحیح نمی‌باشد.'] },
+      details: { password: [ValidationMessage.PASSWORD_INCORRECT] },
+      errorCode: ErrorCode.DATA_CONFLICT,
+      message: ResponseMessage.DATA_CONFLICT,
+      statusCode: HttpStatus.CONFLICT,
     });
-    return;
+    return null;
   }
 
-  return user;
+  return user.toJSON();
 };

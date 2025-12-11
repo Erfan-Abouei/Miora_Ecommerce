@@ -1,0 +1,29 @@
+{
+  "development": {
+    "username": "root",
+    "password": null,
+    "database": "miora_ecommerce_development",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "migrationStorageTableName": "SequelizeMeta",
+    "migrationStoragePath": "/migrations"
+  },
+  "test": {
+    "username": "test_user",
+    "password": null,
+    "database": "miora_ecommerce_test",
+    "host": "127.0.0.1",
+    "dialect": "mysql",
+    "migrationStorageTableName": "SequelizeMeta",
+    "migrationStoragePath": "/migrations"
+  },
+  "production": {
+    "username": "${DATABASE_USERNAME}",
+    "password": "${DATABASE_PASSWORD}",
+    "database": "${DATABASE_NAME}",
+    "host": "${DATABASE_HOST}",
+    "dialect": "${DATABASE_DIALECT}",
+    "migrationStorageTableName": "SequelizeMeta",
+    "migrationStoragePath": "/migrations"
+  }
+}

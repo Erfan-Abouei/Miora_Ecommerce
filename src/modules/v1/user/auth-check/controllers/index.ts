@@ -1,1 +1,1 @@
-export * from './auth-check.controller.js';
+export * from './auth-check.controller';

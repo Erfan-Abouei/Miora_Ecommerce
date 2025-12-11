@@ -1,2 +1,2 @@
-export * from './controllers/index.js';
-export * from './routes/auth-check.route.js';
+export * from './controllers/index';
+export * from './routes/auth-check.route';

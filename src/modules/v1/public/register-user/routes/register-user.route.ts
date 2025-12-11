@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { validate } from '@/middlewares/auth-middlewares/validate.middleware.js';
-import { registerUserSchema } from '../validations/register-user.validation.js';
-import { registerUserConfirmSchema } from '../validations/register-user-confirm.validation.js';
-import { registerUserController, registerUserConfrimController } from '../controllers/index.js';
+import { validate } from '@/middlewares/auth/validate.middleware';
+import { registerUserSchema } from '../validations/register-user.validation';
+import { registerUserConfirmSchema } from '../validations/register-user-confirm.validation';
+import { registerUserController, registerUserConfrimController } from '../controllers/index';
 
 const router = Router();
 

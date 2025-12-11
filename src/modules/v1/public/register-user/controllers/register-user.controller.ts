@@ -1,13 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
-import { successResponse } from '@/utils/error-utils/api-response-handler.util.js';
-import { registerUserService } from '../services/index.js';
-import { RegisterUserDto, RegisterUserServerDto } from '../interfaces/register-user.interface.js';
+import { successResponse } from '@/utils/error/api-response-handler.util';
+import { registerUserService } from '../services/index';
+import { RegisterUserDTO, RegisterUserServerDTO } from '@/types/modules/v1/user/dto/user-dto.type';
+import { HttpStatus } from '@/constants';
 
-export const registerUserController = async (req: Request<unknown, unknown, RegisterUserDto>, res: Response, next: NextFunction): Promise<void> => {
+export const registerUserController = async (req: Request<unknown, unknown, RegisterUserDTO>, res: Response, next: NextFunction): Promise<void> => {
   try {
     const aboutRegisterAndOtpData = await registerUserService(req.body);
     if (aboutRegisterAndOtpData) {
-      successResponse<RegisterUserServerDto>(res, 200, aboutRegisterAndOtpData);
+      successResponse<RegisterUserServerDTO>(res, HttpStatus.OK, aboutRegisterAndOtpData);
     }
   } catch (error: unknown) {
     next(error);

@@ -1,2 +1,2 @@
-export * from './register-user.service.js';
-export * from './register-user-confirm.service.js';
+export * from './register-user.service';
+export * from './register-user-confirm.service';

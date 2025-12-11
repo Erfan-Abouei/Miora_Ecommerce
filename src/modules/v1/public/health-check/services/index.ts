@@ -1,1 +1,1 @@
-export * from './get-health-check.service.js';
+export * from './get-health-check.service';

@@ -1,0 +1,60 @@
+import jwt, { JwtPayload, type SignOptions } from 'jsonwebtoken';
+import { Response } from 'express';
+import { ENV } from '@/config/env/env.config';
+import { TokenPayload } from '@/types/common/basic.type';
+
+const createAccessToken = (payload: TokenPayload): string => {
+  const options: SignOptions = { expiresIn: '1h' };
+  return jwt.sign(payload, process.env.JWT_ACCESS_SECRET!, options);
+};
+
+const createRefreshToken = (payload: TokenPayload): string => {
+  const options: SignOptions = { expiresIn: '7d' };
+  return jwt.sign(payload, process.env.JWT_REFRESH_SECRET!, options);
+};
+
+const setRefreshTokenCookie = (res: Response, token: string) => {
+  res.cookie('refresh_token', token, {
+    httpOnly: true,
+    secure: ENV.NODE_ENV === 'production',
+    sameSite: 'strict',
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+};
+
+const setAccessTokenCookie = (res: Response, token: string) => {
+  res.cookie('access_token', token, {
+    httpOnly: true,
+    secure: ENV.NODE_ENV === 'production',
+    sameSite: 'strict',
+    maxAge: 60 * 60 * 1000,
+  });
+};
+
+const setTokens = (res: Response, payload: TokenPayload) => {
+  const accessToken = createAccessToken(payload);
+  const refreshToken = createRefreshToken(payload);
+
+  setAccessTokenCookie(res, accessToken);
+  setRefreshTokenCookie(res, refreshToken);
+};
+
+const verifyAccessToken = (token: string): string | JwtPayload | null => {
+  try {
+    const tokenPayload = jwt.verify(token, ENV.JWT_ACCESS_SECRET!);
+    return tokenPayload;
+  } catch {
+    return null;
+  }
+};
+
+const verifyRefreshToken = (token: string): string | JwtPayload | null => {
+  try {
+    const tokenPayload = jwt.verify(token, ENV.JWT_REFRESH_SECRET);
+    return tokenPayload;
+  } catch {
+    return null;
+  }
+};
+
+export { createAccessToken, createRefreshToken, setRefreshTokenCookie, setAccessTokenCookie, setTokens, verifyAccessToken, verifyRefreshToken };

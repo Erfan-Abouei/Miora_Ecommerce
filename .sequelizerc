@@ -1,0 +1,15 @@
+const path = require('path');
+const fs = require('fs');
+
+const hasDatabase = fs.existsSync(path.join(__dirname, 'database'));
+const hasMigrations = fs.existsSync(path.join(__dirname, 'migrations'));
+const hasSeeders = fs.existsSync(path.join(__dirname, 'seeders'));
+
+const baseDir = hasDatabase && hasMigrations && hasSeeders ? '' : 'src';
+
+module.exports = {
+  config: path.join(__dirname, baseDir, 'database', 'sequelize-config.json'),
+  'migrations-path': path.join(__dirname, baseDir, 'migrations'),
+  'seeders-path': path.join(__dirname, baseDir, 'seeders'),
+  'models-path': path.join(__dirname, 'database', 'models'),
+};

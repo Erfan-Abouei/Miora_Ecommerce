@@ -1,4 +1,3 @@
-export * from './env.config.js';
-export * from './database/database.config.js';
-export * from './logger.config.js';
-export * from './cors.config.js';
+export * from './env/env.config';
+export * from './logger/logger.config';
+export * from './cors/cors.config';

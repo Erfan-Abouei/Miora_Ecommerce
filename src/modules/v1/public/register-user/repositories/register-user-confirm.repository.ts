@@ -1,11 +1,12 @@
-import { type User } from "@prisma/client";
-import { type ErrorsResponse } from '@/types/error-type/error-response.type.js';
-import { throwValidationError } from '@/utils/error-utils/throw-validation-error.util.js';
-import { RegisterUserConfirmDto } from '../interfaces/register-user-confirm.interface.js';
-import prisma from '@/config/database/database.config.js';
-import cache from '@/config/database/cache.config.js';
+import { type ErrorsResponse } from '@/types/error/error-response.type';
+import cache from '@/database/cache/cache.config';
+import { throwValidationError } from '@/utils/error/throw-validation-error.util';
+import { RegisterUserConfirmDTO } from '@/types/modules/v1/user/dto/user-dto.type';
+import { UserData } from '@/types/modules/v1/user/data/user-date.type';
+import { UserModel } from '@/database/models/v1/user/index';
+import { ErrorCode, HttpStatus, ResponseMessage, ValidationMessage } from '@/constants';
 
-export const registerUserConfirmRepository = async ({ phone_number, otp }: RegisterUserConfirmDto): Promise<User | void> => {
+export const registerUserConfirmRepository = async ({ phone_number, otp }: RegisterUserConfirmDTO): Promise<UserData | void> => {
   const errors: ErrorsResponse = {};
 
   const phoneNumber: string | undefined = cache.get(`phone_number:${phone_number}`);
@@ -13,24 +14,21 @@ export const registerUserConfirmRepository = async ({ phone_number, otp }: Regis
   const password: string | undefined = cache.get(`password:${phone_number}`);
   const cachedOtp: number | undefined = cache.get(`otp:${phone_number}`);
 
-  if (!phoneNumber) errors.phone_number = ['شماره تلفن یافت نشد یا منقضی شده است.'];
-  if (!email) errors.email = ['ایمیل یافت نشد یا منقضی شده است.'];
-  if (!password) errors.password = ['رمز عبور یافت نشد یا منقضی شده است.'];
-  if (!cachedOtp || otp !== cachedOtp.toString()) errors.otp = ['کد عبور یافت نشد یا اشتباه است.'];
+  if (!phoneNumber) errors.phone_number = [ValidationMessage.PHONE_NUMBER_INVALID_OR_EXPIRED];
+  if (!email) errors.email = [ValidationMessage.EMAIL_INVALID_OR_EXPIRED];
+  if (!password) errors.password = [ValidationMessage.PASSWORD_INVALID_OR_EXPIRED];
+  if (!cachedOtp || otp !== cachedOtp.toString()) errors.otp = [ValidationMessage.OTP_INVALID_OR_EXPIRED];
 
-  if (Object.keys(errors).length > 0) throwValidationError({ details: errors });
+  if (Object.keys(errors).length > 0) throwValidationError({ details: errors, errorCode: ErrorCode.DATA_CONFLICT, message: ResponseMessage.DATA_CONFLICT, statusCode: HttpStatus.CONFLICT });
 
-  const user = await prisma.user.create({
-    data: {
-      phone_number: phoneNumber!,
-      email: email!,
-      password: password!,
-      phone_verified: true,
-      
-    },
+  const user = await UserModel.create({
+    phone_number: phoneNumber!,
+    email: email!,
+    password: password!,
+    is_phone_veryfied: !!phoneNumber,
   });
 
   cache.del([`phone_number:${phone_number}`, `email:${phone_number}`, `password:${phone_number}`, `otp:${phone_number}`]);
 
-  return user;
+  return user.toJSON();
 };

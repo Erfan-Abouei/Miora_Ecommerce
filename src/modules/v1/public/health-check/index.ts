@@ -1,3 +1,3 @@
-export * from './controllers/index.js';
-export * from './routes/health-check.routes.js';
-export * from './services/index.js';
+export * from './controllers/index';
+export * from './routes/health-check.routes';
+export * from './services/index';
