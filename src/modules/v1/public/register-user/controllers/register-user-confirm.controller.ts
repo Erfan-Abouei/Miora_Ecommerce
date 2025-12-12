@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { successResponse } from '@/utils/error/api-response-handler.util';
 import { setTokens } from '@/utils/auth/jwt.util';
 import { TokenPayload } from '@/types/common/basic.type';
-import { registerUserConfrimService } from '../services/index';
+import { registerUserConfrimService } from '../services';
 import { RegisterUserConfirmDTO } from '@/types/modules/v1/user/dto/user-dto.type';
 import { removeSecureData } from '@/modules/v1/shared/utils/remove-secure-data.utils';
 import { UserData } from '@/types/modules/v1/user/data/user-date.type';

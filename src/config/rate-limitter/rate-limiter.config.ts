@@ -1,9 +1,9 @@
 import rateLimit from 'express-rate-limit';
 import { Request, Response } from 'express';
 import { errorResponse } from '@/utils/error/api-response-handler.util';
-import { ErrorCode } from '@/constants/error/ERROR_CODE.constant';
-import { ResponseMessage } from '@/constants/error/RESPONSE_MESSAGE.constant';
-import { ENV } from '../env/env.config';
+import { ErrorCode } from '@/constants';
+import { ResponseMessage } from '@/constants';
+import { ENV } from '../index';
 import { HttpStatus } from '@/constants';
 
 export const apiLimiter = rateLimit({

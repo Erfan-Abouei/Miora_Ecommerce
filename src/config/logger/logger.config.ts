@@ -2,7 +2,7 @@ import morgan from 'morgan';
 import fs from 'fs';
 import path from 'path';
 import winston from 'winston';
-import { ENV } from '../env/env.config';
+import { ENV } from '../index';
 
 const logDirectory = path.resolve('logs');
 if (!fs.existsSync(logDirectory)) fs.mkdirSync(logDirectory);

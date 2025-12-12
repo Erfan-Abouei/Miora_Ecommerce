@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { healthCheckRouter } from './health-check/index';
-import { registerUserRouter } from './register-user/index';
-import { loginUserRouter } from './login-user/routes/index';
+import { healthCheckRouter } from './health-check';
+import { registerUserRouter } from './register-user';
+import { loginUserRouter } from './login-user/routes';
 
 const router = Router();
 

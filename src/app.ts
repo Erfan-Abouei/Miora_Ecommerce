@@ -4,12 +4,12 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { Request, Response } from 'express';
-import { corsOptions } from '@/config/index.js';
-import { apiLimiter } from '@/config/rate-limitter/rate-limiter.config.js';
-import { v1Router } from '@/modules/v1/routes.js';
+import { corsOptions } from '@/config';
+import { apiLimiter } from '@/config';
+import { v1Router } from '@/modules/v1/routes';
 import { requestLoggerHandler } from '@/middlewares/logger/logger.middleware';
-import { routeNotFoundHandler } from '@/middlewares/error/route-not-found.middleware.js';
-import { errorHandler } from '@/middlewares/error/error-handler.middleware.js';
+import { routeNotFoundHandler } from '@/middlewares/error/route-not-found.middleware';
+import { errorHandler } from '@/middlewares/error/error-handler.middleware';
 
 const app = express();
 

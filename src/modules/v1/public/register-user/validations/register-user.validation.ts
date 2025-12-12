@@ -1,5 +1,5 @@
 import { Pattern } from '@/constants';
-import { ValidationMessage } from '@/constants/error/VALIDATION_ERROR.constanst';
+import { ValidationMessage } from '@/constants';
 import { z } from 'zod';
 
 export const registerUserSchema = z.object({

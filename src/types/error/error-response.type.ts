@@ -1,4 +1,4 @@
-import { ErrorCode } from '@/constants/error/ERROR_CODE.constant';
+import { ErrorCode } from '@/constants';
 
 export type ErrorsResponse = Record<string, string[]>;
 export interface CustomErrorProps {

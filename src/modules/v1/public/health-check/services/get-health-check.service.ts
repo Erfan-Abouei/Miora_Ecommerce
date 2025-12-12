@@ -1,8 +1,8 @@
 import os from 'os';
 import si from 'systeminformation';
 import { HealthCheckData } from '@/types/modules/v1/health-check/data/health-check-data.type';
-import { eventEmitter } from '@/config/emitter/event-emitter.config';
-import { PublicEventName } from '@/constants/events/PUBLIC_EVENTS.constants';
+import { eventEmitter } from '@/config';
+import { PublicEventName } from '@/constants';
 
 export const getHealthCheckDataService = async (): Promise<HealthCheckData> => {
   // CPU Usage

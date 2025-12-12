@@ -1,5 +1,5 @@
-import { eventEmitter } from '@/config/emitter/event-emitter.config';
-import { PublicEventName } from '@/constants/events/PUBLIC_EVENTS.constants';
+import { eventEmitter } from '@/config';
+import { PublicEventName } from '@/constants';
 import { UserData } from '@/types/modules/v1/user/data/user-date.type';
 import { RegisterUserDTO } from '@/types/modules/v1/user/dto/user-dto.type';
 

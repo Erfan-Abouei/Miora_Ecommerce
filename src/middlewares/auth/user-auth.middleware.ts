@@ -2,8 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import { createAccessToken, setAccessTokenCookie, verifyAccessToken, verifyRefreshToken } from '@/utils/auth/jwt.util';
 import { errorResponse } from '@/utils/error/api-response-handler.util';
 import { TokenPayload } from '@/types/common/basic.type';
-import { ErrorCode } from '@/constants/error/ERROR_CODE.constant';
-import { ResponseMessage } from '@/constants/error/RESPONSE_MESSAGE.constant';
+import { ErrorCode } from '@/constants';
+import { ResponseMessage } from '@/constants';
 import { HttpStatus } from '@/constants';
 
 const userAuthMiddleware = (req: Request, res: Response, next: NextFunction) => {

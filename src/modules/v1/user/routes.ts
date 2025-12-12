@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { authCheckRouter } from './auth-check/index';
-import { logoutUserRouter } from './logout-user/index';
+import { authCheckRouter } from './auth-check';
+import { logoutUserRouter } from './logout-user';
 
 const router = Router();
 

@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { ApiErrorResponse, ApiSuccessResponse } from '@/types/common/response-utils.type';
-import { ErrorCode } from '@/constants/error/ERROR_CODE.constant';
-import { ResponseMessage } from '@/constants/error/RESPONSE_MESSAGE.constant';
+import { ErrorCode } from '@/constants';
+import { ResponseMessage } from '@/constants';
 import { ENV } from '@/config';
 
 const successResponse = <T>(res: Response<ApiSuccessResponse<T>>, status: number, data?: T, message = ResponseMessage.SUCCESS, author = ENV.AUTHOR): Response<ApiSuccessResponse<T>> =>

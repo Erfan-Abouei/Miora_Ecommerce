@@ -1,6 +1,6 @@
 import jwt, { JwtPayload, type SignOptions } from 'jsonwebtoken';
 import { Response } from 'express';
-import { ENV } from '@/config/env/env.config';
+import { ENV } from '@/config';
 import { TokenPayload } from '@/types/common/basic.type';
 
 const createAccessToken = (payload: TokenPayload): string => {

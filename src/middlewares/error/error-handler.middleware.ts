@@ -1,8 +1,8 @@
 import { type ErrorsResponse } from '@/types/error/error-response.type';
 import { ZodError } from 'zod';
 import { NextFunction, Request, Response } from 'express';
-import { ErrorCode } from '@/constants/error/ERROR_CODE.constant';
-import { ResponseMessage } from '@/constants/error/RESPONSE_MESSAGE.constant';
+import { ErrorCode } from '@/constants';
+import { ResponseMessage } from '@/constants';
 import { errorResponse } from '@/utils/error/api-response-handler.util';
 import { zodIssuesToObject } from '@/utils/error/zod-issues-to-object.util';
 import { appErrorToObject } from '@/utils/error/app-error-to-object.util';

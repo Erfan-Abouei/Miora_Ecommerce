@@ -3,7 +3,7 @@ import cache from '@/database/cache/cache.config';
 import { throwValidationError } from '@/utils/error/throw-validation-error.util';
 import { RegisterUserConfirmDTO } from '@/types/modules/v1/user/dto/user-dto.type';
 import { UserData } from '@/types/modules/v1/user/data/user-date.type';
-import { UserModel } from '@/database/models/v1/user/index';
+import { UserModel } from '@/database/models/v1/user';
 import { ErrorCode, HttpStatus, ResponseMessage, ValidationMessage } from '@/constants';
 
 export const registerUserConfirmRepository = async ({ phone_number, otp }: RegisterUserConfirmDTO): Promise<UserData | void> => {

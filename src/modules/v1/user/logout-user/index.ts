@@ -1,3 +1,3 @@
-export * from './controllers/index';
-export * from './listeners/index';
-export * from './routes/index';
+export * from './controllers';
+export * from './listeners';
+export * from './routes';
