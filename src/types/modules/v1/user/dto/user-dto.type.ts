@@ -1,4 +1,4 @@
-import { UserRole } from "../data/user-date.type";
+import { UserRole } from '../data/user-date.type';
 
 // ===========LOGIN DTO===========
 export interface LoginUserDTO {

@@ -4,13 +4,13 @@ import { ENV } from '@/config/env/env.config';
 import { TokenPayload } from '@/types/common/basic.type';
 
 const createAccessToken = (payload: TokenPayload): string => {
-  const options: SignOptions = { expiresIn: '1h' };
-  return jwt.sign(payload, process.env.JWT_ACCESS_SECRET!, options);
+  const options: SignOptions = { expiresIn: +ENV.ACCESS_TOKEN_EXPIRES_IN };
+  return jwt.sign(payload, ENV.JWT_ACCESS_SECRET!, options);
 };
 
 const createRefreshToken = (payload: TokenPayload): string => {
-  const options: SignOptions = { expiresIn: '7d' };
-  return jwt.sign(payload, process.env.JWT_REFRESH_SECRET!, options);
+  const options: SignOptions = { expiresIn: +ENV.REFRESH_TOKEN_EXPIRES_IN };
+  return jwt.sign(payload, ENV.JWT_REFRESH_SECRET!, options);
 };
 
 const setRefreshTokenCookie = (res: Response, token: string) => {
@@ -18,7 +18,7 @@ const setRefreshTokenCookie = (res: Response, token: string) => {
     httpOnly: true,
     secure: ENV.NODE_ENV === 'production',
     sameSite: 'strict',
-    maxAge: 7 * 24 * 60 * 60 * 1000,
+    maxAge: +ENV.REFRESH_TOKEN_EXPIRES_IN,
   });
 };
 
@@ -27,7 +27,7 @@ const setAccessTokenCookie = (res: Response, token: string) => {
     httpOnly: true,
     secure: ENV.NODE_ENV === 'production',
     sameSite: 'strict',
-    maxAge: 60 * 60 * 1000,
+    maxAge: +ENV.ACCESS_TOKEN_EXPIRES_IN,
   });
 };
 
