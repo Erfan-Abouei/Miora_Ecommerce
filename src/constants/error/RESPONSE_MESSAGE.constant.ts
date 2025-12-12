@@ -41,4 +41,7 @@ export enum ResponseMessage {
   BAD_REQUEST = 'درخواست نامعتبر است.',
   INVALID_QUERY_PARAMS = 'پارامترهای ارسال شده برای query نامعتبر هستند.',
   INVALID_BODY_PARAMS = 'پارامترهای ارسال شده برای body نامعتبر هستند.',
+
+  // Other ...
+  USER_LOGOUT = 'کاربر با موفقیت خارج شد.',
 }

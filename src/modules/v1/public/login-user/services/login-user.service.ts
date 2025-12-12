@@ -1,5 +1,5 @@
 import { LoginUserDTO } from '@/types/modules/v1/user/dto/user-dto.type';
-import { loginUserRepository } from '../repositories/login-user.repository';
+import { loginUserRepository } from '../repositories/index';
 import { UserData } from '@/types/modules/v1/user/data/user-date.type';
 import { eventEmitter } from '@/config/emitter/event-emitter.config';
 import { PublicEventName } from '@/constants/events/PUBLIC_EVENTS.constants';

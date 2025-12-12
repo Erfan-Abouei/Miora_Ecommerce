@@ -11,7 +11,7 @@ const successResponse = <T>(res: Response<ApiSuccessResponse<T>>, status: number
     author,
     message,
     data: data ?? null,
-    version: ENV.APP_VERSION
+    version: ENV.APP_VERSION,
   });
 
 const errorResponse = <T>(res: Response<ApiErrorResponse<T>>, status: number, errors?: T, message = ResponseMessage.ERROR, errorCode = ErrorCode.UNKNOWN_ERROR, author = ENV.AUTHOR): Response<ApiErrorResponse<T>> =>
@@ -22,7 +22,7 @@ const errorResponse = <T>(res: Response<ApiErrorResponse<T>>, status: number, er
     message,
     errorCode,
     errors: errors ?? null,
-    version: ENV.APP_VERSION
+    version: ENV.APP_VERSION,
   });
 
 export { successResponse, errorResponse };

@@ -1,5 +1,5 @@
 import { RegisterUserDTO, RegisterUserServerDTO } from '@/types/modules/v1/user/dto/user-dto.type';
-import { registerUserRepository } from '../repositories/register-user.repository';
+import { registerUserRepository } from '../repositories/index';
 import { eventEmitter } from '@/config/emitter/event-emitter.config';
 import { PublicEventName } from '@/constants/events/PUBLIC_EVENTS.constants';
 

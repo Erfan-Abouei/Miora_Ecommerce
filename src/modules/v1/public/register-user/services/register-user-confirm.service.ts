@@ -1,4 +1,4 @@
-import { registerUserConfirmRepository } from '../repositories/register-user-confirm.repository';
+import { registerUserConfirmRepository } from '../repositories/index';
 import { RegisterUserConfirmDTO } from '@/types/modules/v1/user/dto/user-dto.type';
 import { UserData } from '@/types/modules/v1/user/data/user-date.type';
 import { eventEmitter } from '@/config/emitter/event-emitter.config';

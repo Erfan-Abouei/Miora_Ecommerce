@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { LoginUserDTO } from '@/types/modules/v1/user/dto/user-dto.type';
-import { loginUserService } from '../services/login-user.service';
+import { loginUserService } from '../services/index';
 import { successResponse } from '@/utils/error/api-response-handler.util';
 import { removeSecureData } from '@/modules/v1/shared/utils/remove-secure-data.utils';
 import { TokenPayload } from '@/types/common/basic.type';
