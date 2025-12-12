@@ -4,7 +4,7 @@ import { cookieOptionReturner } from '@/utils/auth/cookie-option.utils';
 import { successResponse } from '@/utils/error/api-response-handler.util';
 import { Request, Response, NextFunction } from 'express';
 
-export const logoutController = (req: Request, res: Response, next: NextFunction) => {
+export const logoutUserController = (req: Request, res: Response, next: NextFunction) => {
   try {
     res.clearCookie('access_token', cookieOptionReturner(+ENV.ACCESS_TOKEN_EXPIRES_IN));
     res.clearCookie('refresh_token', cookieOptionReturner(+ENV.REFRESH_TOKEN_EXPIRES_IN));
