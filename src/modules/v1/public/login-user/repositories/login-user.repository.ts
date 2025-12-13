@@ -20,7 +20,7 @@ export const loginUserRepository = async (
   const attempts = Number(cache.get(key) ?? 0);
 
   // Block the login if maximum allowed attempts have been exceeded
-  if (attempts > Number(ENV.LOGIN_ATTEMPTS_MAX)) {
+  if (attempts > ENV.LOGIN_ATTEMPTS_MAX) {
     throwValidationError({
       message: ResponseMessage.TOO_MANY_REQUESTS,
       errorCode: ErrorCode.TOO_MANY_REQUESTS,
@@ -39,7 +39,7 @@ export const loginUserRepository = async (
   // If user is not found, increment the attempt counter and throw a NOT FOUND error
   if (!user) {
     errors.error_message = [ValidationMessage.USER_NOT_FOUND];
-    cache.set(key, attempts + 1);
+    cache.set(key, attempts + 1, ENV.LOGIN_ATTEMPTS_MAX);
     throwValidationError({
       details: errors,
       statusCode: HttpStatus.NOT_FOUND,
@@ -54,7 +54,7 @@ export const loginUserRepository = async (
 
   // If password is incorrect, increment attempts and throw a DATA CONFLICT error
   if (!isValidPassword) {
-    cache.set(key, attempts + 1);
+    cache.set(key, attempts + 1, ENV.LOGIN_ATTEMPTS_MAX);
     throwValidationError({
       details: { password: [ValidationMessage.PASSWORD_INCORRECT] },
       errorCode: ErrorCode.DATA_CONFLICT,

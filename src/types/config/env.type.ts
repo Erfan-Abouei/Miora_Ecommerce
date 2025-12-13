@@ -16,11 +16,12 @@ export interface EnvConfig {
   BCRYPT_SALT: number;
   JWT_ACCESS_SECRET: string;
   JWT_REFRESH_SECRET: string;
-  ACCESS_TOKEN_EXPIRES_IN: string;
-  REFRESH_TOKEN_EXPIRES_IN: string;
+  ACCESS_TOKEN_EXPIRES_IN: number;
+  REFRESH_TOKEN_EXPIRES_IN: number;
   PASSWORD_MIN_LENGTH: number;
   PASSWORD_MAX_LENGTH: number;
   LOGIN_ATTEMPTS_MAX: number;
+  LOGIN_ATTEMPTS_MAX_TIMER: number;
 
   DATABASE_DIALECT: string;
   DATABASE_HOST: string;
@@ -31,7 +32,8 @@ export interface EnvConfig {
   DATABASE_LOGGING: boolean;
 
   CACHE_TTL: number;
-  CACHE_PREIOD: number;
+  CACHE_PERIOD: number;
+  EXPIRE_OTP_TIMER: number;
 
   API_RATE_LIMIT_WINDOW: number;
   API_RATE_LIMIT_MAX: number;

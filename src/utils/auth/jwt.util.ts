@@ -41,8 +41,8 @@ const setTokens = (res: Response, payload: TokenPayload) => {
 };
 
 const clearTokens = (res: Response): boolean => {
-  res.clearCookie('access_token', cookieOptionReturner(+ENV.ACCESS_TOKEN_EXPIRES_IN));
-  res.clearCookie('refresh_token', cookieOptionReturner(+ENV.REFRESH_TOKEN_EXPIRES_IN));
+  res.clearCookie('access_token', cookieOptionReturner(ENV.ACCESS_TOKEN_EXPIRES_IN));
+  res.clearCookie('refresh_token', cookieOptionReturner(ENV.REFRESH_TOKEN_EXPIRES_IN));
 
   return true
 }

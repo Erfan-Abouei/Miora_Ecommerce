@@ -6,6 +6,7 @@ import { RegisterUserDTO, RegisterUserServerDTO } from '@/types/modules/v1/user/
 import { UserModel } from '@/database/models/v1/user';
 import { ErrorCode, HttpStatus, ResponseMessage, ValidationMessage } from '@/constants';
 import { buildWhereConditions } from '@/modules/v1/shared/utils/build-where-conditions.utils';
+import { ENV } from '@/config';
 
 export const registerUserRepository = async ({ email, password, phone_number }: RegisterUserDTO): Promise<RegisterUserServerDTO | void> => {
   const existingOtp: number | undefined = cache.get(`otp:${phone_number}`);
@@ -44,10 +45,10 @@ export const registerUserRepository = async ({ email, password, phone_number }: 
 
   const randomFourDigits: number = Math.floor(1000 + Math.random() * 90000);
 
-  cache.set(`phone_number:${phone_number}`, phone_number, 180);
-  cache.set(`email:${phone_number}`, email, 180);
-  cache.set(`password:${phone_number}`, hashedPassword, 180);
-  cache.set(`otp:${phone_number}`, randomFourDigits, 180);
+  cache.set(`phone_number:${phone_number}`, phone_number, ENV.EXPIRE_OTP_TIMER);
+  cache.set(`email:${phone_number}`, email, ENV.EXPIRE_OTP_TIMER);
+  cache.set(`password:${phone_number}`, hashedPassword, ENV.EXPIRE_OTP_TIMER);
+  cache.set(`otp:${phone_number}`, randomFourDigits, ENV.EXPIRE_OTP_TIMER);
 
   return {
     expire_otp_timer: 180,
