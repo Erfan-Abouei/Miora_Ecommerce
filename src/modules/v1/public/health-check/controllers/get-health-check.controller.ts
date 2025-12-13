@@ -10,7 +10,7 @@ export const getHealthCheckDataController = async (req: Request<unknown, unknown
     let healthCheckData: HealthCheckData | null = null;
     const withSystemData = req.query.has_system_data;
     if (withSystemData === 'true') healthCheckData = await getHealthCheckDataService();
-    successResponse<null | HealthCheckData>(res, HttpStatus.OK, healthCheckData);
+    successResponse<{} | HealthCheckData>(res, HttpStatus.OK, healthCheckData ?? {});
   } catch (error: unknown) {
     next(error);
   }

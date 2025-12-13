@@ -9,7 +9,7 @@ export const profileRepository = async (userId: string): Promise<UserData | null
     const user = await UserModel.findByPk(userId)
 
     if (!user) {
-        errors.error = [ValidationMessage.USER_NOT_FOUND]
+        errors.error_message = [ValidationMessage.USER_NOT_FOUND]
         throwValidationError({ details: errors, message: ResponseMessage.NOT_FOUND, errorCode: ErrorCode.NOT_FOUND, statusCode: HttpStatus.NOT_FOUND })
         return null;
     }

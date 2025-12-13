@@ -5,7 +5,7 @@ export interface ApiSuccessResponse<T> {
   status: number;
   author: string;
   message: string;
-  data: T | null;
+  data: T | {};
   version: string;
 }
 
@@ -15,6 +15,6 @@ export interface ApiErrorResponse<T> {
   author: string;
   message: string;
   errorCode: ErrorCode;
-  errors: T | null;
+  errors: T | {};
   version: string;
 }

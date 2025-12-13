@@ -1,7 +1,7 @@
 import { type ErrorsResponse } from '@/types/error/error-response.type';
 import { type ZodError } from 'zod';
 
-const zodIssuesToObject = (issues: ZodError['issues']): ErrorsResponse => {
+export const zodIssuesToObject = (issues: ZodError['issues']): ErrorsResponse => {
   const result: ErrorsResponse = {};
   issues.forEach((issue) => {
     const path = issue.path.join('.') || 'root';
@@ -11,4 +11,3 @@ const zodIssuesToObject = (issues: ZodError['issues']): ErrorsResponse => {
   return result;
 };
 
-export { zodIssuesToObject };

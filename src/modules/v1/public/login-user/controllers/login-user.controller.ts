@@ -10,11 +10,11 @@ import { HttpStatus } from '@/constants';
 
 export const loginUserController = async (req: Request<unknown, unknown, LoginUserDTO>, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const createdUserData = await loginUserService(req.body);
-    const userWithoutPassword = removeSecureData(createdUserData);
+    const createdUserData = await loginUserService(req.body, req.ip!);
+    const userWithoutPassword = removeSecureData(createdUserData!);
     const tokenPayload: TokenPayload = {
-      userId: createdUserData.id,
-      role: createdUserData.role,
+      userId: createdUserData!.id,
+      role: createdUserData!.role,
     };
     setTokens(res, tokenPayload);
     if (createdUserData) {

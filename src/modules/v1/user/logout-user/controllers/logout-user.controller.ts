@@ -8,7 +8,7 @@ export const logoutUserController = (req: Request, res: Response, next: NextFunc
 
     const isClearedToken = clearTokens(res)
 
-    if (isClearedToken) successResponse<null>(res, HttpStatus.OK, null, ResponseMessage.USER_LOGOUT);
+    if (isClearedToken) successResponse<{}>(res, HttpStatus.OK, {}, ResponseMessage.USER_LOGOUT);
   } catch (error: unknown) {
     next(error);
   }

@@ -2,7 +2,7 @@ import { CustomErrorProps, type ErrorsResponse } from '@/types/error/error-respo
 import { ResponseMessage } from '@/constants';
 import { ErrorCode } from '@/constants';
 
-const throwValidationError = ({ message = ResponseMessage.VALIDATION_ERROR, statusCode = 400, errorCode = ErrorCode.VALIDATION_ERROR, details = {} }: CustomErrorProps) => {
+export const throwValidationError = ({ message = ResponseMessage.VALIDATION_ERROR, statusCode = 400, errorCode = ErrorCode.VALIDATION_ERROR, details = {} }: CustomErrorProps) => {
   const error = new Error(message) as Error & {
     statusCode: number;
     errorCode: ErrorCode;
@@ -15,5 +15,3 @@ const throwValidationError = ({ message = ResponseMessage.VALIDATION_ERROR, stat
 
   throw error;
 };
-
-export { throwValidationError };

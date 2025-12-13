@@ -2,7 +2,7 @@ import type { AppError } from '@/types/common/basic.type';
 import type { ErrorsResponse } from '@/types/error/error-response.type';
 import { ResponseMessage } from '@/constants';
 
-const appErrorToObject = (err: AppError | string): ErrorsResponse => {
+export const appErrorToObject = (err: AppError | string): ErrorsResponse => {
   if (typeof err === 'string') return { error: [err] };
 
   if (err.details && typeof err.details === 'object' && !Array.isArray(err.details)) {
@@ -18,4 +18,3 @@ const appErrorToObject = (err: AppError | string): ErrorsResponse => {
   return { error: [err.message ?? ResponseMessage.ERROR] };
 };
 
-export { appErrorToObject };

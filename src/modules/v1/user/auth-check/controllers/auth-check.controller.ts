@@ -4,7 +4,7 @@ import { HttpStatus } from '@/constants';
 
 const authCheckController = (_: Request, res: Response, next: NextFunction): void => {
   try {
-    successResponse<null>(res, HttpStatus.OK);
+    successResponse<{}>(res, HttpStatus.OK, {});
   } catch (error: unknown) {
     next(error);
   }
