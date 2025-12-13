@@ -39,7 +39,7 @@ export const loginUserRepository = async (
   // If user is not found, increment the attempt counter and throw a NOT FOUND error
   if (!user) {
     errors.error_message = [ValidationMessage.USER_NOT_FOUND];
-    cache.set(key, attempts + 1, ENV.LOGIN_ATTEMPTS_MAX);
+    cache.set(key, attempts + 1, ENV.LOGIN_ATTEMPTS_MAX_TIMER);
     throwValidationError({
       details: errors,
       statusCode: HttpStatus.NOT_FOUND,
@@ -54,7 +54,7 @@ export const loginUserRepository = async (
 
   // If password is incorrect, increment attempts and throw a DATA CONFLICT error
   if (!isValidPassword) {
-    cache.set(key, attempts + 1, ENV.LOGIN_ATTEMPTS_MAX);
+    cache.set(key, attempts + 1, ENV.LOGIN_ATTEMPTS_MAX_TIMER);
     throwValidationError({
       details: { password: [ValidationMessage.PASSWORD_INCORRECT] },
       errorCode: ErrorCode.DATA_CONFLICT,
