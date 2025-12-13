@@ -16,11 +16,11 @@ export const loginUserRepository = async (
 ): Promise<UserData | null> => {
 
   // Generate a unique cache key for the user and IP combination to track login attempts
-  const key = `phone_${phone_number}_ip_${ipAddress}`;
+  const key = `user_${phone_number || email}_ip_${ipAddress}`;
   const attempts = Number(cache.get(key) ?? 0);
 
   // Block the login if maximum allowed attempts have been exceeded
-  if (attempts >= Number(ENV.LOGIN_ATTEMPTS_MAX)) {
+  if (attempts > Number(ENV.LOGIN_ATTEMPTS_MAX)) {
     throwValidationError({
       message: ResponseMessage.TOO_MANY_REQUESTS,
       errorCode: ErrorCode.TOO_MANY_REQUESTS,
@@ -38,7 +38,6 @@ export const loginUserRepository = async (
 
   // If user is not found, increment the attempt counter and throw a NOT FOUND error
   if (!user) {
-    cache.set(key, attempts + 1);
     errors.error_message = [ValidationMessage.USER_NOT_FOUND];
     throwValidationError({
       details: errors,
@@ -46,6 +45,7 @@ export const loginUserRepository = async (
       message: ResponseMessage.NOT_FOUND,
       errorCode: ErrorCode.NOT_FOUND,
     });
+    cache.set(key, attempts + 1);
     return null;
   }
 
@@ -54,13 +54,13 @@ export const loginUserRepository = async (
 
   // If password is incorrect, increment attempts and throw a DATA CONFLICT error
   if (!isValidPassword) {
-    cache.set(key, attempts + 1);
     throwValidationError({
       details: { password: [ValidationMessage.PASSWORD_INCORRECT] },
       errorCode: ErrorCode.DATA_CONFLICT,
       message: ResponseMessage.DATA_CONFLICT,
       statusCode: HttpStatus.CONFLICT,
     });
+    cache.set(key, attempts + 1);
     return null;
   }
 
