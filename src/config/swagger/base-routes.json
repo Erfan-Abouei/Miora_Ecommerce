@@ -250,7 +250,7 @@
           "success": { "type": "boolean", "example": false },
           "author": { "type": "string", "example": "Kara Team" },
           "message": { "type": "string", "example": "عملیات با مشکل مواجه شده است." },
-          "errorCode": { "type": "string", "example": "Unknown error" },
+          "error_code": { "type": "string", "example": "Unknown error" },
           "errors": {
             "type": "object",
             "nullable": true,
