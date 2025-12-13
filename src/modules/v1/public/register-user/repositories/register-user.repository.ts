@@ -12,7 +12,7 @@ export const registerUserRepository = async ({ email, password, phone_number }: 
   if (existingOtp !== undefined) {
     const otpTtl: number = cache.getTtl(`otp:${phone_number}`)!;
     const now = Date.now();
-    const expire_otp_timer = Math.floor((otpTtl - now) / 1000); // convert to second
+    const expire_otp_timer = Math.floor((otpTtl - now) / 10000); // convert to second
 
     return {
       expire_otp_timer,
