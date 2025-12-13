@@ -8,7 +8,7 @@ import { setTokens } from '@/utils/auth/jwt.util';
 import { UserData } from '@/types/modules/v1/user/data/user-date.type';
 import { HttpStatus } from '@/constants';
 
-export const loginUserController = async (req: Request<unknown, unknown, LoginUserDTO>, res: Response, next: NextFunction) => {
+export const loginUserController = async (req: Request<unknown, unknown, LoginUserDTO>, res: Response, next: NextFunction): Promise<void> => {
   try {
     const createdUserData = await loginUserService(req.body);
     const userWithoutPassword = removeSecureData(createdUserData);

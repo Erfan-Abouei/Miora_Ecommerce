@@ -8,7 +8,7 @@ import { removeSecureData } from '@/modules/v1/shared/utils/remove-secure-data.u
 import { UserData } from '@/types/modules/v1/user/data/user-date.type';
 import { HttpStatus } from '@/constants';
 
-export const registerUserConfrimController = async (req: Request<unknown, unknown, RegisterUserConfirmDTO>, res: Response, next: NextFunction) => {
+export const registerUserConfrimController = async (req: Request<unknown, unknown, RegisterUserConfirmDTO>, res: Response, next: NextFunction): Promise<void> => {
   try {
     const user = await registerUserConfrimService(req.body);
     if (user) {

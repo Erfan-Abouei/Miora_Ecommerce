@@ -11,7 +11,7 @@ export enum ValidationMessage {
   EMAIL_CONFLICT = 'ایمیل ارسال شده قبلا ثبت شده است.',
   PHONE_NUMBER_CONFLICT = 'شماره تماس ارسال شده قبلا ثبت شده است.',
   OTP_INVALID_OR_EXPIRED = 'کد ورود اشتباه است یا منقضی شده است.',
-  PHONE_NUMBER_INVALID_OR_EXPIRED = 'شماره تملس اشتباه است یا منقضی شده است.',
+  PHONE_NUMBER_INVALID_OR_EXPIRED = 'شماره تماس اشتباه است یا منقضی شده است.',
   PASSWORD_INVALID_OR_EXPIRED = 'گذرواژه اشتباه است یا منقضی شده است.',
   EMAIL_INVALID_OR_EXPIRED = 'ایمیل اشتباه است یا منقضی شده است.',
   OTP_REQUIRED = 'کد ورود اجباری است و باید از نوع رشته باشد.',

@@ -6,16 +6,19 @@ import { ResponseMessage } from '@/constants';
 import { UserData } from '@/types/modules/v1/user/data/user-date.type';
 import { ErrorCode, HttpStatus, ValidationMessage } from '@/constants';
 import { buildWhereConditions } from '@/modules/v1/shared/utils/build-where-conditions.utils';
+import { ErrorsResponse } from '@/types/error/error-response.type';
 
 export const loginUserRepository = async ({ password, phone_number, email }: LoginUserDTO): Promise<UserData | null> => {
+  const errors: ErrorsResponse = {}
   const user = await UserModel.findOne({
     where: buildWhereConditions({ phone_number, email }),
   });
 
   // user not found
   if (!user) {
+    errors.error = [ValidationMessage.USER_NOT_FOUND]
     throwValidationError({
-      details: { error: [ValidationMessage.USER_NOT_FOUND] },
+      details: errors,
       statusCode: HttpStatus.NOT_FOUND,
       message: ResponseMessage.NOT_FOUND,
       errorCode: ErrorCode.NOT_FOUND,
