@@ -14,13 +14,13 @@ export const successResponse = <T>(res: Response<ApiSuccessResponse<T>>, status:
     version: ENV.APP_VERSION,
   });
 
-export const errorResponse = <T>(res: Response<ApiErrorResponse<T>>, status: number, errors?: T, message = ResponseMessage.ERROR, errorCode = ErrorCode.UNKNOWN_ERROR, author = ENV.AUTHOR): Response<ApiErrorResponse<T>> =>
+export const errorResponse = <T>(res: Response<ApiErrorResponse<T>>, status: number, errors?: T, message = ResponseMessage.ERROR, error_code = ErrorCode.UNKNOWN_ERROR, author = ENV.AUTHOR): Response<ApiErrorResponse<T>> =>
   res.status(status).json({
     status,
     success: false,
     author,
     message,
-    errorCode,
+    error_code,
     errors: errors ?? {},
     version: ENV.APP_VERSION,
   });

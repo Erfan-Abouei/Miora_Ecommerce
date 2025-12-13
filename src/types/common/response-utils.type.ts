@@ -14,7 +14,7 @@ export interface ApiErrorResponse<T> {
   status: number;
   author: string;
   message: string;
-  errorCode: ErrorCode;
+  error_code: ErrorCode;
   errors: T | {};
   version: string;
 }
