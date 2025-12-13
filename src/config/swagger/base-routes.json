@@ -125,6 +125,30 @@
         }
       }
     },
+    "/user/profile": {
+      "get": {
+        "summary": "Get User Data",
+        "tags": ["User"],
+        "responses": {
+          "200": {
+            "description": "User Data",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiSuccessResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "User is not authenticated",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/public/login": {
       "post": {
         "summary": "User Login",
