@@ -6,8 +6,6 @@ import { UserEventName } from "@/constants";
 
 export const profileService = async (userTokenData: TokenPayload): Promise<UserData> => {
     const userData = await profileRepository(userTokenData.userId)
-    if (userData) {
-        eventEmitter.emit(UserEventName.USER_PROFILE_DATA, userData)
-    }
+    eventEmitter.emit(UserEventName.USER_PROFILE_DATA, userData)
     return userData!
 }

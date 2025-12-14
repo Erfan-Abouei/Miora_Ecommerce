@@ -16,6 +16,9 @@ export const ENV: EnvConfig = {
 
   APP_NAME: process.env.APP_NAME!,
   APP_URL: process.env.APP_URL!,
+  APP_INSTAGRAM_LING: process.env.APP_INSTAGRAM_LING!,
+  APP_LINKDIN_LINK: process.env.APP_LINKDIN_LINK!,
+  APP_X_LINK: process.env.APP_X_LINK!,
   APP_DESCRIPTION: process.env.APP_DESCRIPTION!,
   APP_VERSION: process.env.APP_VERSION!,
 

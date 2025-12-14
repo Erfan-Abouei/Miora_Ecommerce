@@ -6,6 +6,9 @@ export interface EnvConfig {
 
   APP_NAME: string;
   APP_URL: string;
+  APP_INSTAGRAM_LING: string,
+  APP_LINKDIN_LINK: string,
+  APP_X_LINK: string,
   APP_DESCRIPTION: string;
   APP_VERSION: string;
 
