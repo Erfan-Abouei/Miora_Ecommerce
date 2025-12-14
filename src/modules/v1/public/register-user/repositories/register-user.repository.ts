@@ -7,6 +7,7 @@ import { UserModel } from '@/database/models/v1/user';
 import { ErrorCode, HttpStatus, ResponseMessage, ValidationMessage } from '@/constants';
 import { buildWhereConditions } from '@/modules/v1/shared/utils/build-where-conditions.utils';
 import { ENV } from '@/config';
+import { randomInt } from 'crypto';
 
 export const registerUserRepository = async ({ email, password, phone_number }: RegisterUserDTO): Promise<RegisterUserServerDTO | void> => {
   const existingOtp: number | undefined = cache.get(`otp:${phone_number}`);
@@ -43,7 +44,7 @@ export const registerUserRepository = async ({ email, password, phone_number }: 
 
   const hashedPassword = await hashPassword(password);
 
-  const randomFourDigits: number = Math.floor(1000 + Math.random() * 90000);
+  const randomFourDigits: number = randomInt(10_000, 100_000)
 
   cache.set(`phone_number:${phone_number}`, phone_number, ENV.EXPIRE_OTP_TIMER);
   cache.set(`email:${phone_number}`, email, ENV.EXPIRE_OTP_TIMER);
