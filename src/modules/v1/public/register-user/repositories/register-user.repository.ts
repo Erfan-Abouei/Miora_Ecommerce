@@ -44,15 +44,15 @@ export const registerUserRepository = async ({ email, password, phone_number }: 
 
   const hashedPassword = await hashPassword(password);
 
-  const randomFourDigits: number = randomInt(10_000, 100_000)
+  const randomFiveDigits: number = randomInt(10_000, 100_000)
 
   cache.set(`phone_number:${phone_number}`, phone_number, ENV.EXPIRE_OTP_TIMER);
   cache.set(`email:${phone_number}`, email, ENV.EXPIRE_OTP_TIMER);
   cache.set(`password:${phone_number}`, hashedPassword, ENV.EXPIRE_OTP_TIMER);
-  cache.set(`otp:${phone_number}`, randomFourDigits, ENV.EXPIRE_OTP_TIMER);
+  cache.set(`otp:${phone_number}`, randomFiveDigits, ENV.EXPIRE_OTP_TIMER);
 
   return {
     expire_otp_timer: 180,
-    otp: randomFourDigits, // for development
+    otp: randomFiveDigits, // for development
   };
 };
