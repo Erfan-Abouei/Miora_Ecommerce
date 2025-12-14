@@ -2,8 +2,8 @@ import sequelize from '@/database/database.config';
 import { ValidationMessage } from '@/constants';
 import { Pattern } from '@/constants';
 import { DataTypes, Model } from 'sequelize';
-import { UserData } from '@/types/modules/v1/user/data/user-date.type';
-import { CreateUserWithAdminAccessDTO, RegisterUserDTO } from '@/types/modules/v1/user/dto/user-dto.type';
+import { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
+import { CreateUserWithAdminAccessDTO, RegisterUserDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
 
 // User model for the system. Stores basic user information, roles, subscription status, verification flags (email/phone), and optional profile details.
 // This model is used for both admin-created users and self-registered users.

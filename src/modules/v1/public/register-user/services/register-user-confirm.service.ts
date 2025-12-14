@@ -1,6 +1,6 @@
 import { registerUserConfirmRepository } from '../repositories';
-import { RegisterUserConfirmDTO } from '@/types/modules/v1/user/dto/user-dto.type';
-import { UserData } from '@/types/modules/v1/user/data/user-date.type';
+import { RegisterUserConfirmDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
+import { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
 import { eventEmitter } from '@/config';
 import { PublicEventName } from '@/constants';
 

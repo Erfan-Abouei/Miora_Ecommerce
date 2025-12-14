@@ -1,7 +1,7 @@
 import { eventEmitter } from '@/config';
 import { PublicEventName } from '@/constants';
-import { UserData } from '@/types/modules/v1/user/data/user-date.type';
-import { RegisterUserDTO } from '@/types/modules/v1/user/dto/user-dto.type';
+import { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
+import { RegisterUserDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
 
 eventEmitter.on(PublicEventName.USER_REGISTER, (aboutRegisterAndOtpData: RegisterUserDTO): void => {
   // user register notification !

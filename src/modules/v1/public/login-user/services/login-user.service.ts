@@ -1,7 +1,7 @@
 import cache from '@/database/cache/cache.config';
-import { LoginUserDTO } from '@/types/modules/v1/user/dto/user-dto.type';
+import { LoginUserDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
 import { loginUserRepository } from '../repositories';
-import { UserData } from '@/types/modules/v1/user/data/user-date.type';
+import { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
 import { eventEmitter } from '@/config';
 import { PublicEventName } from '@/constants';
 

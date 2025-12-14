@@ -1,6 +1,6 @@
 import os from 'os';
 import si from 'systeminformation';
-import { HealthCheckData } from '@/types/modules/v1/health-check/data/health-check-data.type';
+import { HealthCheckData } from '@/types/modules/v1/public/health-check/data/health-check-data.type';
 import { eventEmitter } from '@/config';
 import { PublicEventName } from '@/constants';
 

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { successResponse } from '@/utils/error/api-response-handler.util';
 import { registerUserService } from '../services';
-import { RegisterUserDTO, RegisterUserServerDTO } from '@/types/modules/v1/user/dto/user-dto.type';
+import { RegisterUserDTO, RegisterUserServerDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
 import { HttpStatus } from '@/constants';
 
 export const registerUserController = async (req: Request<unknown, unknown, RegisterUserDTO>, res: Response, next: NextFunction): Promise<void> => {

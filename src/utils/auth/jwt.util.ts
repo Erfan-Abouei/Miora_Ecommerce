@@ -5,44 +5,34 @@ import { TokenPayload } from '@/types/common/basic.type';
 import { cookieOptionReturner } from './cookie-option.utils';
 
 const createAccessToken = (payload: TokenPayload): string => {
-  const options: SignOptions = { expiresIn: +ENV.ACCESS_TOKEN_EXPIRES_IN };
+  const options: SignOptions = { expiresIn: ENV.ACCESS_TOKEN_EXPIRES_IN };
   return jwt.sign(payload, ENV.JWT_ACCESS_SECRET!, options);
 };
 
 const createRefreshToken = (payload: TokenPayload): string => {
-  const options: SignOptions = { expiresIn: +ENV.REFRESH_TOKEN_EXPIRES_IN };
+  const options: SignOptions = { expiresIn: ENV.REFRESH_TOKEN_EXPIRES_IN };
   return jwt.sign(payload, ENV.JWT_REFRESH_SECRET!, options);
 };
 
-const setRefreshTokenCookie = (res: Response, token: string) => {
-  res.cookie('refresh_token', token, {
-    httpOnly: true,
-    secure: ENV.NODE_ENV === 'production',
-    sameSite: 'strict',
-    maxAge: +ENV.REFRESH_TOKEN_EXPIRES_IN,
-  });
+const setAccessTokenCookie = (res: Response, token: string, isLocal: boolean) => {
+  res.cookie('access_token', token, cookieOptionReturner(ENV.ACCESS_TOKEN_EXPIRES_IN, isLocal));
 };
 
-const setAccessTokenCookie = (res: Response, token: string) => {
-  res.cookie('access_token', token, {
-    httpOnly: true,
-    secure: ENV.NODE_ENV === 'production',
-    sameSite: 'strict',
-    maxAge: +ENV.ACCESS_TOKEN_EXPIRES_IN,
-  });
+const setRefreshTokenCookie = (res: Response, token: string, isLocal: boolean) => {
+  res.cookie('refresh_token', token, cookieOptionReturner(ENV.REFRESH_TOKEN_EXPIRES_IN, isLocal));
 };
 
-const setTokens = (res: Response, payload: TokenPayload) => {
+const setTokens = (res: Response, payload: TokenPayload, isLocal: boolean) => {
   const accessToken = createAccessToken(payload);
   const refreshToken = createRefreshToken(payload);
 
-  setAccessTokenCookie(res, accessToken);
-  setRefreshTokenCookie(res, refreshToken);
+  setAccessTokenCookie(res, accessToken, isLocal);
+  setRefreshTokenCookie(res, refreshToken, isLocal);
 };
 
-const clearTokens = (res: Response): boolean => {
-  res.clearCookie('access_token', cookieOptionReturner(ENV.ACCESS_TOKEN_EXPIRES_IN));
-  res.clearCookie('refresh_token', cookieOptionReturner(ENV.REFRESH_TOKEN_EXPIRES_IN));
+const clearTokens = (res: Response, isLocal: boolean): boolean => {
+  res.clearCookie('access_token', cookieOptionReturner(ENV.ACCESS_TOKEN_EXPIRES_IN, isLocal));
+  res.clearCookie('refresh_token', cookieOptionReturner(ENV.REFRESH_TOKEN_EXPIRES_IN, isLocal));
 
   return true
 }

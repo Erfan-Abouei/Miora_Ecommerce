@@ -1,11 +1,11 @@
 import bcrypt from 'bcryptjs';
 import cache from '@/database/cache/cache.config';
 import { ENV } from '@/config';
-import { LoginUserDTO } from '@/types/modules/v1/user/dto/user-dto.type';
+import { LoginUserDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
 import { UserModel } from '@/database/models/v1/user';
 import { throwValidationError } from '@/utils/error/throw-validation-error.util';
 import { ResponseMessage } from '@/constants';
-import { UserData } from '@/types/modules/v1/user/data/user-date.type';
+import { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
 import { ErrorCode, HttpStatus, ValidationMessage } from '@/constants';
 import { buildWhereConditions } from '@/modules/v1/shared/utils/build-where-conditions.utils';
 import { ErrorsResponse } from '@/types/error/error-response.type';
