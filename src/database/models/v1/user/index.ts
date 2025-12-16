@@ -7,7 +7,7 @@ import { CreateUserWithAdminAccessDTO, RegisterUserDTO } from '@/types/modules/v
 
 // User model for the system. Stores basic user information, roles, subscription status, verification flags (email/phone), and optional profile details.
 // This model is used for both admin-created users and self-registered users.
-const UserModel = sequelize.define<Model<UserData, CreateUserWithAdminAccessDTO | RegisterUserDTO>>(
+export const UserModel = sequelize.define<Model<UserData, CreateUserWithAdminAccessDTO | RegisterUserDTO>>(
   'user',
   {
     id: {
@@ -130,5 +130,3 @@ const UserModel = sequelize.define<Model<UserData, CreateUserWithAdminAccessDTO 
     underscored: true,
   },
 );
-
-export { UserModel };

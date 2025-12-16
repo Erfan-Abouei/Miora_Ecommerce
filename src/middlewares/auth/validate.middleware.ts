@@ -5,7 +5,7 @@ import { errorResponse } from '@/utils/error/api-response-handler.util';
 import { ResponseMessage } from '@/constants';
 import { HttpStatus } from '@/constants';
 
-const validate =
+export const validate =
   (schema: ZodType) =>
   (req: Request, res: Response, next: NextFunction): void => {
     if (!req.body || Object.keys(req.body).length === 0) {
@@ -19,5 +19,3 @@ const validate =
       next(error);
     }
   };
-
-export { validate };

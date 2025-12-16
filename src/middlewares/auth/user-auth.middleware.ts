@@ -1,3 +1,4 @@
+import { AuthUserQueryType } from './../../types/modules/v1/user/user-auth/query/user-query.type';
 import { Request, Response, NextFunction } from 'express';
 import { createAccessToken, setAccessTokenCookie, verifyAccessToken, verifyRefreshToken } from '@/utils/auth/jwt.util';
 import { errorResponse } from '@/utils/error/api-response-handler.util';
@@ -6,7 +7,7 @@ import { ErrorCode } from '@/constants';
 import { ResponseMessage } from '@/constants';
 import { HttpStatus } from '@/constants';
 
-const userAuthMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export const userAuthMiddleware = (req: Request<unknown, unknown, unknown, AuthUserQueryType>, res: Response, next: NextFunction) => {
   const accessToken = req.cookies.access_token;
   const refreshToken = req.cookies.refresh_token;
 
@@ -29,7 +30,7 @@ const userAuthMiddleware = (req: Request, res: Response, next: NextFunction) => 
       const refreshPayload = verifyRefreshToken(refreshToken) as TokenPayload;
 
       const newAccessToken = createAccessToken(refreshPayload);
-      setAccessTokenCookie(res, newAccessToken);
+      setAccessTokenCookie(res, newAccessToken, !!req.query.local);
 
       req.user = refreshPayload;
       next();
@@ -38,5 +39,3 @@ const userAuthMiddleware = (req: Request, res: Response, next: NextFunction) => 
     }
   }
 };
-
-export { userAuthMiddleware };

@@ -1,10 +1,10 @@
-interface DatabaseConfig {
+export interface DatabaseConfig {
   development: DatabaseConfigItem;
   production: DatabaseConfigItem;
   test: DatabaseConfigItem;
 }
 
-interface DatabaseConfigItem {
+export interface DatabaseConfigItem {
   username: string;
   password: string | null;
   database: string;
@@ -12,4 +12,3 @@ interface DatabaseConfigItem {
   dialect: string;
 }
 
-export { DatabaseConfig, DatabaseConfigItem };
