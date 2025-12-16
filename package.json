@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Miora is an e-commerce backend built with Express, TypeScript, and Sequelize. It provides APIs for managing users, products, and orders with clean architecture and scalable modular design.",
   "type": "module",
-  "main": "dist/server.js",
+  "main": "loader.js",
   "engines": {
     "node": ">=20.0.0"
   },
