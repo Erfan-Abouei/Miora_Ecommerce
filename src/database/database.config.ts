@@ -1,6 +1,5 @@
 import { Sequelize } from 'sequelize';
-import { logger } from '@/config';
-import { ENV } from '@/config';
+import { logger, ENV } from '@/config';
 
 const sequelize = new Sequelize({
   dialect: 'mysql',

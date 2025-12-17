@@ -4,3 +4,4 @@ export * from './cors/cors.config';
 export * from './emitter/event-emitter.config'
 export * from './rate-limitter/rate-limiter.config'
 export * from './swagger/swagger.config'
+export * from './node-mailer/node-mailer.config'

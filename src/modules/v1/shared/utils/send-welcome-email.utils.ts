@@ -1,7 +1,6 @@
-import { ENV, logger } from "@/config"
+import { ENV, logger, transporter } from "@/config"
 import { SendMailOptions } from "nodemailer"
 import { welcomeEmailHtmlReturner } from "./welcom-email-html-returner.utils"
-import { transporter } from "@/config/node-mailer/node-mailer.config"
 
 export const sendWelcomeEmail = async (userEmail: string) => {
     const mailOption: SendMailOptions = {
