@@ -9,7 +9,7 @@ export const logoutUserController = (req: Request<unknown, unknown, unknown, Aut
 
     const isClearedToken = clearTokens(res, !!req.query.local)
 
-    if (isClearedToken) successResponse<{}>(res, HttpStatus.OK, {}, ResponseMessage.USER_LOGOUT);
+    if (isClearedToken) successResponse<{}>(res, HttpStatus.NO_CONTENT, {}, ResponseMessage.USER_LOGOUT);
   } catch (error: unknown) {
     next(error);
   }
