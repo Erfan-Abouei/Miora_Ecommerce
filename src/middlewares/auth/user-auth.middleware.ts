@@ -12,7 +12,7 @@ export const userAuthMiddleware = (req: Request<unknown, unknown, unknown, AuthU
   const refreshToken = req.cookies.refresh_token;
 
   if (!accessToken) {
-    errorResponse<null>(res, HttpStatus.UNAUTHORIZED, null, ResponseMessage.UNAUTHORIZED, ErrorCode.UNAUTHORIZED);
+    errorResponse<{}>(res, HttpStatus.UNAUTHORIZED, {}, ResponseMessage.UNAUTHORIZED, ErrorCode.UNAUTHORIZED);
     return;
   }
 
@@ -22,7 +22,7 @@ export const userAuthMiddleware = (req: Request<unknown, unknown, unknown, AuthU
     next();
   } catch {
     if (!refreshToken) {
-      errorResponse<null>(res, HttpStatus.UNAUTHORIZED, null, ResponseMessage.UNAUTHORIZED, ErrorCode.UNAUTHORIZED);
+      errorResponse<{}>(res, HttpStatus.UNAUTHORIZED, {}, ResponseMessage.UNAUTHORIZED, ErrorCode.UNAUTHORIZED);
       return;
     }
 
@@ -35,7 +35,7 @@ export const userAuthMiddleware = (req: Request<unknown, unknown, unknown, AuthU
       req.user = refreshPayload;
       next();
     } catch {
-      errorResponse<null>(res, 401, null, ResponseMessage.UNAUTHORIZED, ErrorCode.UNAUTHORIZED);
+      errorResponse<{}>(res, 401, {}, ResponseMessage.UNAUTHORIZED, ErrorCode.UNAUTHORIZED);
     }
   }
 };

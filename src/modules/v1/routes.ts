@@ -4,8 +4,7 @@ import { publicRouter } from './public/routes';
 import { userRouter } from './user/routes';
 import { adminRouter } from './admin/routes';
 import { userAuthMiddleware } from '@/middlewares/auth/user-auth.middleware';
-import { swaggerDocument } from '@/config';
-import { ENV } from '@/config';
+import { swaggerDocument, ENV } from '@/config';
 
 const router = Router();
 

@@ -12,6 +12,6 @@ export const apiLimiter = rateLimit({
 
   legacyHeaders: true,
   handler: (_: Request, res: Response) => {
-    errorResponse<null>(res, HttpStatus.TOO_MANY_REQUESTS, null, ResponseMessage.TOO_MANY_REQUESTS, ErrorCode.TOO_MANY_REQUESTS);
+    errorResponse<{}>(res, HttpStatus.TOO_MANY_REQUESTS, {}, ResponseMessage.TOO_MANY_REQUESTS, ErrorCode.TOO_MANY_REQUESTS);
   },
 });

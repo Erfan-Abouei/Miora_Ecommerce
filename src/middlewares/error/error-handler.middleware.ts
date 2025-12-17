@@ -25,5 +25,5 @@ export const errorHandler = (err: unknown, _req: Request, res: Response, _next: 
   }
 
   // Unknown Error
-  errorResponse<null>(res, HttpStatus.INTERNAL_SERVER_ERROR, null, ResponseMessage.UNKNOWN_ERROR, ErrorCode.INTERNAL_SERVER_ERROR);
+  errorResponse<{}>(res, HttpStatus.INTERNAL_SERVER_ERROR, {}, ResponseMessage.UNKNOWN_ERROR, ErrorCode.INTERNAL_SERVER_ERROR);
 };

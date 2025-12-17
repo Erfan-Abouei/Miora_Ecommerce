@@ -9,7 +9,7 @@ export const validate =
   (schema: ZodType) =>
   (req: Request, res: Response, next: NextFunction): void => {
     if (!req.body || Object.keys(req.body).length === 0) {
-      errorResponse<null>(res, HttpStatus.BAD_REQUEST, null, ResponseMessage.NO_DATA_RECEIVED, ErrorCode.NO_DATA_RECEIVED);
+      errorResponse<{}>(res, HttpStatus.BAD_REQUEST, {}, ResponseMessage.NO_DATA_RECEIVED, ErrorCode.NO_DATA_RECEIVED);
       return;
     }
     try {
