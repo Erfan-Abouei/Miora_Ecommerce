@@ -25,6 +25,7 @@ export interface EnvConfig {
   PASSWORD_MAX_LENGTH: number;
   LOGIN_ATTEMPTS_MAX: number;
   LOGIN_ATTEMPTS_MAX_TIMER: number;
+  OTP_RESEND_ATTEMPS: number;
 
   DATABASE_DIALECT: string;
   DATABASE_HOST: string;

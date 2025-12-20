@@ -3,7 +3,7 @@ import type { ErrorsResponse } from '@/types/error/error-response.type';
 import { ResponseMessage } from '@/constants';
 
 export const appErrorToObject = (err: AppError | string): ErrorsResponse => {
-  if (typeof err === 'string') return { error: [err] };
+  if (typeof err === 'string') return { error_message: [err] };
 
   if (err.details && typeof err.details === 'object' && !Array.isArray(err.details)) {
     const details = err.details as Record<string, unknown>;
@@ -15,6 +15,6 @@ export const appErrorToObject = (err: AppError | string): ErrorsResponse => {
     return result;
   }
 
-  return { error: [err.message ?? ResponseMessage.ERROR] };
+  return { error_message: [err.message ?? ResponseMessage.ERROR] };
 };
 

@@ -35,6 +35,7 @@ export const ENV: EnvConfig = {
   PASSWORD_MAX_LENGTH: Number(process.env.PASSWORD_MAX_LENGTH) || 64,
   LOGIN_ATTEMPTS_MAX: Number(process.env.LOGIN_ATTEMPTS_MAX) || 5,
   LOGIN_ATTEMPTS_MAX_TIMER: Number(process.env.LOGIN_ATTEMPTS_MAX_TIMER) || 120,
+  OTP_RESEND_ATTEMPS: Number(process.env.OTP_RESEND_ATTEMPS) || 3,
 
   DATABASE_DIALECT: process.env.DATABASE_DIALECT!,
   DATABASE_HOST: process.env.DATABASE_HOST!,

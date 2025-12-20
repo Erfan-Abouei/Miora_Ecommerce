@@ -20,7 +20,7 @@ export const errorHandler = (err: unknown, _req: Request, res: Response, _next: 
   }
 
   if (isAppError(err)) {
-    errorResponse(res, err.statusCode ?? 500, appErrorToObject(err), err.message as ResponseMessage, err.errorCode ?? ErrorCode.INTERNAL_SERVER_ERROR);
+    errorResponse<ErrorsResponse>(res, err.statusCode ?? 500, appErrorToObject(err), err.message as ResponseMessage, err.errorCode ?? ErrorCode.INTERNAL_SERVER_ERROR);
     return;
   }
 

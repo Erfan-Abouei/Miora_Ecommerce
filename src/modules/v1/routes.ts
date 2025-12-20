@@ -1,5 +1,5 @@
 import swaggerUi from 'swagger-ui-express';
-import { Router } from 'express';
+import { RequestHandler, Router } from 'express';
 import { publicRouter } from './public/routes';
 import { userRouter } from './user/routes';
 import { adminRouter } from './admin/routes';
@@ -12,8 +12,8 @@ const router = Router();
 router.use('/public', publicRouter);
 
 // user routes ( need to login to access )
-router.use('/user', userAuthMiddleware, userRouter);
-
+router.use('/user', userAuthMiddleware as unknown as RequestHandler, userRouter as unknown as RequestHandler
+);
 // admin routes ( need to login with admin access )
 router.use('/admin', adminRouter);
 
