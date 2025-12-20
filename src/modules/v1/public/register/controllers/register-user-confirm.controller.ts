@@ -3,15 +3,15 @@ import { Request, Response, NextFunction } from 'express';
 import { successResponse } from '@/utils/error/api-response-handler.util';
 import { setTokens } from '@/utils/auth/jwt.util';
 import { TokenPayload } from '@/types/common/basic.type';
-import { registerUserConfrimService } from '../services';
+import { registerUserConfirmService } from '../services';
 import { RegisterUserConfirmDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
 import { removeSecureData } from '@/modules/v1/shared/utils/remove-secure-data.utils';
 import { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
 import { HttpStatus } from '@/constants';
 
-export const registerUserConfrimController = async (req: Request<unknown, unknown, RegisterUserConfirmDTO, AuthUserQueryType>, res: Response, next: NextFunction): Promise<void> => {
+export const registerUserConfirmController = async (req: Request<unknown, unknown, RegisterUserConfirmDTO, AuthUserQueryType>, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const user = await registerUserConfrimService(req.body);
+    const user = await registerUserConfirmService(req.body);
     if (user) {
       const userWithoutPassword = removeSecureData(user);
       const tokenPayload: TokenPayload = {
