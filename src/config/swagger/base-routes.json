@@ -1,150 +1,336 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Miora API Documentation",
-    "version": "1.0.0",
-    "description": "The Miora API documentation helps you understand how to work with the API developed by our team and experience the best quality from Kara."
+    "title": "Miora Ecommerce API",
+    "version": "1.0.10",
+    "description": "Complete API documentation for the Miora Ecommerce platform developed by Kara Team."
   },
-  "servers": [{ "url": "https://miora-api.karaflow.com/api/v1" }],
+  "servers": [
+    {
+      "url": "https://miora-api.karaflow.com/api/v1",
+      "description": "Production Server"
+    }
+  ],
   "tags": [
-    { "name": "Public", "description": "Routes requiring no access" },
-    { "name": "User", "description": "Routes requiring user login" },
-    { "name": "Admin", "description": "Routes requiring admin access" }
+    {
+      "name": "Public",
+      "description": "Public routes (no authentication required)"
+    },
+    {
+      "name": "User",
+      "description": "Routes requiring user authentication"
+    },
+    {
+      "name": "Admin",
+      "description": "Routes requiring admin access"
+    }
   ],
   "paths": {
     "/public/health-check": {
       "get": {
         "summary": "System Health Check",
-        "tags": ["Public"],
+        "description": "Check server status. If `has_system_data=true` is provided, hardware information (CPU, memory, disk, network) will also be returned.",
+        "tags": [
+          "Public"
+        ],
         "parameters": [
           {
             "name": "has_system_data",
             "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ]
+            },
             "required": false,
-            "schema": { "type": "boolean", "enum": ["true", "false"] },
-            "description": "If 'true', system information (CPU, memory, disk, network) will be returned."
+            "description": "If true, returns CPU, memory, disk, and network information."
           }
         ],
         "responses": {
           "200": {
-            "description": "System health data",
+            "description": "System health status",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ApiSuccessResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSuccessResponse"
+                },
+                "example": {
+                  "status": 200,
+                  "success": true,
+                  "author": "Kara_Company",
+                  "message": "عملیات با موفقیت انجام شد.",
+                  "data": {},
+                  "time_zone": "Asia/Tehran",
+                  "version": "1.0.10"
+                }
               }
             }
           },
           "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ApiErrorResponse" }
-              }
-            }
+            "$ref": "#/components/responses/ServerError"
           }
         }
       }
     },
     "/public/register": {
       "post": {
-        "summary": "User Registration",
-        "tags": ["Public"],
+        "summary": "User Registration (Send OTP)",
+        "description": "Initiate user registration process and send verification code to the phone number.",
+        "tags": [
+          "Public"
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/RegisterUserRequest" }
+              "schema": {
+                "$ref": "#/components/schemas/RegisterUserRequest"
+              }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Successful registration (OTP sent)",
+            "description": "OTP sent successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ApiSuccessResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterUserResponse"
+                },
+                "example": {
+                  "status": 200,
+                  "success": true,
+                  "author": "Kara_Company",
+                  "message": "عملیات با موفقیت انجام شد.",
+                  "data": {
+                    "expire_otp_timer": 180,
+                    "otp": 58492
+                  },
+                  "time_zone": "Asia/Tehran",
+                  "version": "1.0.10"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Email or phone number already registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                },
+                "example": {
+                  "status": 409,
+                  "success": false,
+                  "author": "Kara_Company",
+                  "message": "داده ارسال شده با داده‌های موجود در تداخل است.",
+                  "error_code": "E1021",
+                  "errors": {
+                    "email": [
+                      "ایمیل ارسال شده قبلا ثبت شده است."
+                    ],
+                    "phone_number": [
+                      "شماره تماس ارسال شده قبلا ثبت شده است."
+                    ]
+                  },
+                  "time_zone": "Asia/Tehran",
+                  "version": "1.0.10"
+                }
               }
             }
           },
           "400": {
-            "description": "Validation error",
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/public/register/resend-otp": {
+      "post": {
+        "summary": "Resend OTP",
+        "description": "Resend verification code if the previous one was not received or has expired.",
+        "tags": [
+          "Public"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResendOtpRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "New OTP sent successfully",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ApiErrorResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/ResendOtpResponse"
+                },
+                "example": {
+                  "status": 200,
+                  "success": true,
+                  "author": "Kara_Company",
+                  "message": "عملیات با موفقیت انجام شد.",
+                  "data": {
+                    "expire_otp_timer": 180,
+                    "otp": 73921
+                  },
+                  "time_zone": "Asia/Tehran",
+                  "version": "1.0.10"
+                }
               }
             }
           },
-          "500": {
-            "description": "Server error",
+          "409": {
+            "description": "User not in registration queue, OTP still valid, or other conflict",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ApiErrorResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                },
+                "example": {
+                  "status": 409,
+                  "success": false,
+                  "author": "Kara_Company",
+                  "message": "داده ارسال شده با داده‌های موجود در تداخل است.",
+                  "error_code": "E1021",
+                  "errors": {
+                    "error_message": [
+                      "کاربری با این مشخصات در صف انتظار برای ثبت نام وجود ندارد."
+                    ]
+                  },
+                  "time_zone": "Asia/Tehran",
+                  "version": "1.0.10"
+                }
               }
             }
+          },
+          "429": {
+            "description": "Too many resend attempts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                },
+                "example": {
+                  "status": 429,
+                  "success": false,
+                  "author": "Kara_Company",
+                  "message": "بیش از سقف مجاز درخواست ارسال کرده‌اید، لطفا بعدا تلاش کنید.",
+                  "error_code": "E429",
+                  "errors": {},
+                  "time_zone": "Asia/Tehran",
+                  "version": "1.0.10"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
           }
         }
       }
     },
     "/public/register/confirm": {
       "post": {
-        "summary": "Confirm Registration and Create User",
-        "tags": ["Public"],
+        "summary": "Confirm Registration",
+        "description": "Verify OTP and finalize user registration in the database.",
+        "tags": [
+          "Public"
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/RegisterUserConfirmRequest" }
+              "schema": {
+                "$ref": "#/components/schemas/RegisterUserConfirmRequest"
+              }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "User created successfully",
+            "description": "User successfully created and tokens set",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ApiSuccessResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterUserSuccessResponse"
+                },
+                "example": {
+                  "status": 201,
+                  "success": true,
+                  "author": "Kara_Company",
+                  "message": "مورد با موفقیت ایجاد شد.",
+                  "data": {
+                    "id": "uuid-1234-5678",
+                    "user_name": "erfan_abouei",
+                    "email": "erfan_abouei@example.com",
+                    "phone_number": "09123456789",
+                    "gender": "MALE",
+                    "birth_date": null,
+                    "profile_picture": null,
+                    "bank_card_number": null,
+                    "sheba_number": null,
+                    "is_subscribed_for_newsletter": false,
+                    "is_phone_verified": true,
+                    "is_email_verified": false,
+                    "created_at": "2025-12-26T10:00:00.000Z",
+                    "updated_at": "2025-12-26T10:00:00.000Z"
+                  },
+                  "time_zone": "Asia/Tehran",
+                  "version": "1.0.10"
+                }
               }
             }
           },
           "400": {
-            "description": "Validation error or invalid OTP",
+            "description": "Invalid or expired OTP",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ApiErrorResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "User data in cache has expired",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                },
+                "example": {
+                  "status": 409,
+                  "success": false,
+                  "author": "Kara_Company",
+                  "message": "داده ارسال شده با داده‌های موجود در تداخل است.",
+                  "error_code": "E1021",
+                  "errors": {
+                    "otp": [
+                      "کد ورود اشتباه است یا منقضی شده است."
+                    ]
+                  },
+                  "time_zone": "Asia/Tehran",
+                  "version": "1.0.10"
+                }
               }
             }
           },
           "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ApiErrorResponse" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/user/profile": {
-      "get": {
-        "summary": "Get User Data",
-        "tags": ["User"],
-        "responses": {
-          "200": {
-            "description": "User Data",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ApiSuccessResponse" }
-              }
-            }
-          },
-          "401": {
-            "description": "User is not authenticated",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ApiErrorResponse" }
-              }
-            }
+            "$ref": "#/components/responses/ServerError"
           }
         }
       }
@@ -152,79 +338,223 @@
     "/public/login": {
       "post": {
         "summary": "User Login",
-        "tags": ["Public"],
+        "description": "Login using email or phone number and password. JWT tokens are set in cookies.",
+        "tags": [
+          "Public"
+        ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/LoginUserRequest" }
+              "schema": {
+                "$ref": "#/components/schemas/LoginUserRequest"
+              }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Successful login",
+            "description": "Login successful",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ApiSuccessResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/UserLoginSuccessResponse"
+                },
+                "example": {
+                  "status": 200,
+                  "success": true,
+                  "author": "Kara_Company",
+                  "message": "عملیات با موفقیت انجام شد.",
+                  "data": {
+                    "id": "uuid-1234-5678",
+                    "user_name": "erfan_abouei",
+                    "email": "erfan_abouei@example.com",
+                    "phone_number": "09123456789",
+                    "gender": "MALE",
+                    "birth_date": null,
+                    "profile_picture": "https://example.com/profile.jpg",
+                    "bank_card_number": null,
+                    "sheba_number": null,
+                    "is_subscribed_for_newsletter": true,
+                    "is_phone_verified": true,
+                    "is_email_verified": true,
+                    "created_at": "2025-01-01T00:00:00.000Z",
+                    "updated_at": "2025-12-26T10:00:00.000Z"
+                  },
+                  "time_zone": "Asia/Tehran",
+                  "version": "1.0.10"
+                }
               }
             }
           },
           "401": {
-            "description": "Incorrect email or password",
+            "description": "Incorrect credentials",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ApiErrorResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                },
+                "example": {
+                  "status": 401,
+                  "success": false,
+                  "author": "Kara_Company",
+                  "message": "داده ارسال شده با داده‌های موجود در تداخل است.",
+                  "error_code": "E1021",
+                  "errors": {
+                    "password": [
+                      "گذرواژه ارسال شده معتبر نمیباشد."
+                    ]
+                  },
+                  "time_zone": "Asia/Tehran",
+                  "version": "1.0.10"
+                }
               }
             }
+          },
+          "429": {
+            "description": "Too many login attempts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/user/profile": {
+      "get": {
+        "summary": "Get User Profile",
+        "description": "Retrieve authenticated user's full profile information (excluding password and role).",
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserProfileSuccessResponse"
+                },
+                "example": {
+                  "status": 200,
+                  "success": true,
+                  "author": "Kara_Company",
+                  "message": "عملیات با موفقیت انجام شد.",
+                  "data": {
+                    "id": "uuid-1234-5678",
+                    "user_name": "erfan_abouei",
+                    "email": "erfan_abouei@example.com",
+                    "phone_number": "09123456789",
+                    "gender": "MALE",
+                    "birth_date": "1387/5/28",
+                    "profile_picture": "https://example.com/profile.jpg",
+                    "bank_card_number": "6037991234567890",
+                    "sheba_number": "IR012345678901234567890123",
+                    "is_subscribed_for_newsletter": true,
+                    "is_phone_verified": true,
+                    "is_email_verified": true,
+                    "created_at": "2025-01-01T00:00:00.000Z",
+                    "updated_at": "2025-12-26T12:30:00.000Z"
+                  },
+                  "time_zone": "Asia/Tehran",
+                  "version": "1.0.10"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
           }
         }
       }
     },
     "/user/logout": {
       "get": {
-        "summary": "Logout user",
-        "tags": ["User"],
+        "summary": "User Logout",
+        "description": "Clear authentication tokens from cookies.",
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "User Logouted",
+            "description": "Logout successful",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ApiSuccessResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSuccessResponse"
+                },
+                "example": {
+                  "status": 200,
+                  "success": true,
+                  "author": "Kara_Company",
+                  "message": "کاربر با موفقیت خارج شد.",
+                  "data": {},
+                  "time_zone": "Asia/Tehran",
+                  "version": "1.0.10"
+                }
               }
             }
           },
           "401": {
-            "description": "User is not authenticated",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ApiErrorResponse" }
-              }
-            }
+            "$ref": "#/components/responses/Unauthorized"
           }
         }
       }
     },
     "/user/auth-check": {
       "get": {
-        "summary": "Check if the user is authenticated",
-        "tags": ["User"],
+        "summary": "Authentication Check",
+        "description": "Check if the current user is authenticated.",
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "User is authenticated",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/ApiSuccessResponse" }
+                "schema": {
+                  "$ref": "#/components/schemas/ApiSuccessResponse"
+                },
+                "example": {
+                  "status": 200,
+                  "success": true,
+                  "author": "Kara_Company",
+                  "message": "عملیات با موفقیت انجام شد.",
+                  "data": {},
+                  "time_zone": "Asia/Tehran",
+                  "version": "1.0.10"
+                }
               }
             }
           },
           "401": {
-            "description": "User is not authenticated",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ApiErrorResponse" }
-              }
-            }
+            "$ref": "#/components/responses/Unauthorized"
           }
         }
       }
@@ -234,98 +564,417 @@
     "schemas": {
       "ApiSuccessResponse": {
         "type": "object",
+        "required": [
+          "status",
+          "success",
+          "author",
+          "message",
+          "data",
+          "time_zone",
+          "version"
+        ],
         "properties": {
-          "status": { "type": "integer", "example": 200 },
-          "success": { "type": "boolean", "example": true },
-          "author": { "type": "string", "example": "Kara Team" },
-          "message": { "type": "string", "example": "عملیات با موفقیت انجام شد." },
-          "data": { "type": "object", "nullable": true, "example": [] }
-        },
-        "required": ["status", "success", "author", "message", "data"]
+          "status": {
+            "type": "integer",
+            "example": 200
+          },
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "author": {
+            "type": "string",
+            "example": "Kara_Company"
+          },
+          "message": {
+            "type": "string",
+            "example": "عملیات با موفقیت انجام شد."
+          },
+          "data": {
+            "type": "object",
+            "nullable": true
+          },
+          "time_zone": {
+            "type": "string",
+            "example": "Asia/Tehran"
+          },
+          "version": {
+            "type": "string",
+            "example": "1.0.10"
+          }
+        }
       },
       "ApiErrorResponse": {
         "type": "object",
+        "required": [
+          "status",
+          "success",
+          "author",
+          "message",
+          "error_code",
+          "time_zone",
+          "version"
+        ],
         "properties": {
-          "status": { "type": "integer", "example": 400 },
-          "success": { "type": "boolean", "example": false },
-          "author": { "type": "string", "example": "Kara Team" },
-          "message": { "type": "string", "example": "عملیات با مشکل مواجه شده است." },
-          "error_code": { "type": "string", "example": "Unknown error" },
+          "status": {
+            "type": "integer",
+            "example": 400
+          },
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "author": {
+            "type": "string",
+            "example": "Kara_Company"
+          },
+          "message": {
+            "type": "string",
+            "example": "عملیات با مشکل مواجه شده است."
+          },
+          "error_code": {
+            "type": "string",
+            "example": "E1021"
+          },
           "errors": {
             "type": "object",
+            "nullable": true
+          },
+          "time_zone": {
+            "type": "string",
+            "example": "Asia/Tehran"
+          },
+          "version": {
+            "type": "string",
+            "example": "1.0.10"
+          }
+        }
+      },
+      "UserData": {
+        "type": "object",
+        "description": "Full user data structure",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "uuid-1234-5678"
+          },
+          "user_name": {
+            "type": "string",
             "nullable": true,
-            "example": {
-              "field_name": ["این یک پیغام تستی برای خطای این فیلد است"]
-            }
+            "example": "erfan_abouei"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "erfan_abouei@example.com"
+          },
+          "phone_number": {
+            "type": "string",
+            "pattern": "^09\\\\d{9}$",
+            "example": "09123456789"
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ],
+            "nullable": true,
+            "example": "MALE"
+          },
+          "birth_date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true,
+            "example": "1387/5/28"
+          },
+          "profile_picture": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true,
+            "example": "https://example.com/profile.jpg"
+          },
+          "bank_card_number": {
+            "type": "string",
+            "nullable": true,
+            "example": "6037991234567890"
+          },
+          "sheba_number": {
+            "type": "string",
+            "nullable": true,
+            "example": "IR012345678901234567890123"
+          },
+          "is_subscribed_for_newsletter": {
+            "type": "boolean",
+            "example": true
+          },
+          "is_phone_verified": {
+            "type": "boolean",
+            "example": true
+          },
+          "is_email_verified": {
+            "type": "boolean",
+            "example": false
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-01-01T00:00:00.000Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-12-26T12:30:00.000Z"
           }
         },
-        "required": ["status", "success", "author", "message", "errorCode", "errors"]
+        "required": [
+          "id",
+          "email",
+          "phone_number",
+          "role",
+          "is_subscribed_for_newsletter"
+        ]
+      },
+      "UserPublicData": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/UserData"
+          }
+        ],
+        "description": "User data returned to client (password and role excluded)"
       },
       "RegisterUserRequest": {
         "type": "object",
+        "required": [
+          "email",
+          "password",
+          "phone_number"
+        ],
         "properties": {
           "email": {
             "type": "string",
-            "example": "example@test.com",
-            "description": "User's email address"
+            "format": "email",
+            "example": "user@example.com"
           },
           "password": {
             "type": "string",
-            "example": "password123",
-            "minLength": 6,
-            "description": "User's password"
+            "minLength": 8,
+            "example": "MyStrongPass123"
           },
           "phone_number": {
             "type": "string",
-            "example": "09121234567",
-            "pattern": "^09\\d{9}$",
-            "description": "User's phone number"
+            "pattern": "^09\\\\d{9}$",
+            "example": "09123456789"
           }
-        },
-        "required": ["email", "password", "phone_number"]
+        }
+      },
+      "RegisterUserResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiSuccessResponse"
+          }
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "expire_otp_timer",
+              "otp"
+            ],
+            "properties": {
+              "expire_otp_timer": {
+                "type": "integer",
+                "description": "Remaining time until OTP expires (seconds)",
+                "example": 180
+              },
+              "otp": {
+                "type": "integer",
+                "description": "OTP code (visible only in development environment)",
+                "example": 58492
+              }
+            }
+          }
+        }
+      },
+      "ResendOtpRequest": {
+        "type": "object",
+        "required": [
+          "phone_number"
+        ],
+        "properties": {
+          "phone_number": {
+            "type": "string",
+            "pattern": "^09\\\\d{9}$",
+            "example": "09123456789"
+          }
+        }
+      },
+      "ResendOtpResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiSuccessResponse"
+          }
+        ],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": [
+              "expire_otp_timer",
+              "otp"
+            ],
+            "properties": {
+              "expire_otp_timer": {
+                "type": "integer",
+                "example": 180
+              },
+              "otp": {
+                "type": "integer",
+                "example": 73921
+              }
+            }
+          }
+        }
       },
       "RegisterUserConfirmRequest": {
         "type": "object",
+        "required": [
+          "phone_number",
+          "otp"
+        ],
         "properties": {
           "phone_number": {
             "type": "string",
-            "example": "09121234567",
-            "description": "User's phone number",
-            "pattern": "^09\\d{9}$"
+            "pattern": "^09\\\\d{9}$",
+            "example": "09123456789"
           },
           "otp": {
             "type": "string",
-            "example": "1234",
-            "minLength": 4,
-            "maxLength": 4,
-            "description": "OTP sent to the user"
+            "minLength": 5,
+            "maxLength": 5,
+            "example": "58492"
           }
-        },
-        "required": ["phone_number", "otp"]
+        }
       },
       "LoginUserRequest": {
         "type": "object",
+        "required": [
+          "password"
+        ],
+        "oneOf": [
+          {
+            "required": [
+              "email"
+            ]
+          },
+          {
+            "required": [
+              "phone_number"
+            ]
+          }
+        ],
         "properties": {
           "email": {
             "type": "string",
-            "example": "example@test.com",
-            "description": "User's email address"
+            "format": "email",
+            "example": "user@example.com"
           },
           "phone_number": {
             "type": "string",
-            "example": "09121234567",
-            "description": "User's phone number",
-            "pattern": "^09\\d{9}$"
+            "pattern": "^09\\\\d{9}$",
+            "example": "09123456789"
           },
           "password": {
             "type": "string",
-            "example": "password123",
-            "description": "User's password",
-            "minLength": 6
+            "minLength": 8,
+            "example": "MyStrongPass123"
           }
-        },
-        "required": ["password"],
-        "oneOf": [{ "required": ["email"] }, { "required": ["phone_number"] }]
+        }
+      },
+      "UserProfileSuccessResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiSuccessResponse"
+          }
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/UserPublicData"
+          }
+        }
+      },
+      "UserLoginSuccessResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiSuccessResponse"
+          }
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/UserPublicData"
+          }
+        }
+      },
+      "RegisterUserSuccessResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ApiSuccessResponse"
+          }
+        ],
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/UserPublicData"
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Invalid request (validation error)",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiErrorResponse"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "User is not authenticated",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiErrorResponse"
+            },
+            "example": {
+              "status": 401,
+              "success": false,
+              "author": "Kara_Company",
+              "message": "اعتبارسنجی نشده اید. لطفا دوباره تلاش کنید.",
+              "error_code": "E401",
+              "errors": {},
+              "time_zone": "Asia/Tehran",
+              "version": "1.0.10"
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Internal server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ApiErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "cookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "access_token"
       }
     }
   }
