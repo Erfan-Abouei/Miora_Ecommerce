@@ -34,3 +34,12 @@ export interface RegisterUserServerDTO {
   expire_otp_timer: number;
   otp: number;
 }
+
+export interface RegisterUserResendOtpDTO {
+  phone_number: number;
+}
+
+export interface RegisterUserResendOtpServerDTO {
+  expire_otp_timer: number;
+  otp: number;
+}

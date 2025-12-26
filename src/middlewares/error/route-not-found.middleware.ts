@@ -9,4 +9,3 @@ export const routeNotFoundHandler = (req: Request, res: Response, next: NextFunc
   errorResponse<NotFoundError>(res, HttpStatus.NOT_FOUND, { error: `.پیدا نشد ${req.method} با ${req.path} آدرس` }, ResponseMessage.NOT_FOUND, ErrorCode.NOT_FOUND);
   next();
 };
-

@@ -33,9 +33,11 @@ export const ENV: EnvConfig = {
   REFRESH_TOKEN_EXPIRES_IN: Number(process.env.REFRESH_TOKEN_EXPIRES_IN)! || 604800000,
   PASSWORD_MIN_LENGTH: Number(process.env.PASSWORD_MIN_LENGTH) || 8,
   PASSWORD_MAX_LENGTH: Number(process.env.PASSWORD_MAX_LENGTH) || 64,
+  REGISTER_QUEUE_TTL: Number(process.env.REGISTER_QUEUE_TTL) || 600,
   LOGIN_ATTEMPTS_MAX: Number(process.env.LOGIN_ATTEMPTS_MAX) || 5,
   LOGIN_ATTEMPTS_MAX_TIMER: Number(process.env.LOGIN_ATTEMPTS_MAX_TIMER) || 120,
   OTP_RESEND_ATTEMPS: Number(process.env.OTP_RESEND_ATTEMPS) || 3,
+  OTP_RESEND_ATTEMPS_TIMER: Number(process.env.OTP_RESEND_ATTEMPS_TIMER) || 120,
 
   DATABASE_DIALECT: process.env.DATABASE_DIALECT!,
   DATABASE_HOST: process.env.DATABASE_HOST!,
@@ -44,6 +46,11 @@ export const ENV: EnvConfig = {
   DATABASE_PASSWORD: process.env.DATABASE_PASSWORD!,
   DATABASE_NAME: process.env.DATABASE_NAME!,
   DATABASE_LOGGING: process.env.DATABASE_LOGGING === 'true',
+
+  REDIS_USERNAME: process.env.REDIS_USERNAME!,
+  REDIS_PASSWORD: process.env.REDIS_PASSWORD!,
+  REDIS_PORT: Number(process.env.REDIS_PORT) || 17777,
+  REDIS_HOST: process.env.REDIS_HOST!,
 
   CACHE_TTL: Number(process.env.CACHE_TTL) || 3600,
   CACHE_PERIOD: Number(process.env.CACHE_PERIOD) || 60,

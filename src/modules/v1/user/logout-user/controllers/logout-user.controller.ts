@@ -6,8 +6,7 @@ import { Request, Response, NextFunction } from 'express';
 
 export const logoutUserController = (req: Request<unknown, unknown, unknown, AuthUserQueryType>, res: Response, next: NextFunction): void => {
   try {
-
-    const isClearedToken = clearTokens(res, !!req.query.local)
+    const isClearedToken = clearTokens(res, !!req.query.local);
 
     if (isClearedToken) successResponse<{}>(res, HttpStatus.NO_CONTENT, {}, ResponseMessage.USER_LOGOUT);
   } catch (error: unknown) {

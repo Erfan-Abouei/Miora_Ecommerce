@@ -1,5 +1,4 @@
 import { type ErrorsResponse } from '@/types/error/error-response.type';
-import cache from '@/database/cache/cache.config';
 import { throwValidationError } from '@/utils/error/throw-validation-error.util';
 import { hashPassword } from '@/utils/auth/password.util';
 import { RegisterUserDTO, RegisterUserServerDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
@@ -8,16 +7,17 @@ import { ErrorCode, HttpStatus, ResponseMessage, ValidationMessage } from '@/con
 import { buildWhereConditions } from '@/modules/v1/shared/utils/build-where-conditions.utils';
 import { ENV } from '@/config';
 import { randomInt } from 'crypto';
+import { cacheGet, cacheSet, cacheTtl } from '@/database/cache/cache.handler';
 
 export const registerUserRepository = async ({ email, password, phone_number }: RegisterUserDTO): Promise<RegisterUserServerDTO | void> => {
-  const existingOtp: number | undefined = cache.get(`otp:${phone_number}`);
-  if (existingOtp !== undefined) {
-    const otpTtl: number = cache.getTtl(`otp:${phone_number}`)!;
+  const existingOtp: number | null = await cacheGet(`otp_${phone_number}`);
+
+  if (existingOtp !== null) {
+    const otpTtl: number = await cacheTtl(`otp_${phone_number}`)! as number;
     const now = Date.now();
-    const expire_otp_timer = Math.floor((otpTtl - now) / 1000); // convert to second
 
     return {
-      expire_otp_timer,
+      expire_otp_timer: otpTtl,
       otp: existingOtp, // for development
     };
   }
@@ -38,21 +38,26 @@ export const registerUserRepository = async ({ email, password, phone_number }: 
   }
 
   if (Object.keys(errors).length > 0) {
-    throwValidationError({ details: errors, errorCode: ErrorCode.DATA_CONFLICT, message: ResponseMessage.DATA_CONFLICT, statusCode: HttpStatus.CONFLICT });
+    throwValidationError({
+      details: errors,
+      errorCode: ErrorCode.DATA_CONFLICT,
+      message: ResponseMessage.DATA_CONFLICT,
+      statusCode: HttpStatus.CONFLICT,
+    });
     return;
   }
 
   const hashedPassword = await hashPassword(password);
+  const randomFiveDigits: number = randomInt(10_000, 100_000);
 
-  const randomFiveDigits: number = randomInt(10_000, 100_000)
-
-  cache.set(`phone_number:${phone_number}`, phone_number, ENV.EXPIRE_OTP_TIMER);
-  cache.set(`email:${phone_number}`, email, ENV.EXPIRE_OTP_TIMER);
-  cache.set(`password:${phone_number}`, hashedPassword, ENV.EXPIRE_OTP_TIMER);
-  cache.set(`otp:${phone_number}`, randomFiveDigits, ENV.EXPIRE_OTP_TIMER);
+  await cacheSet(`phone_number_${phone_number}`, phone_number, ENV.REGISTER_QUEUE_TTL);
+  await cacheSet(`email_${phone_number}`, email, ENV.REGISTER_QUEUE_TTL);
+  await cacheSet(`password_${phone_number}`, hashedPassword, ENV.REGISTER_QUEUE_TTL);
+  await cacheSet(`otp_${phone_number}`, randomFiveDigits, ENV.EXPIRE_OTP_TIMER);
+  const otpTtl: number = await cacheTtl(`otp_${phone_number}`) as number;
 
   return {
-    expire_otp_timer: 180,
+    expire_otp_timer: otpTtl,
     otp: randomFiveDigits, // for development
   };
 };

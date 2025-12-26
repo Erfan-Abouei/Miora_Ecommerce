@@ -11,4 +11,3 @@ export interface DatabaseConfigItem {
   host: string;
   dialect: string;
 }
-

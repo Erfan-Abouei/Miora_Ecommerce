@@ -4,4 +4,3 @@ export const removeSecureData = (user: UserData) => {
   const { id, role, password, ...unSecureData } = user;
   return unSecureData;
 };
-

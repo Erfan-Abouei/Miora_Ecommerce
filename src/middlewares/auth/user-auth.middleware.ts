@@ -1,4 +1,4 @@
-import { AuthUserQueryType } from './../../types/modules/v1/user/user-auth/query/user-query.type';
+import { AuthUserQueryType } from '@/types/modules/v1/user/user-auth/query/user-query.type';
 import { Request, Response, NextFunction } from 'express';
 import { createAccessToken, setAccessTokenCookie, verifyAccessToken, verifyRefreshToken } from '@/utils/auth/jwt.util';
 import { errorResponse } from '@/utils/error/api-response-handler.util';

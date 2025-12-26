@@ -6,9 +6,9 @@ export interface EnvConfig {
 
   APP_NAME: string;
   APP_URL: string;
-  APP_INSTAGRAM_LING: string,
-  APP_LINKDIN_LINK: string,
-  APP_X_LINK: string,
+  APP_INSTAGRAM_LING: string;
+  APP_LINKDIN_LINK: string;
+  APP_X_LINK: string;
   APP_DESCRIPTION: string;
   APP_VERSION: string;
 
@@ -23,9 +23,12 @@ export interface EnvConfig {
   REFRESH_TOKEN_EXPIRES_IN: number;
   PASSWORD_MIN_LENGTH: number;
   PASSWORD_MAX_LENGTH: number;
+  REGISTER_QUEUE_TTL: number;
   LOGIN_ATTEMPTS_MAX: number;
   LOGIN_ATTEMPTS_MAX_TIMER: number;
   OTP_RESEND_ATTEMPS: number;
+  OTP_RESEND_ATTEMPS_TIMER: number;
+  EXPIRE_OTP_TIMER: number;
 
   DATABASE_DIALECT: string;
   DATABASE_HOST: string;
@@ -35,9 +38,13 @@ export interface EnvConfig {
   DATABASE_NAME: string;
   DATABASE_LOGGING: boolean;
 
+  REDIS_USERNAME: string;
+  REDIS_PASSWORD: string;
+  REDIS_PORT: number;
+  REDIS_HOST: string;
+
   CACHE_TTL: number;
   CACHE_PERIOD: number;
-  EXPIRE_OTP_TIMER: number;
 
   API_RATE_LIMIT_WINDOW: number;
   API_RATE_LIMIT_MAX: number;

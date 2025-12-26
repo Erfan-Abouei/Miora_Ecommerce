@@ -1,4 +1,4 @@
-import { emitAsync } from './../../../shared/events/emit-async.events';
+import { emitAsync } from '@/modules/v1/shared/events/emit-async.events';
 import { registerUserConfirmRepository } from '../repositories';
 import { RegisterUserConfirmDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
 import { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
@@ -7,6 +7,6 @@ import { PublicEventName } from '@/constants';
 export const registerUserConfirmService = async (ConfirmUserData: RegisterUserConfirmDTO): Promise<UserData> => {
   const user = (await registerUserConfirmRepository(ConfirmUserData)) as UserData;
 
-  await emitAsync<UserData>(PublicEventName.USER_REGISTER_CONFIRM, user)
+  await emitAsync<UserData>(PublicEventName.USER_REGISTER_CONFIRM, user);
   return user;
 };

@@ -1,7 +1,7 @@
-import { ENV } from "@/config"
+import { ENV } from '@/config';
 
 export const welcomeEmailHtmlReturner = () => {
-    return `<div dir="rtl" style="margin:0;padding:0;font-family:'Vazir', Tahoma, sans-serif; background:#000000; color:#ffffff;">
+  return `<div dir="rtl" style="margin:0;padding:0;font-family:'Vazir', Tahoma, sans-serif; background:#000000; color:#ffffff;">
   <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
 
   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px; margin:30px auto; background:#1a1a1a; border-radius:10px; overflow:hidden; box-shadow:0 4px 25px rgba(0,0,0,0.5);">
@@ -46,5 +46,5 @@ export const welcomeEmailHtmlReturner = () => {
     </tr>
 
   </table>
-</div>`
-}
+</div>`;
+};

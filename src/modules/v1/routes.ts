@@ -12,8 +12,7 @@ const router = Router();
 router.use('/public', publicRouter);
 
 // user routes ( need to login to access )
-router.use('/user', userAuthMiddleware as unknown as RequestHandler, userRouter as unknown as RequestHandler
-);
+router.use('/user', userAuthMiddleware as unknown as RequestHandler, userRouter as unknown as RequestHandler);
 // admin routes ( need to login with admin access )
 router.use('/admin', adminRouter);
 

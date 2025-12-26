@@ -10,4 +10,3 @@ export const zodIssuesToObject = (issues: ZodError['issues']): ErrorsResponse =>
   });
   return result;
 };
-

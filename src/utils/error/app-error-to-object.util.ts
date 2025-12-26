@@ -17,4 +17,3 @@ export const appErrorToObject = (err: AppError | string): ErrorsResponse => {
 
   return { error_message: [err.message ?? ResponseMessage.ERROR] };
 };
-

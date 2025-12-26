@@ -7,6 +7,6 @@ const router = Router();
 
 router.use('/auth-check', authCheckRouter);
 router.use('/logout', logoutUserRouter);
-router.use('/profile', ProfileRouter)
+router.use('/profile', ProfileRouter);
 
 export { router as userRouter };

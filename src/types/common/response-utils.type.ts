@@ -7,6 +7,7 @@ export interface ApiSuccessResponse<T> {
   message: string;
   data: T | {};
   version: string;
+  time_zone: string;
 }
 
 export interface ApiErrorResponse<T> {
@@ -17,4 +18,5 @@ export interface ApiErrorResponse<T> {
   error_code: ErrorCode;
   errors: T | {};
   version: string;
+  time_zone: string;
 }

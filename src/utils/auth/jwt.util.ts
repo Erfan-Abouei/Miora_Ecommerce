@@ -34,8 +34,8 @@ export const clearTokens = (res: Response, isLocal: boolean): boolean => {
   res.clearCookie('access_token', cookieOptionReturner(ENV.ACCESS_TOKEN_EXPIRES_IN, isLocal));
   res.clearCookie('refresh_token', cookieOptionReturner(ENV.REFRESH_TOKEN_EXPIRES_IN, isLocal));
 
-  return true
-}
+  return true;
+};
 
 export const verifyAccessToken = (token: string): string | JwtPayload | null => {
   try {
@@ -54,4 +54,3 @@ export const verifyRefreshToken = (token: string): string | JwtPayload | null =>
     return null;
   }
 };
-
