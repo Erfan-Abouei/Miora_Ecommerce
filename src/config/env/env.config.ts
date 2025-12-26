@@ -51,6 +51,7 @@ export const ENV: EnvConfig = {
   REDIS_PASSWORD: process.env.REDIS_PASSWORD!,
   REDIS_PORT: Number(process.env.REDIS_PORT) || 17777,
   REDIS_HOST: process.env.REDIS_HOST!,
+  REDIS_URL: process.env.REDIS_URL!,
 
   CACHE_TTL: Number(process.env.CACHE_TTL) || 3600,
   CACHE_PERIOD: Number(process.env.CACHE_PERIOD) || 60,

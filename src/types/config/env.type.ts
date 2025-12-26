@@ -42,6 +42,7 @@ export interface EnvConfig {
   REDIS_PASSWORD: string;
   REDIS_PORT: number;
   REDIS_HOST: string;
+  REDIS_URL: string;
 
   CACHE_TTL: number;
   CACHE_PERIOD: number;
