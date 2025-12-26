@@ -1,5 +1,5 @@
 import { type ErrorsResponse } from '@/types/error/error-response.type';
-import { throwValidationError } from '@/utils/error/throw-validation-error.util';
+import { throwValidationError } from '@/modules/v1/shared/utils/error/throw-validation-error.util';
 import { hashPassword } from '@/utils/auth/password.util';
 import { RegisterUserDTO, RegisterUserServerDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
 import { UserModel } from '@/database/models/v1/user';
@@ -13,7 +13,7 @@ export const registerUserRepository = async ({ email, password, phone_number }: 
   const existingOtp: number | null = await cacheGet(`otp_${phone_number}`);
 
   if (existingOtp !== null) {
-    const otpTtl: number = await cacheTtl(`otp_${phone_number}`)! as number;
+    const otpTtl: number = (await cacheTtl(`otp_${phone_number}`)!) as number;
     const now = Date.now();
 
     return {
@@ -54,7 +54,7 @@ export const registerUserRepository = async ({ email, password, phone_number }: 
   await cacheSet(`email_${phone_number}`, email, ENV.REGISTER_QUEUE_TTL);
   await cacheSet(`password_${phone_number}`, hashedPassword, ENV.REGISTER_QUEUE_TTL);
   await cacheSet(`otp_${phone_number}`, randomFiveDigits, ENV.EXPIRE_OTP_TIMER);
-  const otpTtl: number = await cacheTtl(`otp_${phone_number}`) as number;
+  const otpTtl: number = (await cacheTtl(`otp_${phone_number}`)) as number;
 
   return {
     expire_otp_timer: otpTtl,

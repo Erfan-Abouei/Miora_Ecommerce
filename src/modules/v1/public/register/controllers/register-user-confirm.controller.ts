@@ -1,6 +1,6 @@
 import { type AuthUserQueryType } from '@/types/modules/v1/user/user-auth/query/user-query.type';
 import { Request, Response, NextFunction } from 'express';
-import { successResponse } from '@/utils/error/api-response-handler.util';
+import { successResponse } from '@/modules/v1/shared/utils/error/api-response-handler.util';
 import { setTokens } from '@/utils/auth/jwt.util';
 import { TokenPayload } from '@/types/common/basic.type';
 import { registerUserConfirmService } from '../services';

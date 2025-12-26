@@ -1,7 +1,7 @@
 import { AuthUserQueryType } from '@/types/modules/v1/user/user-auth/query/user-query.type';
 import { Request, Response, NextFunction } from 'express';
 import { createAccessToken, setAccessTokenCookie, verifyAccessToken, verifyRefreshToken } from '@/utils/auth/jwt.util';
-import { errorResponse } from '@/utils/error/api-response-handler.util';
+import { errorResponse } from '@/modules/v1/shared/utils/error/api-response-handler.util';
 import { TokenPayload } from '@/types/common/basic.type';
 import { ErrorCode } from '@/constants';
 import { ResponseMessage } from '@/constants';

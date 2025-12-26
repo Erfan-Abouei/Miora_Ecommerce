@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { successResponse } from '@/utils/error/api-response-handler.util';
+import { successResponse } from '@/modules/v1/shared/utils/error/api-response-handler.util';
 import { registerUserService } from '../services';
 import { RegisterUserDTO, RegisterUserServerDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
 import { HttpStatus } from '@/constants';

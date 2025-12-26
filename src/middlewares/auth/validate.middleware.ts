@@ -1,7 +1,7 @@
 import { ZodType } from 'zod';
 import { Request, Response, NextFunction } from 'express';
 import { ErrorCode } from '@/constants';
-import { errorResponse } from '@/utils/error/api-response-handler.util';
+import { errorResponse } from '@/modules/v1/shared/utils/error/api-response-handler.util';
 import { ResponseMessage } from '@/constants';
 import { HttpStatus } from '@/constants';
 

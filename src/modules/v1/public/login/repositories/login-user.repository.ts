@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import { ENV } from '@/config';
 import { LoginUserDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
 import { UserModel } from '@/database/models/v1/user';
-import { throwValidationError } from '@/utils/error/throw-validation-error.util';
+import { throwValidationError } from '@/modules/v1/shared/utils/error/throw-validation-error.util';
 import { ResponseMessage, ErrorCode, HttpStatus, ValidationMessage } from '@/constants';
 import { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
 import { buildWhereConditions } from '@/modules/v1/shared/utils/build-where-conditions.utils';
@@ -11,7 +11,7 @@ import { cacheGet, cacheSet, cacheDel } from '@/database/cache/cache.handler';
 
 export const loginUserRepository = async ({ password, phone_number, email }: LoginUserDTO, ipAddress: string): Promise<UserData | null> => {
   const key = `login_user_attempts_${phone_number || email}_ip_${ipAddress}`;
-  const attempts = Number(await cacheGet<number>(key) ?? 0);
+  const attempts = Number((await cacheGet<number>(key)) ?? 0);
 
   if (attempts > ENV.LOGIN_ATTEMPTS_MAX) {
     throwValidationError({

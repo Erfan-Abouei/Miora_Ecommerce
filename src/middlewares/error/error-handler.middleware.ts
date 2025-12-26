@@ -3,9 +3,9 @@ import { ZodError } from 'zod';
 import { NextFunction, Request, Response } from 'express';
 import { ErrorCode } from '@/constants';
 import { ResponseMessage } from '@/constants';
-import { errorResponse } from '@/utils/error/api-response-handler.util';
-import { zodIssuesToObject } from '@/utils/error/zod-issues-to-object.util';
-import { appErrorToObject } from '@/utils/error/app-error-to-object.util';
+import { errorResponse } from '@/modules/v1/shared/utils/error/api-response-handler.util';
+import { zodIssuesToObject } from '@/modules/v1/shared/utils/error/zod-issues-to-object.util';
+import { appErrorToObject } from '@/modules/v1/shared/utils/error/app-error-to-object.util';
 import { AppError } from '@/types/common/basic.type';
 import { HttpStatus } from '@/constants';
 

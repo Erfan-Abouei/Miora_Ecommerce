@@ -1,5 +1,5 @@
 import { type ErrorsResponse } from '@/types/error/error-response.type';
-import { throwValidationError } from '@/utils/error/throw-validation-error.util';
+import { throwValidationError } from '@/modules/v1/shared/utils/error/throw-validation-error.util';
 import { RegisterUserConfirmDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
 import { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
 import { UserModel } from '@/database/models/v1/user';

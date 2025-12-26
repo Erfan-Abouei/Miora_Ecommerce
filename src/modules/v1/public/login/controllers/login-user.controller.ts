@@ -2,7 +2,7 @@ import { type AuthUserQueryType } from '@/types/modules/v1/user/user-auth/query/
 import { Request, Response, NextFunction } from 'express';
 import { LoginUserDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
 import { loginUserService } from '../services';
-import { successResponse } from '@/utils/error/api-response-handler.util';
+import { successResponse } from '@/modules/v1/shared/utils/error/api-response-handler.util';
 import { removeSecureData } from '@/modules/v1/shared/utils/remove-secure-data.utils';
 import { TokenPayload } from '@/types/common/basic.type';
 import { setTokens } from '@/utils/auth/jwt.util';

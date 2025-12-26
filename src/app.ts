@@ -12,7 +12,7 @@ import { routeNotFoundHandler } from '@/middlewares/error/route-not-found.middle
 import { errorHandler } from '@/middlewares/error/error-handler.middleware';
 
 const app = express();
-const isProduction: boolean = ENV.NODE_ENV === 'production'
+const isProduction: boolean = ENV.NODE_ENV === 'production';
 
 // Core middleware
 app.use(express.json());
@@ -23,8 +23,7 @@ app.use(helmet());
 app.use(morgan('dev'));
 app.use(requestLoggerHandler);
 // swagger assets for dark mode
-app.use('/swagger-assets', express.static(path.join(process.cwd(), `${isProduction ? '' : "src"}/config/swagger/swagger-ui`)));
-
+app.use('/swagger-assets', express.static(path.join(process.cwd(), `${isProduction ? '' : 'src'}/config/swagger/swagger-ui`)));
 
 // health check route for c-panel
 app.get('/', (_: Request, res: Response) => res.status(200).json({ kara: 'Made by @Erfan_Abouei' }));
