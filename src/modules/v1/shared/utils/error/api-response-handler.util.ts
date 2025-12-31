@@ -13,7 +13,7 @@ export const successResponse = <T>(res: Response<ApiSuccessResponse<T>>, status:
     data: data ?? {},
     time_zone: ENV.TIMEZONE,
     version: ENV.APP_VERSION,
-    ...(ENV.ENABLE_BETA_FEATURES) && { is_beta_feature_enabled: true }
+    ...(ENV.ENABLE_BETA_FEATURES && { is_beta_feature_enabled: true }),
   });
 
 export const errorResponse = <T>(res: Response<ApiErrorResponse<T>>, status: number, errors?: T, message = ResponseMessage.ERROR, error_code = ErrorCode.UNKNOWN_ERROR, author = ENV.AUTHOR): Response<ApiErrorResponse<T>> =>
@@ -26,5 +26,5 @@ export const errorResponse = <T>(res: Response<ApiErrorResponse<T>>, status: num
     errors: errors ?? {},
     time_zone: ENV.TIMEZONE,
     version: ENV.APP_VERSION,
-    ...(ENV.ENABLE_BETA_FEATURES ) && { is_beta_feature_enabled: true }
+    ...(ENV.ENABLE_BETA_FEATURES && { is_beta_feature_enabled: true }),
   });

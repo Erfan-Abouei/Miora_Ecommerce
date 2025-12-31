@@ -31,9 +31,8 @@ export const cacheTtl = async (key: string): Promise<number | null> => {
 
   const ttl = Math.max(0, Math.floor((expirationTime - currentTime) / 1000));
 
-  return ttl
+  return ttl;
 };
-
 
 export const cacheFlush = async (): Promise<void> => {
   cache.flushAll();

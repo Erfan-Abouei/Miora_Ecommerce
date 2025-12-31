@@ -1,1 +1,1 @@
-export * from './forgot-password.route'
+export * from './forgot-password.route';

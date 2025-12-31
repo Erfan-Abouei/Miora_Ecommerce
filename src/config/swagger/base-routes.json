@@ -30,19 +30,14 @@
       "get": {
         "summary": "System Health Check",
         "description": "Check server status. If `has_system_data=true` is provided, hardware information (CPU, memory, disk, network) will also be returned.",
-        "tags": [
-          "Public"
-        ],
+        "tags": ["Public"],
         "parameters": [
           {
             "name": "has_system_data",
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": [
-                "true",
-                "false"
-              ]
+              "enum": ["true", "false"]
             },
             "required": false,
             "description": "If true, returns CPU, memory, disk, and network information."
@@ -78,9 +73,7 @@
       "post": {
         "summary": "User Registration (Send OTP)",
         "description": "Initiate user registration process and send verification code to the phone number.",
-        "tags": [
-          "Public"
-        ],
+        "tags": ["Public"],
         "requestBody": {
           "required": true,
           "content": {
@@ -128,12 +121,8 @@
                   "message": "داده ارسال شده با داده‌های موجود در تداخل است.",
                   "error_code": "E1021",
                   "errors": {
-                    "email": [
-                      "ایمیل ارسال شده قبلا ثبت شده است."
-                    ],
-                    "phone_number": [
-                      "شماره تماس ارسال شده قبلا ثبت شده است."
-                    ]
+                    "email": ["ایمیل ارسال شده قبلا ثبت شده است."],
+                    "phone_number": ["شماره تماس ارسال شده قبلا ثبت شده است."]
                   },
                   "time_zone": "Asia/Tehran",
                   "version": "1.0.10"
@@ -154,9 +143,7 @@
       "post": {
         "summary": "Resend OTP",
         "description": "Resend verification code if the previous one was not received or has expired.",
-        "tags": [
-          "Public"
-        ],
+        "tags": ["Public"],
         "requestBody": {
           "required": true,
           "content": {
@@ -204,9 +191,7 @@
                   "message": "داده ارسال شده با داده‌های موجود در تداخل است.",
                   "error_code": "E1021",
                   "errors": {
-                    "error_message": [
-                      "کاربری با این مشخصات در صف انتظار برای ثبت نام وجود ندارد."
-                    ]
+                    "error_message": ["کاربری با این مشخصات در صف انتظار برای ثبت نام وجود ندارد."]
                   },
                   "time_zone": "Asia/Tehran",
                   "version": "1.0.10"
@@ -247,9 +232,7 @@
       "post": {
         "summary": "Confirm Registration",
         "description": "Verify OTP and finalize user registration in the database.",
-        "tags": [
-          "Public"
-        ],
+        "tags": ["Public"],
         "requestBody": {
           "required": true,
           "content": {
@@ -319,9 +302,7 @@
                   "message": "داده ارسال شده با داده‌های موجود در تداخل است.",
                   "error_code": "E1021",
                   "errors": {
-                    "otp": [
-                      "کد ورود اشتباه است یا منقضی شده است."
-                    ]
+                    "otp": ["کد ورود اشتباه است یا منقضی شده است."]
                   },
                   "time_zone": "Asia/Tehran",
                   "version": "1.0.10"
@@ -339,9 +320,7 @@
       "post": {
         "summary": "User Login",
         "description": "Login using email or phone number and password. JWT tokens are set in cookies.",
-        "tags": [
-          "Public"
-        ],
+        "tags": ["Public"],
         "requestBody": {
           "required": true,
           "content": {
@@ -401,9 +380,7 @@
                   "message": "داده ارسال شده با داده‌های موجود در تداخل است.",
                   "error_code": "E1021",
                   "errors": {
-                    "password": [
-                      "گذرواژه ارسال شده معتبر نمیباشد."
-                    ]
+                    "password": ["گذرواژه ارسال شده معتبر نمیباشد."]
                   },
                   "time_zone": "Asia/Tehran",
                   "version": "1.0.10"
@@ -434,9 +411,7 @@
       "get": {
         "summary": "Get User Profile",
         "description": "Retrieve authenticated user's full profile information (excluding password and role).",
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "security": [
           {
             "cookieAuth": []
@@ -487,9 +462,7 @@
       "get": {
         "summary": "User Logout",
         "description": "Clear authentication tokens from cookies.",
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "security": [
           {
             "cookieAuth": []
@@ -525,9 +498,7 @@
       "get": {
         "summary": "Authentication Check",
         "description": "Check if the current user is authenticated.",
-        "tags": [
-          "User"
-        ],
+        "tags": ["User"],
         "security": [
           {
             "cookieAuth": []
@@ -564,15 +535,7 @@
     "schemas": {
       "ApiSuccessResponse": {
         "type": "object",
-        "required": [
-          "status",
-          "success",
-          "author",
-          "message",
-          "data",
-          "time_zone",
-          "version"
-        ],
+        "required": ["status", "success", "author", "message", "data", "time_zone", "version"],
         "properties": {
           "status": {
             "type": "integer",
@@ -606,15 +569,7 @@
       },
       "ApiErrorResponse": {
         "type": "object",
-        "required": [
-          "status",
-          "success",
-          "author",
-          "message",
-          "error_code",
-          "time_zone",
-          "version"
-        ],
+        "required": ["status", "success", "author", "message", "error_code", "time_zone", "version"],
         "properties": {
           "status": {
             "type": "integer",
@@ -676,10 +631,7 @@
           },
           "gender": {
             "type": "string",
-            "enum": [
-              "MALE",
-              "FEMALE"
-            ],
+            "enum": ["MALE", "FEMALE"],
             "nullable": true,
             "example": "MALE"
           },
@@ -728,13 +680,7 @@
             "example": "2025-12-26T12:30:00.000Z"
           }
         },
-        "required": [
-          "id",
-          "email",
-          "phone_number",
-          "role",
-          "is_subscribed_for_newsletter"
-        ]
+        "required": ["id", "email", "phone_number", "role", "is_subscribed_for_newsletter"]
       },
       "UserPublicData": {
         "allOf": [
@@ -746,11 +692,7 @@
       },
       "RegisterUserRequest": {
         "type": "object",
-        "required": [
-          "email",
-          "password",
-          "phone_number"
-        ],
+        "required": ["email", "password", "phone_number"],
         "properties": {
           "email": {
             "type": "string",
@@ -778,10 +720,7 @@
         "properties": {
           "data": {
             "type": "object",
-            "required": [
-              "expire_otp_timer",
-              "otp"
-            ],
+            "required": ["expire_otp_timer", "otp"],
             "properties": {
               "expire_otp_timer": {
                 "type": "integer",
@@ -799,9 +738,7 @@
       },
       "ResendOtpRequest": {
         "type": "object",
-        "required": [
-          "phone_number"
-        ],
+        "required": ["phone_number"],
         "properties": {
           "phone_number": {
             "type": "string",
@@ -819,10 +756,7 @@
         "properties": {
           "data": {
             "type": "object",
-            "required": [
-              "expire_otp_timer",
-              "otp"
-            ],
+            "required": ["expire_otp_timer", "otp"],
             "properties": {
               "expire_otp_timer": {
                 "type": "integer",
@@ -838,10 +772,7 @@
       },
       "RegisterUserConfirmRequest": {
         "type": "object",
-        "required": [
-          "phone_number",
-          "otp"
-        ],
+        "required": ["phone_number", "otp"],
         "properties": {
           "phone_number": {
             "type": "string",
@@ -858,19 +789,13 @@
       },
       "LoginUserRequest": {
         "type": "object",
-        "required": [
-          "password"
-        ],
+        "required": ["password"],
         "oneOf": [
           {
-            "required": [
-              "email"
-            ]
+            "required": ["email"]
           },
           {
-            "required": [
-              "phone_number"
-            ]
+            "required": ["phone_number"]
           }
         ],
         "properties": {

@@ -44,5 +44,5 @@ export enum ResponseMessage {
 
   // Other ...
   USER_LOGOUT = 'کاربر با موفقیت خارج شد.',
-  THERE_IS_NO_PLACE = 'هنوز خبری نیست.'
+  THERE_IS_NO_PLACE = 'هنوز خبری نیست.',
 }
