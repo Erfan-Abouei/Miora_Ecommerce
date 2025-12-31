@@ -1,3 +1,3 @@
 export type NotFoundError = {
-  error: string;
+  error_message: string;
 };

@@ -8,7 +8,7 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development tsx watch src/index.ts",
+    "start:dev": "cross-env NODE_ENV=development tsx watch src/index.ts",
     "build": "tsup src/index.ts --out-dir dist --format esm --dts --clean && npm run copy-assets && npm run create-loader",
     "start": "cross-env NODE_ENV=production node loader.js",
     "copy-assets": "cpx \"src/config/swagger/**/*.json\" dist/config/swagger && cpx \"docker-compose.yml\" dist/ && cpx \"Dockerfile\" dist/ && cpx \"package.json\" dist/ && cpx \"package-lock.json\" dist/ && cpx \".env*\" dist/ && cpx \".sequelizerc\" dist/",

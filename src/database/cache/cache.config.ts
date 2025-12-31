@@ -1,7 +1,6 @@
 import { ENV } from '@/config';
-import { createClient } from 'redis';
+import NodeCache from 'node-cache';
 
-const cache = createClient({
-  url: ENV.REDIS_URL
-});
+const cache = new NodeCache({ stdTTL: ENV.CACHE_TTL, checkperiod: ENV.CACHE_PERIOD });
+
 export default cache;

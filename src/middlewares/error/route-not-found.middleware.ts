@@ -6,6 +6,6 @@ import { ResponseMessage } from '@/constants';
 import { HttpStatus } from '@/constants';
 
 export const routeNotFoundHandler = (req: Request, res: Response, next: NextFunction) => {
-  errorResponse<NotFoundError>(res, HttpStatus.NOT_FOUND, { error: `.پیدا نشد ${req.method} با ${req.path} آدرس` }, ResponseMessage.NOT_FOUND, ErrorCode.NOT_FOUND);
+  errorResponse<NotFoundError>(res, HttpStatus.NOT_FOUND, { error_message: `.پیدا نشد ${req.method} با ${req.path} آدرس` }, ResponseMessage.NOT_FOUND, ErrorCode.NOT_FOUND);
   next();
 };
