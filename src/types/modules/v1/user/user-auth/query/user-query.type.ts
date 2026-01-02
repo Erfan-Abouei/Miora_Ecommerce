@@ -1,3 +1,3 @@
 export type AuthUserQueryType = {
-  local?: boolean;
+  local?: string;
 };

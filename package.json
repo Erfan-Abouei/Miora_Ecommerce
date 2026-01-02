@@ -13,8 +13,9 @@
     "start": "cross-env NODE_ENV=production node loader.js",
     "copy-assets": "cpx \"src/config/swagger/**/*.json\" dist/config/swagger && cpx \"src/config/swagger/swagger-ui/**/*\" dist/config/swagger/swagger-ui && cpx \"docker-compose.yml\" dist/ && cpx \"Dockerfile\" dist/ && cpx \"package.json\" dist/ && cpx \"package-lock.json\" dist/ && cpx \".env*\" dist/ && cpx \".sequelizerc\" dist/",
     "create-loader": "echo import('./index.js'); > dist/loader.js",
-    "lint": "eslint src/**/*.{ts,js} --fix",
-    "format": "prettier --write 'src/**/*.{ts,js,json,md}'",
+    "lint": "eslint \"src/**/*.{ts,js}\"",
+    "lint:fix": "eslint \"src/**/*.{ts,js}\" --fix",
+    "format": "prettier --write \"src/**/*.{ts,js,json,md}\"",
     "test": "echo \"No tests specified\" && exit 0"
   },
   "dependencies": {
@@ -39,6 +40,7 @@
     "zod": "4.1.12"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "@types/cookie-parser": "1.4.10",
     "@types/cors": "2.8.19",
     "@types/express": "5.0.5",
@@ -49,15 +51,21 @@
     "@types/nodemailer": "^7.0.4",
     "@types/swagger-jsdoc": "6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
+    "@typescript-eslint/eslint-plugin": "^8.51.0",
+    "@typescript-eslint/parser": "^8.51.0",
     "cpx": "^1.5.0",
     "cross-env": "^10.1.0",
+    "eslint": "^9.39.2",
     "eslint-import-resolver-typescript": "4.4.4",
-    "prettier": "3.6.2",
+    "globals": "^17.0.0",
+    "jiti": "^2.6.1",
+    "prettier": "^3.6.2",
     "sequelize-cli": "^6.6.3",
     "tsc-alias": "1.8.16",
     "tsup": "^8.5.1",
     "tsx": "4.20.6",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "typescript-eslint": "^8.51.0"
   },
   "repository": {
     "type": "git",

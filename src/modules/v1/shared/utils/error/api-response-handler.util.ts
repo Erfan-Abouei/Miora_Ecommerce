@@ -1,5 +1,5 @@
-import { Response } from 'express';
-import { ApiErrorResponse, ApiSuccessResponse } from '@/types/common/response-utils.type';
+import type { Response } from 'express';
+import type { ApiErrorResponse, ApiSuccessResponse } from '@/types/common/response-utils.type';
 import { ErrorCode } from '@/constants';
 import { ResponseMessage } from '@/constants';
 import { ENV } from '@/config';

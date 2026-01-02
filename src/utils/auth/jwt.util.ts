@@ -1,28 +1,29 @@
-import jwt, { JwtPayload, type SignOptions } from 'jsonwebtoken';
-import { Response } from 'express';
+import type { TokenPayload } from '@/types/common/basic.type';
+import type { Response } from 'express';
+import type { JwtPayload } from 'jsonwebtoken';
+import jwt, { type SignOptions } from 'jsonwebtoken';
 import { ENV } from '@/config';
-import { TokenPayload } from '@/types/common/basic.type';
 import { cookieOptionReturner } from './cookie-option.utils';
 
 export const createAccessToken = (payload: TokenPayload): string => {
   const options: SignOptions = { expiresIn: ENV.ACCESS_TOKEN_EXPIRES_IN };
-  return jwt.sign(payload, ENV.JWT_ACCESS_SECRET!, options);
+  return jwt.sign(payload, ENV.JWT_ACCESS_SECRET, options);
 };
 
 export const createRefreshToken = (payload: TokenPayload): string => {
   const options: SignOptions = { expiresIn: ENV.REFRESH_TOKEN_EXPIRES_IN };
-  return jwt.sign(payload, ENV.JWT_REFRESH_SECRET!, options);
+  return jwt.sign(payload, ENV.JWT_REFRESH_SECRET, options);
 };
 
-export const setAccessTokenCookie = (res: Response, token: string, isLocal: boolean) => {
+export const setAccessTokenCookie = (res: Response, token: string, isLocal: boolean): void => {
   res.cookie('access_token', token, cookieOptionReturner(ENV.ACCESS_TOKEN_EXPIRES_IN, isLocal));
 };
 
-export const setRefreshTokenCookie = (res: Response, token: string, isLocal: boolean) => {
+export const setRefreshTokenCookie = (res: Response, token: string, isLocal: boolean): void => {
   res.cookie('refresh_token', token, cookieOptionReturner(ENV.REFRESH_TOKEN_EXPIRES_IN, isLocal));
 };
 
-export const setTokens = (res: Response, payload: TokenPayload, isLocal: boolean) => {
+export const setTokens = (res: Response, payload: TokenPayload, isLocal: boolean): void => {
   const accessToken = createAccessToken(payload);
   const refreshToken = createRefreshToken(payload);
 
@@ -39,7 +40,7 @@ export const clearTokens = (res: Response, isLocal: boolean): boolean => {
 
 export const verifyAccessToken = (token: string): string | JwtPayload | null => {
   try {
-    const tokenPayload = jwt.verify(token, ENV.JWT_ACCESS_SECRET!);
+    const tokenPayload = jwt.verify(token, ENV.JWT_ACCESS_SECRET);
     return tokenPayload;
   } catch {
     return null;

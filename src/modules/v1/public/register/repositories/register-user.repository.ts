@@ -1,7 +1,7 @@
-import { type ErrorsResponse } from '@/types/error/error-response.type';
+import type { ErrorsResponse } from '@/types/error/error-response.type';
+import type { RegisterUserDTO, RegisterUserServerDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
 import { throwValidationError } from '@/modules/v1/shared/utils/error/throw-validation-error.util';
 import { hashPassword } from '@/utils/auth/password.util';
-import { RegisterUserDTO, RegisterUserServerDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
 import { UserModel } from '@/database/models/v1/user';
 import { ErrorCode, HttpStatus, ResponseMessage, ValidationMessage } from '@/constants';
 import { buildWhereConditions } from '@/modules/v1/shared/utils/build-where-conditions.utils';
@@ -11,7 +11,7 @@ import { cacheGet, cacheSet, cacheTtl } from '@/database/cache/cache.handler';
 import { CacheKey } from '@/constants';
 import { cacheNameBuilder } from '@/utils/cache/cache-name-builder';
 
-export const registerUserRepository = async ({ email, password, phone_number }: RegisterUserDTO): Promise<RegisterUserServerDTO | void> => {
+export const registerUserRepository = async ({ email, password, phone_number }: RegisterUserDTO): Promise<RegisterUserServerDTO | unknown> => {
   const phoneKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:phone`);
   const emailKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:email`);
   const passwordKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:password`);
@@ -20,7 +20,7 @@ export const registerUserRepository = async ({ email, password, phone_number }: 
   const existingOtp: number | null = await cacheGet(otpKey);
 
   if (existingOtp !== null) {
-    const otpTtl: number = (await cacheTtl(otpKey)!) as number;
+    const otpTtl: number = (await cacheTtl(otpKey)) as number;
 
     return {
       expire_otp_timer: otpTtl,

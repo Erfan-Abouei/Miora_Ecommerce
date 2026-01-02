@@ -1,4 +1,4 @@
-import { RegisterUserDTO, RegisterUserServerDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
+import type { RegisterUserDTO, RegisterUserServerDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
 import { registerUserRepository } from '../repositories';
 import { eventEmitter } from '@/config';
 import { PublicEventName } from '@/constants';
@@ -6,8 +6,6 @@ import { PublicEventName } from '@/constants';
 export const registerUserService = async (userData: RegisterUserDTO): Promise<RegisterUserServerDTO> => {
   const aboutRegisterAndOtpData = await registerUserRepository(userData);
 
-  if (aboutRegisterAndOtpData) {
-    eventEmitter.emit(PublicEventName.USER_REGISTER, aboutRegisterAndOtpData);
-  }
-  return aboutRegisterAndOtpData!;
+  eventEmitter.emit(PublicEventName.USER_REGISTER, aboutRegisterAndOtpData);
+  return aboutRegisterAndOtpData as RegisterUserServerDTO;
 };

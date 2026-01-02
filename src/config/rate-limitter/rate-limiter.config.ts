@@ -1,5 +1,5 @@
+import type { Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
-import { Request, Response } from 'express';
 import { errorResponse } from '@/modules/v1/shared/utils/error/api-response-handler.util';
 import { ErrorCode } from '@/constants';
 import { ResponseMessage } from '@/constants';
@@ -12,6 +12,6 @@ export const apiLimiter = rateLimit({
 
   legacyHeaders: true,
   handler: (_: Request, res: Response) => {
-    errorResponse<{}>(res, HttpStatus.TOO_MANY_REQUESTS, {}, ResponseMessage.TOO_MANY_REQUESTS, ErrorCode.TOO_MANY_REQUESTS);
+    errorResponse<null>(res, HttpStatus.TOO_MANY_REQUESTS, null, ResponseMessage.TOO_MANY_REQUESTS, ErrorCode.TOO_MANY_REQUESTS);
   },
 });

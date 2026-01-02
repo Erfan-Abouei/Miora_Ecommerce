@@ -1,5 +1,5 @@
-import { ForgotPasswordRequestedDTO } from "@/types/modules/v1/user/user-auth/dto/user-dto.type";
+// import type { ForgotPasswordRequestedDTO } from "@/types/modules/v1/user/user-auth/dto/user-dto.type";
 
-export const forgotPasswordRequestedService = async (forgotPasswordData: ForgotPasswordRequestedDTO) => {
-    // const aboutForgetPasswordData = await 
-}
+// export const forgotPasswordRequestedService = async (forgotPasswordData: ForgotPasswordRequestedDTO): Pr => {
+//     // const aboutForgetPasswordData = await
+// }

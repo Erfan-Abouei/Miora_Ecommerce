@@ -1,6 +1,6 @@
+import type { HealthCheckData } from '@/types/modules/v1/public/health-check/data/health-check-data.type';
 import os from 'os';
 import si from 'systeminformation';
-import { HealthCheckData } from '@/types/modules/v1/public/health-check/data/health-check-data.type';
 import { eventEmitter } from '@/config';
 import { PublicEventName } from '@/constants';
 
@@ -34,7 +34,7 @@ export const getHealthCheckDataService = async (): Promise<HealthCheckData> => {
       usedPercent: Number(d.use.toFixed(2)),
     })),
     network: networkInterfaces
-      .filter((n) => n.ip4 && !n.virtual) // Filter out virtual or empty network interfaces
+      .filter((n) => !!n.ip4 && !n.virtual) // Filter out virtual or empty network interfaces
       .map((n) => ({
         iface: n.iface,
         ip4: n.ip4,

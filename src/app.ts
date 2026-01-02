@@ -1,10 +1,10 @@
+import type { Request, Response } from 'express';
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import path from 'path';
-import { Request, Response } from 'express';
 import { corsOptions, apiLimiter, ENV } from '@/config';
 import { v1Router } from '@/modules/v1/routes';
 import { requestLoggerHandler } from '@/middlewares';

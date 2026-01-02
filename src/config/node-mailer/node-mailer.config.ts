@@ -1,4 +1,4 @@
-import SMTPTransport from 'nodemailer/lib/smtp-transport';
+import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { createTransport } from 'nodemailer';
 import { ENV } from '../env/env.config';
 

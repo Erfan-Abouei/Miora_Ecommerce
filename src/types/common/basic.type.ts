@@ -1,4 +1,4 @@
-import { ErrorCode } from '@/constants';
+import type { ErrorCode } from '@/constants';
 
 export interface AppError extends Error {
   statusCode?: number;

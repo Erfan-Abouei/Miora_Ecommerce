@@ -1,16 +1,23 @@
-import { Op, WhereOptions } from 'sequelize';
+import type { WhereOptions } from 'sequelize';
+import { Op } from 'sequelize';
 
-type Credentials = Record<string, any>;
+type Credentials = Record<string, unknown>;
 
-export const buildWhereConditions = (filters: Credentials): WhereOptions => {
-  const whereConditions: any[] = [];
+export const buildWhereConditions = (filters: Partial<Credentials>): WhereOptions => {
+  const conditions: WhereOptions[] = [];
 
-  Object.keys(filters).forEach((key) => {
-    const value = filters[key];
-    if (value !== undefined && value !== null) {
-      whereConditions.push({ [key]: value });
-    }
-  });
+  for (const [key, value] of Object.entries(filters)) {
+    if (value === undefined || value === null) continue;
 
-  return whereConditions.length > 0 ? { [Op.or]: whereConditions } : {};
+    const trimmed = typeof value === 'string' ? value.trim() : value;
+    if (trimmed === '') continue;
+
+    conditions.push({ [key]: trimmed } as WhereOptions);
+  }
+
+  if (conditions.length === 1) {
+    return conditions[0];
+  }
+
+  return { [Op.or]: conditions };
 };

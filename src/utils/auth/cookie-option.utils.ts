@@ -1,5 +1,5 @@
+import type { CookieOptions } from 'express';
 import { ENV } from '@/config';
-import { CookieOptions } from 'express';
 
 export const cookieOptionReturner = (maxAge: number, isLocal: boolean): CookieOptions => {
   const isProduction = ENV.NODE_ENV === 'production';

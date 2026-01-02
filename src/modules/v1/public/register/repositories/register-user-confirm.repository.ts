@@ -1,14 +1,14 @@
-import { type ErrorsResponse } from '@/types/error/error-response.type';
+import type { RegisterUserConfirmDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
+import type { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
+import type { ErrorsResponse } from '@/types/error/error-response.type';
 import { throwValidationError } from '@/modules/v1/shared/utils/error/throw-validation-error.util';
-import { RegisterUserConfirmDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
-import { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
 import { UserModel } from '@/database/models/v1/user';
 import { ErrorCode, HttpStatus, ResponseMessage, ValidationMessage } from '@/constants';
 import { cacheDel, cacheGet } from '@/database/cache/cache.handler';
 import { cacheNameBuilder } from '@/utils/cache/cache-name-builder';
 import { CacheKey } from '@/constants';
 
-export const registerUserConfirmRepository = async ({ phone_number, otp }: RegisterUserConfirmDTO): Promise<UserData | void> => {
+export const registerUserConfirmRepository = async ({ phone_number, otp }: RegisterUserConfirmDTO): Promise<UserData | unknown> => {
   const errors: ErrorsResponse = {};
   const phoneKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:phone`);
   const emailKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:email`);
@@ -20,10 +20,10 @@ export const registerUserConfirmRepository = async ({ phone_number, otp }: Regis
   const password: string | null = await cacheGet(passwordKey);
   const cachedOtp: number | null = await cacheGet(otpKey);
 
-  if (!phoneNumber) errors.phone_number = [ValidationMessage.PHONE_NUMBER_INVALID_OR_EXPIRED];
-  if (!email) errors.email = [ValidationMessage.EMAIL_INVALID_OR_EXPIRED];
-  if (!password) errors.password = [ValidationMessage.PASSWORD_INVALID_OR_EXPIRED];
-  if (!cachedOtp || otp !== cachedOtp.toString()) errors.otp = [ValidationMessage.OTP_INVALID_OR_EXPIRED];
+  if (phoneNumber === null) errors.phone_number = [ValidationMessage.PHONE_NUMBER_INVALID_OR_EXPIRED];
+  if (email === null) errors.email = [ValidationMessage.EMAIL_INVALID_OR_EXPIRED];
+  if (password === null) errors.password = [ValidationMessage.PASSWORD_INVALID_OR_EXPIRED];
+  if (otp !== cachedOtp?.toString()) errors.otp = [ValidationMessage.OTP_INVALID_OR_EXPIRED];
 
   if (Object.keys(errors).length > 0)
     throwValidationError({
@@ -34,9 +34,9 @@ export const registerUserConfirmRepository = async ({ phone_number, otp }: Regis
     });
 
   const user = await UserModel.create({
-    phone_number: phoneNumber!,
-    email: email!,
-    password: password!,
+    phone_number: phoneNumber as string,
+    email: email as string,
+    password: password as string,
     is_phone_verified: true,
   });
 

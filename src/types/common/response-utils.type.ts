@@ -1,11 +1,11 @@
-import { ErrorCode } from '@/constants';
+import type { ErrorCode } from '@/constants';
 
 export interface ApiSuccessResponse<T> {
   success: true;
   status: number;
   author: string;
   message: string;
-  data: T | {};
+  data: T | null;
   version: string;
   time_zone: string;
 }
@@ -16,7 +16,7 @@ export interface ApiErrorResponse<T> {
   author: string;
   message: string;
   error_code: ErrorCode;
-  errors: T | {};
+  errors: T | null;
   version: string;
   time_zone: string;
 }

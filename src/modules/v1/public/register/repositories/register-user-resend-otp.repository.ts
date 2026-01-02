@@ -1,6 +1,6 @@
-import { type ErrorsResponse } from '@/types/error/error-response.type';
+import type { ErrorsResponse } from '@/types/error/error-response.type';
+import type { RegisterUserResendOtpServerDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
 import { ErrorCode, HttpStatus, ResponseMessage, ValidationMessage } from '@/constants';
-import { RegisterUserResendOtpServerDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
 import { throwValidationError } from '@/modules/v1/shared/utils/error/throw-validation-error.util';
 import { randomInt } from 'crypto';
 import { ENV } from '@/config';
@@ -13,9 +13,9 @@ export const registerUserResendOtpRepository = async (phone_number: number): Pro
   const emailKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:email`);
   const otpKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:otp`);
 
-  const hasUserInQues = await cacheGet(emailKey);
+  const hasUserInQues: string | null = await cacheGet<string>(emailKey);
 
-  if (!hasUserInQues) {
+  if (hasUserInQues === null) {
     errors.error_message = [ValidationMessage.USER_NOT_IN_REGISTER_QUEUE];
     throwValidationError({
       message: ResponseMessage.DATA_CONFLICT,
@@ -25,10 +25,10 @@ export const registerUserResendOtpRepository = async (phone_number: number): Pro
     });
   }
 
-  const existingOtp: number | null = await cacheGet(otpKey);
+  const existingOtp: number | null = await cacheGet<number>(otpKey);
   const otpTtl: number = Number(await cacheTtl(otpKey));
 
-  if (existingOtp) {
+  if (existingOtp !== null) {
     errors.error_message = [ValidationMessage.OTP_HAS_EXISTED];
     errors.expire_otp_timer = [otpTtl.toString()];
 

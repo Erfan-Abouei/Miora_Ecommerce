@@ -1,5 +1,6 @@
+import type { RequestHandler } from 'express';
 import swaggerUi from 'swagger-ui-express';
-import { RequestHandler, Router } from 'express';
+import { Router } from 'express';
 import { publicRouter } from './public/routes';
 import { userRouter } from './user/routes';
 import { adminRouter } from './admin/routes';

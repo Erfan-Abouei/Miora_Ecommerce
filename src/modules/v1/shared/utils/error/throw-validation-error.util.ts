@@ -1,8 +1,9 @@
-import { CustomErrorProps, type ErrorsResponse } from '@/types/error/error-response.type';
+import type { CustomErrorProps } from '@/types/error/error-response.type';
+import type { ErrorsResponse } from '@/types/error/error-response.type';
 import { ResponseMessage } from '@/constants';
 import { ErrorCode } from '@/constants';
 
-export const throwValidationError = ({ message = ResponseMessage.VALIDATION_ERROR, statusCode = 400, errorCode = ErrorCode.VALIDATION_ERROR, details = {} }: CustomErrorProps) => {
+export const throwValidationError = ({ message = ResponseMessage.VALIDATION_ERROR, statusCode = 400, errorCode = ErrorCode.VALIDATION_ERROR, details = {} }: CustomErrorProps): void => {
   const error = new Error(message) as Error & {
     statusCode: number;
     errorCode: ErrorCode;

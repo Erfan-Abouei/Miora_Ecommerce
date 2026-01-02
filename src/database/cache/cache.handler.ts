@@ -1,5 +1,4 @@
 import cache from '@/database/cache/cache.config';
-import { ENV } from '@/config';
 
 export const cacheSet = async <T>(key: string, value: T, ttl: number = 100): Promise<boolean> => {
   const success = cache.set(key, value, ttl);

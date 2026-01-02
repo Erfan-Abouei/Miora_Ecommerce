@@ -1,18 +1,18 @@
-import { AuthUserQueryType } from '@/types/modules/v1/user/user-auth/query/user-query.type';
-import { Request, Response, NextFunction } from 'express';
+import type { TokenPayload } from '@/types/common/basic.type';
+import type { AuthUserQueryType } from '@/types/modules/v1/user/user-auth/query/user-query.type';
+import type { Request, Response, NextFunction } from 'express';
 import { createAccessToken, setAccessTokenCookie, verifyAccessToken, verifyRefreshToken } from '@/utils/auth/jwt.util';
 import { errorResponse } from '@/modules/v1/shared/utils/error/api-response-handler.util';
-import { TokenPayload } from '@/types/common/basic.type';
 import { ErrorCode } from '@/constants';
 import { ResponseMessage } from '@/constants';
 import { HttpStatus } from '@/constants';
 
-export const userAuthMiddleware = (req: Request<unknown, unknown, unknown, AuthUserQueryType>, res: Response, next: NextFunction) => {
-  const accessToken = req.cookies.access_token;
-  const refreshToken = req.cookies.refresh_token;
+export const userAuthMiddleware = (req: Request<unknown, unknown, unknown, AuthUserQueryType>, res: Response, next: NextFunction): void => {
+  const accessToken: string = req.cookies.access_token;
+  const refreshToken: string = req.cookies.refresh_token;
 
   if (!accessToken) {
-    errorResponse<{}>(res, HttpStatus.UNAUTHORIZED, {}, ResponseMessage.UNAUTHORIZED, ErrorCode.UNAUTHORIZED);
+    errorResponse<null>(res, HttpStatus.UNAUTHORIZED, null, ResponseMessage.UNAUTHORIZED, ErrorCode.UNAUTHORIZED);
     return;
   }
 
@@ -22,7 +22,7 @@ export const userAuthMiddleware = (req: Request<unknown, unknown, unknown, AuthU
     next();
   } catch {
     if (!refreshToken) {
-      errorResponse<{}>(res, HttpStatus.UNAUTHORIZED, {}, ResponseMessage.UNAUTHORIZED, ErrorCode.UNAUTHORIZED);
+      errorResponse<null>(res, HttpStatus.UNAUTHORIZED, null, ResponseMessage.UNAUTHORIZED, ErrorCode.UNAUTHORIZED);
       return;
     }
 
@@ -30,12 +30,12 @@ export const userAuthMiddleware = (req: Request<unknown, unknown, unknown, AuthU
       const refreshPayload = verifyRefreshToken(refreshToken) as TokenPayload;
 
       const newAccessToken = createAccessToken(refreshPayload);
-      setAccessTokenCookie(res, newAccessToken, !!req.query.local);
+      setAccessTokenCookie(res, newAccessToken, req.query.local === 'true');
 
       req.user = refreshPayload;
       next();
     } catch {
-      errorResponse<{}>(res, 401, {}, ResponseMessage.UNAUTHORIZED, ErrorCode.UNAUTHORIZED);
+      errorResponse<null>(res, 401, null, ResponseMessage.UNAUTHORIZED, ErrorCode.UNAUTHORIZED);
     }
   }
 };
