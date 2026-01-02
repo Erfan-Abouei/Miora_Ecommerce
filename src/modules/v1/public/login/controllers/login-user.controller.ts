@@ -11,9 +11,7 @@ import { HttpStatus } from '@/constants';
 
 export const loginUserController = async (req: Request<unknown, unknown, LoginUserDTO, AuthUserQueryType>, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const ip = req.ip ?? 'unknown';
-
-    const createdUserData = await loginUserService(req.body, ip);
+    const createdUserData = await loginUserService(req.body);
 
     const userWithoutPassword = removeSecureData(createdUserData);
 

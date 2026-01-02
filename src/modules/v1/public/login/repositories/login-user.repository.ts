@@ -7,7 +7,8 @@ import { throwValidationError } from '@/modules/v1/shared/utils/error/throw-vali
 import { ResponseMessage, ErrorCode, HttpStatus, ValidationMessage } from '@/constants';
 import { buildWhereConditions } from '@/modules/v1/shared/utils/build-where-conditions.utils';
 
-export const loginUserRepository = async ({ password, phone_number, email }: LoginUserDTO): Promise<UserData | unknown> => {  const errors: ErrorsResponse = {};
+export const loginUserRepository = async ({ password, phone_number, email }: LoginUserDTO): Promise<UserData | unknown> => {
+  const errors: ErrorsResponse = {};
 
   const user = await UserModel.findOne({
     where: buildWhereConditions({ phone_number, email }),

@@ -14,7 +14,7 @@ const getEnv = (key: string, defaultValue = ''): string => {
 
 const getNumberEnv = (key: string, defaultValue: number): number => {
   const value = process.env[key]?.trim();
-  return (value !== undefined || value !== null) ? Number(value) : defaultValue;
+  return value !== undefined || value !== null ? Number(value) : defaultValue;
 };
 
 const getBooleanEnv = (key: string, defaultValue = false): boolean => {
