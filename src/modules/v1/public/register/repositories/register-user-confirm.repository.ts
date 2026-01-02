@@ -5,14 +5,20 @@ import { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type'
 import { UserModel } from '@/database/models/v1/user';
 import { ErrorCode, HttpStatus, ResponseMessage, ValidationMessage } from '@/constants';
 import { cacheDel, cacheGet } from '@/database/cache/cache.handler';
+import { cacheNameBuilder } from '@/utils/cache/cache-name-builder';
+import { CacheKey } from '@/constants';
 
 export const registerUserConfirmRepository = async ({ phone_number, otp }: RegisterUserConfirmDTO): Promise<UserData | void> => {
   const errors: ErrorsResponse = {};
+  const phoneKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:phone`);
+  const emailKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:email`);
+  const passwordKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:password`);
+  const otpKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:otp`);
 
-  const phoneNumber: string | null = await cacheGet(`register_phone_number_${phone_number}`);
-  const email: string | null = await cacheGet(`register_email_${phone_number}`);
-  const password: string | null = await cacheGet(`register_password_${phone_number}`);
-  const cachedOtp: number | null = await cacheGet(`register_otp_${phone_number}`);
+  const phoneNumber: string | null = await cacheGet(phoneKey);
+  const email: string | null = await cacheGet(emailKey);
+  const password: string | null = await cacheGet(passwordKey);
+  const cachedOtp: number | null = await cacheGet(otpKey);
 
   if (!phoneNumber) errors.phone_number = [ValidationMessage.PHONE_NUMBER_INVALID_OR_EXPIRED];
   if (!email) errors.email = [ValidationMessage.EMAIL_INVALID_OR_EXPIRED];
@@ -31,10 +37,10 @@ export const registerUserConfirmRepository = async ({ phone_number, otp }: Regis
     phone_number: phoneNumber!,
     email: email!,
     password: password!,
-    is_phone_verified: !!phoneNumber,
+    is_phone_verified: true,
   });
 
-  await cacheDel([`register_phone_number_${phone_number}`, `register_email_${phone_number}`, `register_password_${phone_number}`, `register_otp_${phone_number}`]);
+  await cacheDel([phoneKey, emailKey, passwordKey, otpKey]);
 
   return user.toJSON();
 };

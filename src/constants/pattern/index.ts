@@ -1,1 +1,1 @@
-export * from './REGEX_PATTERN.constanst';
+export * from './REGEX_PATTERN.constant';

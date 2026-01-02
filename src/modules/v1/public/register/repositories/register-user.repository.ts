@@ -8,12 +8,19 @@ import { buildWhereConditions } from '@/modules/v1/shared/utils/build-where-cond
 import { ENV } from '@/config';
 import { randomInt } from 'crypto';
 import { cacheGet, cacheSet, cacheTtl } from '@/database/cache/cache.handler';
+import { CacheKey } from '@/constants';
+import { cacheNameBuilder } from '@/utils/cache/cache-name-builder';
 
 export const registerUserRepository = async ({ email, password, phone_number }: RegisterUserDTO): Promise<RegisterUserServerDTO | void> => {
-  const existingOtp: number | null = await cacheGet(`register_otp_${phone_number}`);
+  const phoneKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:phone`);
+  const emailKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:email`);
+  const passwordKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:password`);
+  const otpKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:otp`);
+
+  const existingOtp: number | null = await cacheGet(otpKey);
 
   if (existingOtp !== null) {
-    const otpTtl: number = (await cacheTtl(`register_otp_${phone_number}`)!) as number;
+    const otpTtl: number = (await cacheTtl(otpKey)!) as number;
 
     return {
       expire_otp_timer: otpTtl,
@@ -49,11 +56,11 @@ export const registerUserRepository = async ({ email, password, phone_number }: 
   const hashedPassword = await hashPassword(password);
   const randomFiveDigits: number = randomInt(10_000, 100_000);
 
-  await cacheSet(`register_phone_number_${phone_number}`, phone_number, ENV.REGISTER_QUEUE_TTL);
-  await cacheSet(`register_email_${phone_number}`, email, ENV.REGISTER_QUEUE_TTL);
-  await cacheSet(`register_password_${phone_number}`, hashedPassword, ENV.REGISTER_QUEUE_TTL);
-  await cacheSet(`register_otp_${phone_number}`, randomFiveDigits, ENV.EXPIRE_OTP_TIMER);
-  const otpTtl: number = (await cacheTtl(`register_otp_${phone_number}`)) as number;
+  await cacheSet(phoneKey, phone_number, ENV.REGISTER_QUEUE_TTL);
+  await cacheSet(emailKey, email, ENV.REGISTER_QUEUE_TTL);
+  await cacheSet(passwordKey, hashedPassword, ENV.REGISTER_QUEUE_TTL);
+  await cacheSet(otpKey, randomFiveDigits, ENV.EXPIRE_OTP_TIMER);
+  const otpTtl: number = (await cacheTtl(otpKey)) as number;
 
   return {
     expire_otp_timer: otpTtl,

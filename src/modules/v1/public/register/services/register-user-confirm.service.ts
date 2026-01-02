@@ -4,8 +4,8 @@ import { RegisterUserConfirmDTO } from '@/types/modules/v1/user/user-auth/dto/us
 import { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
 import { PublicEventName } from '@/constants';
 
-export const registerUserConfirmService = async (ConfirmUserData: RegisterUserConfirmDTO): Promise<UserData> => {
-  const user = (await registerUserConfirmRepository(ConfirmUserData)) as UserData;
+export const registerUserConfirmService = async (confirmUserData: RegisterUserConfirmDTO): Promise<UserData> => {
+  const user = (await registerUserConfirmRepository(confirmUserData)) as UserData;
 
   await emitAsync<UserData>(PublicEventName.USER_REGISTER_CONFIRM, user);
   return user;

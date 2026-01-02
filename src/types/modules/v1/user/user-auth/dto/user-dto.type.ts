@@ -43,3 +43,7 @@ export interface RegisterUserResendOtpServerDTO {
   expire_otp_timer: number;
   otp: number;
 }
+
+export interface ForgotPasswordRequestedDTO {
+  email: string;
+}

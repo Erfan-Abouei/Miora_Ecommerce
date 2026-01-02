@@ -1,1 +1,1 @@
-export * from './HTTP_STATUS_CODE.constants';
+export * from './HTTP_STATUS_CODE.constant';

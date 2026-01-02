@@ -6,7 +6,7 @@ import { HttpStatus } from '@/constants';
 
 export const registerUserResendOtpController = async (req: Request<unknown, unknown, RegisterUserResendOtpDTO>, res: Response, next: NextFunction) => {
   try {
-    const aboutOtpData = (await registerUserResendOtpService(req.body)) as RegisterUserResendOtpServerDTO;
+    const aboutOtpData = (await registerUserResendOtpService({ phone_number: req.body.phone_number }, req.ip as string)) as RegisterUserResendOtpServerDTO;
     if (aboutOtpData) {
       successResponse<RegisterUserResendOtpServerDTO>(res, HttpStatus.OK, aboutOtpData);
     }

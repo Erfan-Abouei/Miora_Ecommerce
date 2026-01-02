@@ -8,10 +8,12 @@ import { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type'
 import { buildWhereConditions } from '@/modules/v1/shared/utils/build-where-conditions.utils';
 import { ErrorsResponse } from '@/types/error/error-response.type';
 import { cacheGet, cacheSet, cacheDel } from '@/database/cache/cache.handler';
+import { cacheNameBuilder } from '@/utils/cache/cache-name-builder';
+import { CacheKey } from '@/constants';
 
 export const loginUserRepository = async ({ password, phone_number, email }: LoginUserDTO, ipAddress: string): Promise<UserData | null> => {
-  const key = `login_user_attempts_${phone_number || email}_ip_${ipAddress}`;
-  const attempts = Number((await cacheGet<number>(key)) ?? 0);
+  const loginAttemptCacheKeyName = cacheNameBuilder(CacheKey.LOGIN_USER_ATTEMPT, `${phone_number || email}_${ipAddress}`)
+  const attempts = Number((await cacheGet<number>(loginAttemptCacheKeyName)) ?? 0);
 
   if (attempts > ENV.LOGIN_ATTEMPTS_MAX) {
     throwValidationError({
@@ -29,7 +31,7 @@ export const loginUserRepository = async ({ password, phone_number, email }: Log
 
   if (!user) {
     errors.error_message = [ValidationMessage.USER_NOT_FOUND];
-    await cacheSet(key, attempts + 1, ENV.LOGIN_ATTEMPTS_MAX_TIMER);
+    await cacheSet(loginAttemptCacheKeyName, attempts + 1, ENV.LOGIN_ATTEMPTS_MAX_TIMER);
 
     throwValidationError({
       details: errors,
@@ -43,7 +45,7 @@ export const loginUserRepository = async ({ password, phone_number, email }: Log
   const isValidPassword = await bcrypt.compare(password, user.getDataValue('password') as string);
 
   if (!isValidPassword) {
-    await cacheSet(key, attempts + 1, ENV.LOGIN_ATTEMPTS_MAX_TIMER);
+    await cacheSet(loginAttemptCacheKeyName, attempts + 1, ENV.LOGIN_ATTEMPTS_MAX_TIMER);
 
     throwValidationError({
       details: { password: [ValidationMessage.PASSWORD_INCORRECT] },
@@ -54,7 +56,7 @@ export const loginUserRepository = async ({ password, phone_number, email }: Log
     return null;
   }
 
-  await cacheDel(key);
+  await cacheDel(loginAttemptCacheKeyName);
 
   return user.toJSON();
 };

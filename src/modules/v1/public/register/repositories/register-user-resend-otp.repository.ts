@@ -5,12 +5,17 @@ import { throwValidationError } from '@/modules/v1/shared/utils/error/throw-vali
 import { randomInt } from 'crypto';
 import { ENV } from '@/config';
 import { cacheGet, cacheSet, cacheTtl } from '@/database/cache/cache.handler';
+import { cacheNameBuilder } from '@/utils/cache/cache-name-builder';
+import { CacheKey } from '@/constants';
 
-export const registerUserResendOtpRepository = async (phone_number: number): Promise<RegisterUserResendOtpServerDTO | null> => {
+export const registerUserResendOtpRepository = async (phone_number: number, ipAddress: string): Promise<RegisterUserResendOtpServerDTO | null> => {
   const errors: ErrorsResponse = {};
-  const key = `otp_resend_attempts_${phone_number}`;
-  const otpResendAttempts: number = (await cacheGet<number>(key)) || 0;
-  const hasUserInQues = await cacheGet(`register_email_${phone_number}`);
+  const resendAttemptKey = cacheNameBuilder(CacheKey.REGISTER_USER_ATTEMPT, `phone_number_${ipAddress}`);
+  const emailKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:email`);
+  const otpKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:otp`);
+
+  const otpResendAttempts: number = (await cacheGet<number>(resendAttemptKey)) || 0;
+  const hasUserInQues = await cacheGet(emailKey);
 
   if (otpResendAttempts >= ENV.OTP_RESEND_ATTEMPS) {
     throwValidationError({
@@ -31,8 +36,8 @@ export const registerUserResendOtpRepository = async (phone_number: number): Pro
     });
   }
 
-  const existingOtp: number | null = await cacheGet(`register_otp_${phone_number}`);
-  const otpTtl: number = Number(await cacheTtl(`register_otp_${phone_number}`));
+  const existingOtp: number | null = await cacheGet(otpKey);
+  const otpTtl: number = Number(await cacheTtl(otpKey));
 
   if (existingOtp) {
     errors.error_message = [ValidationMessage.OTP_HAS_EXISTED];
@@ -48,9 +53,9 @@ export const registerUserResendOtpRepository = async (phone_number: number): Pro
   }
 
   const randomFiveDigits: number = randomInt(10_000, 100_000);
-  await cacheSet(`register_otp_${phone_number}`, randomFiveDigits, ENV.EXPIRE_OTP_TIMER);
-  await cacheSet(key, otpResendAttempts + 1, ENV.OTP_RESEND_ATTEMPS_TIMER);
-  const newOtpTtl: number | null = (await cacheTtl(`register_otp_${phone_number}`)) as number;
+  await cacheSet(otpKey, randomFiveDigits, ENV.EXPIRE_OTP_TIMER);
+  await cacheSet(resendAttemptKey, otpResendAttempts + 1, ENV.OTP_RESEND_ATTEMPS_TIMER);
+  const newOtpTtl: number | null = (await cacheTtl(otpKey)) as number;
   return {
     expire_otp_timer: newOtpTtl,
     otp: randomFiveDigits,
