@@ -9,10 +9,10 @@ import { cacheDel, cacheGet } from '@/database/cache/cache.handler';
 export const registerUserConfirmRepository = async ({ phone_number, otp }: RegisterUserConfirmDTO): Promise<UserData | void> => {
   const errors: ErrorsResponse = {};
 
-  const phoneNumber: string | null = await cacheGet(`phone_number_${phone_number}`);
-  const email: string | null = await cacheGet(`email_${phone_number}`);
-  const password: string | null = await cacheGet(`password_${phone_number}`);
-  const cachedOtp: number | null = await cacheGet(`otp_${phone_number}`);
+  const phoneNumber: string | null = await cacheGet(`register_phone_number_${phone_number}`);
+  const email: string | null = await cacheGet(`register_email_${phone_number}`);
+  const password: string | null = await cacheGet(`register_password_${phone_number}`);
+  const cachedOtp: number | null = await cacheGet(`register_otp_${phone_number}`);
 
   if (!phoneNumber) errors.phone_number = [ValidationMessage.PHONE_NUMBER_INVALID_OR_EXPIRED];
   if (!email) errors.email = [ValidationMessage.EMAIL_INVALID_OR_EXPIRED];
@@ -34,7 +34,7 @@ export const registerUserConfirmRepository = async ({ phone_number, otp }: Regis
     is_phone_verified: !!phoneNumber,
   });
 
-  await cacheDel([`phone_number_${phone_number}`, `email_${phone_number}`, `password_${phone_number}`, `otp_${phone_number}`]);
+  await cacheDel([`register_phone_number_${phone_number}`, `register_email_${phone_number}`, `register_password_${phone_number}`, `register_otp_${phone_number}`]);
 
   return user.toJSON();
 };

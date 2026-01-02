@@ -10,10 +10,10 @@ import { randomInt } from 'crypto';
 import { cacheGet, cacheSet, cacheTtl } from '@/database/cache/cache.handler';
 
 export const registerUserRepository = async ({ email, password, phone_number }: RegisterUserDTO): Promise<RegisterUserServerDTO | void> => {
-  const existingOtp: number | null = await cacheGet(`otp_${phone_number}`);
+  const existingOtp: number | null = await cacheGet(`register_otp_${phone_number}`);
 
   if (existingOtp !== null) {
-    const otpTtl: number = (await cacheTtl(`otp_${phone_number}`)!) as number;
+    const otpTtl: number = (await cacheTtl(`register_otp_${phone_number}`)!) as number;
 
     return {
       expire_otp_timer: otpTtl,
@@ -49,11 +49,11 @@ export const registerUserRepository = async ({ email, password, phone_number }: 
   const hashedPassword = await hashPassword(password);
   const randomFiveDigits: number = randomInt(10_000, 100_000);
 
-  await cacheSet(`phone_number_${phone_number}`, phone_number, ENV.REGISTER_QUEUE_TTL);
-  await cacheSet(`email_${phone_number}`, email, ENV.REGISTER_QUEUE_TTL);
-  await cacheSet(`password_${phone_number}`, hashedPassword, ENV.REGISTER_QUEUE_TTL);
-  await cacheSet(`otp_${phone_number}`, randomFiveDigits, ENV.EXPIRE_OTP_TIMER);
-  const otpTtl: number = (await cacheTtl(`otp_${phone_number}`)) as number;
+  await cacheSet(`register_phone_number_${phone_number}`, phone_number, ENV.REGISTER_QUEUE_TTL);
+  await cacheSet(`register_email_${phone_number}`, email, ENV.REGISTER_QUEUE_TTL);
+  await cacheSet(`register_password_${phone_number}`, hashedPassword, ENV.REGISTER_QUEUE_TTL);
+  await cacheSet(`register_otp_${phone_number}`, randomFiveDigits, ENV.EXPIRE_OTP_TIMER);
+  const otpTtl: number = (await cacheTtl(`register_otp_${phone_number}`)) as number;
 
   return {
     expire_otp_timer: otpTtl,
