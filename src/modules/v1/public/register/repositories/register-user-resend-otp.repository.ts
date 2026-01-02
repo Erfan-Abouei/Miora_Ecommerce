@@ -8,23 +8,12 @@ import { cacheGet, cacheSet, cacheTtl } from '@/database/cache/cache.handler';
 import { cacheNameBuilder } from '@/utils/cache/cache-name-builder';
 import { CacheKey } from '@/constants';
 
-export const registerUserResendOtpRepository = async (phone_number: number, ipAddress: string): Promise<RegisterUserResendOtpServerDTO | null> => {
+export const registerUserResendOtpRepository = async (phone_number: number): Promise<RegisterUserResendOtpServerDTO | null> => {
   const errors: ErrorsResponse = {};
-  const resendAttemptKey = cacheNameBuilder(CacheKey.REGISTER_USER_ATTEMPT, `phone_number_${ipAddress}`);
   const emailKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:email`);
   const otpKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:otp`);
 
-  const otpResendAttempts: number = (await cacheGet<number>(resendAttemptKey)) || 0;
   const hasUserInQues = await cacheGet(emailKey);
-
-  if (otpResendAttempts >= ENV.OTP_RESEND_ATTEMPS) {
-    throwValidationError({
-      message: ResponseMessage.TOO_MANY_REQUESTS,
-      errorCode: ErrorCode.TOO_MANY_REQUESTS,
-      statusCode: HttpStatus.TOO_MANY_REQUESTS,
-    });
-    return null;
-  }
 
   if (!hasUserInQues) {
     errors.error_message = [ValidationMessage.USER_NOT_IN_REGISTER_QUEUE];
@@ -54,7 +43,6 @@ export const registerUserResendOtpRepository = async (phone_number: number, ipAd
 
   const randomFiveDigits: number = randomInt(10_000, 100_000);
   await cacheSet(otpKey, randomFiveDigits, ENV.EXPIRE_OTP_TIMER);
-  await cacheSet(resendAttemptKey, otpResendAttempts + 1, ENV.OTP_RESEND_ATTEMPS_TIMER);
   const newOtpTtl: number | null = (await cacheTtl(otpKey)) as number;
   return {
     expire_otp_timer: newOtpTtl,

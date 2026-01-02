@@ -7,9 +7,9 @@ import path from 'path';
 import { Request, Response } from 'express';
 import { corsOptions, apiLimiter, ENV } from '@/config';
 import { v1Router } from '@/modules/v1/routes';
-import { requestLoggerHandler } from '@/middlewares/logger/logger.middleware';
-import { routeNotFoundHandler } from '@/middlewares/error/route-not-found.middleware';
-import { errorHandler } from '@/middlewares/error/error-handler.middleware';
+import { requestLoggerHandler } from '@/middlewares';
+import { routeNotFoundHandler } from '@/middlewares';
+import { errorHandler } from '@/middlewares';
 
 const app = express();
 const isProduction: boolean = ENV.NODE_ENV === 'production';
