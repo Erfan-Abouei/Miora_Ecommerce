@@ -257,7 +257,6 @@
                   "author": "Kara_Company",
                   "message": "مورد با موفقیت ایجاد شد.",
                   "data": {
-                    "id": "uuid-1234-5678",
                     "user_name": "erfan_abouei",
                     "email": "erfan_abouei@example.com",
                     "phone_number": "09123456789",
@@ -345,7 +344,6 @@
                   "author": "Kara_Company",
                   "message": "عملیات با موفقیت انجام شد.",
                   "data": {
-                    "id": "uuid-1234-5678",
                     "user_name": "erfan_abouei",
                     "email": "erfan_abouei@example.com",
                     "phone_number": "09123456789",
@@ -431,7 +429,6 @@
                   "author": "Kara_Company",
                   "message": "عملیات با موفقیت انجام شد.",
                   "data": {
-                    "id": "uuid-1234-5678",
                     "user_name": "erfan_abouei",
                     "email": "erfan_abouei@example.com",
                     "phone_number": "09123456789",
@@ -609,11 +606,6 @@
         "type": "object",
         "description": "Full user data structure",
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "example": "uuid-1234-5678"
-          },
           "user_name": {
             "type": "string",
             "nullable": true,
@@ -680,7 +672,7 @@
             "example": "2025-12-26T12:30:00.000Z"
           }
         },
-        "required": ["id", "email", "phone_number", "role", "is_subscribed_for_newsletter"]
+        "required": ["email", "phone_number", "role", "is_subscribed_for_newsletter"]
       },
       "UserPublicData": {
         "allOf": [
