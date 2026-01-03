@@ -233,6 +233,17 @@
         "summary": "Confirm Registration",
         "description": "Verify OTP and finalize user registration in the database.",
         "tags": ["Public"],
+        "parameters": [
+          {
+            "name": "dashboard_callback_route",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "required dashboard path. If provided, the welcome email button will redirect the user to this route after login."
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {

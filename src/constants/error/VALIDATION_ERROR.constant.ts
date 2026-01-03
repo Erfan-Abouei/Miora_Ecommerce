@@ -28,4 +28,6 @@ export enum ValidationMessage {
   BIRTH_DATE_INVALID = 'تاریخ تولد معتبر نمیباشد.',
   BANK_NUMBER_INVALID = 'شماره کارت وارد شده معتبر نیست.',
   SHEBA_NUMBER_INVALID = 'شماره شبا باید با IR شروع شده و 24 رقم داشته باشد.',
+  DASHBOARD_CALLBACK_ROUTE_REQUIRED_QUERY = 'پارامتر dashboard_callback_route اجباری است و باید از نوع رشته باشد.',
+  DASHBOARD_CALLBACK_ROUTE_IS_URL_QUERY = 'پارامتر dashboard_callback_route باید به صورت یک آدرس باشد.'
 }
