@@ -12,6 +12,7 @@ import { CacheKey } from '@/constants';
 import { cacheNameBuilder } from '@/utils/cache/cache-name-builder';
 
 export const registerUserRepository = async ({ email, password, phone_number }: RegisterUserDTO): Promise<RegisterUserServerDTO | unknown> => {
+  const errors: ErrorsResponse = {};
   const phoneKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:phone`);
   const emailKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:email`);
   const passwordKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:password`);
@@ -21,14 +22,17 @@ export const registerUserRepository = async ({ email, password, phone_number }: 
 
   if (existingOtp !== null) {
     const otpTtl: number = (await cacheTtl(otpKey)) as number;
+    errors.error_message = [ValidationMessage.OTP_HAS_EXISTED];
+    errors.expire_otp_timer = [otpTtl.toString()];
 
-    return {
-      expire_otp_timer: otpTtl,
-      otp: existingOtp, // for development
-    };
+    throwValidationError({
+      message: ResponseMessage.DATA_CONFLICT,
+      details: errors,
+      errorCode: ErrorCode.DATA_CONFLICT,
+      statusCode: HttpStatus.CONFLICT,
+    });
   }
 
-  const errors: ErrorsResponse = {};
 
   const existingUser = await UserModel.findOne({
     where: buildWhereConditions({ email, phone_number }),

@@ -8,7 +8,7 @@ import { cacheGet, cacheSet, cacheTtl } from '@/database/cache/cache.handler';
 import { cacheNameBuilder } from '@/utils/cache/cache-name-builder';
 import { CacheKey } from '@/constants';
 
-export const registerUserResendOtpRepository = async (phone_number: number): Promise<RegisterUserResendOtpServerDTO | null> => {
+export const registerUserResendOtpRepository = async (phone_number: number): Promise<RegisterUserResendOtpServerDTO | unknown> => {
   const errors: ErrorsResponse = {};
   const emailKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:email`);
   const otpKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:otp`);
@@ -38,7 +38,7 @@ export const registerUserResendOtpRepository = async (phone_number: number): Pro
       errorCode: ErrorCode.DATA_CONFLICT,
       statusCode: HttpStatus.CONFLICT,
     });
-    return null;
+    return;
   }
 
   const randomFiveDigits: number = randomInt(10_000, 100_000);
