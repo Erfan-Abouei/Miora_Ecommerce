@@ -12,8 +12,8 @@ import { HttpStatus } from '@/constants';
 
 export const registerUserConfirmController = async (req: Request<unknown, unknown, RegisterUserConfirmDTO, AuthUserQueryType & RegisterConfirmQueryType>, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { dashboard_callback_route } = req.query;
-    const isLocal = req.query.local === 'true';
+    const { dashboard_callback_route, local } = req.query;
+    const isLocal = local === 'true';
 
     const user = await registerUserConfirmService(req.body, dashboard_callback_route);
     const userWithoutPassword = removeSecureData(user);
