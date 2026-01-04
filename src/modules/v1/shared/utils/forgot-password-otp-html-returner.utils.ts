@@ -66,7 +66,7 @@ export const forgotPasswordEmailHtmlReturner = (otp: string): string => {
           اگر شما این درخواست را نداده‌اید، لطفاً این ایمیل را نادیده بگیرید و برای امنیت بیشتر، حساب خود را بررسی کنید.
         </p>
         <p style="margin-top:32px;font-size:13px;color:#9ca3af;text-align:center;">
-          © 2025 Kara Company — Miura
+          © 2025 Kara Company — Miora
         </p>
       </td>
     </tr>

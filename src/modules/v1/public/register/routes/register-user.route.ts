@@ -1,4 +1,4 @@
-import { validateQuery } from './../../../../../middlewares/auth/validate-query.middleware';
+import { validateQuery } from '@/middlewares';
 import { rateLimitMiddleWare } from '@/middlewares';
 import { Router } from 'express';
 import { validate } from '@/middlewares';

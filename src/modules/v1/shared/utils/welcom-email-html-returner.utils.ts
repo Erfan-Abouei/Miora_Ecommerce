@@ -66,7 +66,7 @@ export const welcomeEmailHtmlReturner = (dashboardCallbackRoute: string): string
       </div>
 
       <p style="margin-top:32px;font-size:13px;color:#9ca3af;text-align:center;">
-        © 2025 Kara Company — Miura
+        © 2025 Kara Company — Miora
       </p>
     </td>
   </tr>
