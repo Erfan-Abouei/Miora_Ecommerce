@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from 'express';
 import type { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
 import { profileService } from '../services/';
 import { successResponse } from '@/modules/v1/shared/utils/error/api-response-handler.util';
-import { removeSecureData } from '@/modules/v1/shared/utils/remove-secure-data.utils';
+import { removeSecureData } from '@/modules/v1/shared/utils/remove-secure-data.util';
 import { HttpStatus, ResponseMessage } from '@/constants';
 
 export const profileController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {

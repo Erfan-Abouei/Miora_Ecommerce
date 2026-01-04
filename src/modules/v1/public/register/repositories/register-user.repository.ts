@@ -4,7 +4,7 @@ import { throwValidationError } from '@/modules/v1/shared/utils/error/throw-vali
 import { hashPassword } from '@/utils/auth/password.util';
 import { UserModel } from '@/database/models/v1/user';
 import { ErrorCode, HttpStatus, ResponseMessage, ValidationMessage } from '@/constants';
-import { buildWhereConditions } from '@/modules/v1/shared/utils/build-where-conditions.utils';
+import { buildWhereConditions } from '@/modules/v1/shared/utils/build-where-conditions.util';
 import { ENV } from '@/config';
 import { randomInt } from 'crypto';
 import { cacheGet, cacheSet, cacheTtl } from '@/database/cache/cache.handler';

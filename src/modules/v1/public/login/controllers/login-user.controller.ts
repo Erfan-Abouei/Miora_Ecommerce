@@ -5,7 +5,7 @@ import type { TokenPayload } from '@/types/common/basic.type';
 import type { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
 import { loginUserService } from '../services';
 import { successResponse } from '@/modules/v1/shared/utils/error/api-response-handler.util';
-import { removeSecureData } from '@/modules/v1/shared/utils/remove-secure-data.utils';
+import { removeSecureData } from '@/modules/v1/shared/utils/remove-secure-data.util';
 import { setTokens } from '@/utils/auth/jwt.util';
 import { HttpStatus } from '@/constants';
 

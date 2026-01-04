@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 import { UserModel } from '@/database/models/v1/user';
 import { throwValidationError } from '@/modules/v1/shared/utils/error/throw-validation-error.util';
 import { ResponseMessage, ErrorCode, HttpStatus, ValidationMessage } from '@/constants';
-import { buildWhereConditions } from '@/modules/v1/shared/utils/build-where-conditions.utils';
+import { buildWhereConditions } from '@/modules/v1/shared/utils/build-where-conditions.util';
 
 export const loginUserRepository = async ({ password, phone_number, email }: LoginUserDTO): Promise<UserData | unknown> => {
   const errors: ErrorsResponse = {};
