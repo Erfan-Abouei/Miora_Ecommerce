@@ -4,7 +4,6 @@ import type { RedirectQueryType } from '@/types/modules/v1/public/health-check/q
 export const redirectController = (req: Request<unknown, unknown, unknown, RedirectQueryType>, res: Response, next: NextFunction): void => {
   try {
     const { redirect_url } = req.query;
-    res.status(200);
     res.redirect(redirect_url);
   } catch (error: unknown) {
     next(error);
