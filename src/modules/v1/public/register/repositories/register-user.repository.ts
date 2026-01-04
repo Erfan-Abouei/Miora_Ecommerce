@@ -33,7 +33,6 @@ export const registerUserRepository = async ({ email, password, phone_number }: 
     });
   }
 
-
   const existingUser = await UserModel.findOne({
     where: buildWhereConditions({ email, phone_number }),
   });

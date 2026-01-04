@@ -1,83 +1,162 @@
 import { ENV } from '@/config';
 
 export const forgotPasswordEmailHtmlReturner = (otp: string): string => {
-  return `<div dir="rtl" style="margin:0;padding:0;background:#0b0b0b;font-family:'Vazir',Tahoma,sans-serif;color:#ffffff;">
-  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
-  <table width="100%" cellpadding="0" cellspacing="0" border="0"
-    style="max-width:600px;margin:40px auto;background:#141414;border-radius:14px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,0.7);">
-    <!-- Header -->
-    <tr>
-      <td style="padding:36px 20px;text-align:center;
-        background:linear-gradient(135deg,#0f0f0f,#1c1c1c);">
-        <div style="display:inline-block;">
-          <!-- Custom Key SVG for Password Reset -->
-          <svg width="72" height="72" viewBox="0 0 100 100" style="display:block;margin:0 auto 16px auto;">
-            <defs>
-              <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#ffffff"/>
-                <stop offset="100%" stop-color="#9ca3af"/>
-              </linearGradient>
-            </defs>
-            <circle cx="50" cy="50" r="46" fill="none" stroke="url(#g2)" stroke-width="4"/>
-            <path d="M35 50 Q35 35 50 35 Q65 35 65 50 Q65 65 50 65 Q40 65 35 60" fill="none" stroke="url(#g2)" stroke-width="6" stroke-linecap="round"/>
-            <circle cx="70" cy="50" r="15" fill="none" stroke="url(#g2)" stroke-width="6"/>
-            <line x1="85" y1="50" x2="95" y2="50" stroke="url(#g2)" stroke-width="6" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h1 style="color:#ffffff;margin:0;font-size:24px;font-weight:700;letter-spacing:-0.4px;">
-          بازیابی رمز عبور
-        </h1>
-      </td>
-    </tr>
-    <!-- Content -->
-    <tr>
-      <td style="padding:30px 28px;font-size:15.5px;line-height:1.9;color:#e5e5e5;">
-       
-        <p style="margin-top:0;">
-          سلام!
-        </p>
-        <p>
-          درخواست بازیابی رمز عبور برای حساب شما در <strong style="color:#ffffff;">میورا</strong> دریافت شد.
-        </p>
-        <p>
-          اگر این درخواست از طرف شما بوده، برای تنظیم رمز عبور جدید کد زیر را در اپلیکیشن وارد کنید.
-        </p>
-        <p>
-          این کد تا <strong>${ENV.FORGOT_PASSWORD_OTP_EXPIRE_TIMER / 60} دقیقه</strong> آینده معتبر است. اگر بعد از این مدت منقضی شد، می‌توانید دوباره درخواست دهید.
-        </p>
-        <!-- CTA -->
-        <div style="text-align:center;margin:38px 0;">
-          <span
-             style="
-               display:inline-block;
-               padding:14px 38px;
-               background:linear-gradient(135deg,#ffffff,#d1d5db);
-               color:#000000;
-               text-decoration:none;
-               font-weight:700;
-               border-radius:8px;
-               font-size:15px;
-               box-shadow:0 8px 25px rgba(255,255,255,0.15);
-             ">
-            ${otp}
-          </span>
-        </div>
-        <p>
-          اگر شما این درخواست را نداده‌اید، لطفاً این ایمیل را نادیده بگیرید و برای امنیت بیشتر، حساب خود را بررسی کنید.
-        </p>
-        <p style="margin-top:32px;font-size:13px;color:#9ca3af;text-align:center;">
-          © 2025 Kara Company — Miora
-        </p>
-      </td>
-    </tr>
-    <!-- Footer -->
-    <tr>
-      <td style="padding:18px;text-align:center;background:#0f0f0f;font-size:12px;color:#888;">
-        <a href="${ENV.APP_LINKDIN_LINK}" style="color:#d1d5db;text-decoration:none;margin:0 6px;">LinkedIn</a> |
-        <a href="${ENV.APP_INSTAGRAM_LING}" style="color:#d1d5db;text-decoration:none;margin:0 6px;">Instagram</a> |
-        <a href="${ENV.APP_X_LINK}" style="color:#d1d5db;text-decoration:none;margin:0 6px;">X</a>
-      </td>
-    </tr>
-  </table>
-</div>`;
+  return `
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>بازیابی رمز عبور ✔👀</title>
+</head>
+
+<body style="
+  margin:0;
+  padding:0;
+  background-color:#0b0b0b;
+  font-family:Tahoma, Arial, sans-serif;
+  color:#ffffff;
+">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="padding:40px 0;">
+  <tr>
+    <td align="center">
+
+      <table width="600" cellpadding="0" cellspacing="0" style="
+        background:#111111;
+        border-radius:16px;
+        overflow:hidden;
+        box-shadow:0 20px 60px rgba(0,0,0,0.8);
+      ">
+
+        <!-- HEADER -->
+        <tr>
+          <td style="
+            padding:40px 24px;
+            text-align:center;
+            background:#0f0f0f;
+          ">
+            <div style="
+              width:64px;
+              height:64px;
+              margin:0 auto 18px;
+              border-radius:50%;
+              background:#ffffff;
+              color:#000;
+              font-size:28px;
+              font-weight:bold;
+              line-height:64px;
+            ">
+              🔒
+            </div>
+
+            <h1 style="
+              margin:0;
+              font-size:24px;
+              font-weight:bold;
+              letter-spacing:-0.4px;
+            ">
+              بازیابی رمز عبور
+            </h1>
+
+            <p style="
+              margin-top:10px;
+              font-size:14px;
+              color:#9ca3af;
+            ">
+              درخواست تغییر رمز عبور حساب کاربری
+            </p>
+          </td>
+        </tr>
+
+        <!-- CONTENT -->
+        <tr>
+          <td style="
+            padding:34px 32px;
+            font-size:15px;
+            line-height:2;
+            color:#e5e7eb;
+          ">
+            <p style="margin-top:0;">
+              سلام،
+            </p>
+
+            <p>
+              درخواست بازیابی رمز عبور برای حساب شما در
+              <strong style="color:#ffffff;">میورا</strong>
+              دریافت شد.
+            </p>
+
+            <p>
+              اگر این درخواست از طرف شما بوده، کد تأیید زیر را در اپلیکیشن وارد کنید:
+            </p>
+
+            <!-- OTP -->
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin:36px 0;">
+              <tr>
+                <td align="center">
+                  <div style="
+                    display:inline-block;
+                    padding: 0px 44px;
+                    background:#ffffff;
+                    color:#000000;
+                    font-size:26px;
+                    font-weight:bold;
+                    letter-spacing:6px;
+                    border-radius:12px;
+                    font-family:Courier New, monospace;
+                    box-shadow:0 12px 30px rgba(255,255,255,0.2);
+                  ">
+                    ${otp}
+                  </div>
+                </td>
+              </tr>
+            </table>
+
+            <p style="font-size:14px;color:#9ca3af;">
+              این کد تا
+              <strong style="color:#ffffff;">
+                ${ENV.FORGOT_PASSWORD_OTP_EXPIRE_TIMER / 60} دقیقه
+              </strong>
+              آینده معتبر است.
+            </p>
+
+            <p style="margin-top:24px;">
+              اگر شما این درخواست را ثبت نکرده‌اید، این ایمیل را نادیده بگیرید.
+            </p>
+
+            <p style="
+              margin-top:40px;
+              font-size:13px;
+              color:#9ca3af;
+              text-align:center;
+            ">
+              © 2025 Kara Company — Miora
+            </p>
+          </td>
+        </tr>
+
+        <!-- FOOTER -->
+        <tr>
+          <td style="
+            padding:20px;
+            text-align:center;
+            background:#0b0b0b;
+            font-size:12px;
+            color:#6b7280;
+          ">
+            <a href="${ENV.APP_LINKDIN_LINK}" style="color:#d1d5db;text-decoration:none;margin:0 8px;">LinkedIn</a> |
+            <a href="${ENV.APP_INSTAGRAM_LING}" style="color:#d1d5db;text-decoration:none;margin:0 8px;">Instagram</a> |
+            <a href="${ENV.APP_X_LINK}" style="color:#d1d5db;text-decoration:none;margin:0 8px;">X</a>
+          </td>
+        </tr>
+
+      </table>
+
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
+`;
 };

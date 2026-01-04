@@ -1,10 +1,10 @@
-import { validateQuery } from "@/middlewares";
-import { Router } from "express";
-import { redirectQuerySchema } from "../validations";
-import { redirectController } from "../controllers";
+import { validateQuery } from '@/middlewares';
+import { Router } from 'express';
+import { redirectQuerySchema } from '../validations';
+import { redirectController } from '../controllers';
 
-const router = Router()
+const router = Router();
 
-router.get('/', validateQuery(redirectQuerySchema), redirectController)
+router.get('/', validateQuery(redirectQuerySchema), redirectController);
 
-export { router as redirectRouter }
+export { router as redirectRouter };

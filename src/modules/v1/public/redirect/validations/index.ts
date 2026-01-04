@@ -1,1 +1,1 @@
-export * from './redirect-query.validation'
+export * from './redirect-query.validation';

@@ -1,1 +1,1 @@
-export * from './redirect.controller'
+export * from './redirect.controller';

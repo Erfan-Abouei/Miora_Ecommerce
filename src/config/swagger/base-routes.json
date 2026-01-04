@@ -69,6 +69,52 @@
         }
       }
     },
+    "/public/redirect": {
+      "get": {
+        "summary": "Redirect user",
+        "description": "Redirects the user to the provided URL without returning a response body.",
+        "tags": ["Public"],
+        "parameters": [
+          {
+            "name": "redirect_url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "Destination URL to redirect the user to."
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "User redirected successfully",
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "description": "Redirect destination URL"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or missing redirect_url",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
     "/public/register": {
       "post": {
         "summary": "User Registration (Send OTP)",

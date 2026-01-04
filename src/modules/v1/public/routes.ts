@@ -10,7 +10,7 @@ const router = Router();
 router.use('/health-check', healthCheckRouter);
 router.use('/register', registerUserRouter);
 router.use('/login', loginUserRouter);
-router.use('/redirect', redirectRouter)
+router.use('/redirect', redirectRouter);
 // router.use('/forgot-password', forgotPasswordRouter);
 
 export { router as publicRouter };

@@ -2,7 +2,6 @@ import type { EnvConfig } from '@/types/config/env.type';
 import dotenv from 'dotenv';
 import path from 'path';
 
-
 const env = process.env.NODE_ENV ?? 'development';
 const envFile = `.env.${env}`;
 const envPath = path.resolve(process.cwd(), envFile);
@@ -28,7 +27,6 @@ const getBooleanEnv = (key: string, defaultValue = false): boolean => {
   if (value === 'false' || value === '0') return false;
   return defaultValue;
 };
-
 
 export const ENV: EnvConfig = {
   CEO_PHONE_NUMBER: getEnv('CEO_PHONE_NUMBER', ''),

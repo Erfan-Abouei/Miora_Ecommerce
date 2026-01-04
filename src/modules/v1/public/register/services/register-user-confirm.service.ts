@@ -7,10 +7,6 @@ import { PublicEventName } from '@/constants';
 export const registerUserConfirmService = async (confirmUserData: RegisterUserConfirmDTO, dashboardCallbackRoute: string): Promise<UserData> => {
   const user = (await registerUserConfirmRepository(confirmUserData)) as UserData;
 
-  await emitAsync(
-    PublicEventName.USER_REGISTER_CONFIRM,
-    user,
-    dashboardCallbackRoute
-  );
+  await emitAsync(PublicEventName.USER_REGISTER_CONFIRM, user, dashboardCallbackRoute);
   return user;
 };
