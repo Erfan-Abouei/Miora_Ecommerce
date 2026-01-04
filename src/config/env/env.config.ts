@@ -2,6 +2,7 @@ import type { EnvConfig } from '@/types/config/env.type';
 import dotenv from 'dotenv';
 import path from 'path';
 
+
 const env = process.env.NODE_ENV ?? 'development';
 const envFile = `.env.${env}`;
 const envPath = path.resolve(process.cwd(), envFile);
@@ -9,18 +10,25 @@ const envPath = path.resolve(process.cwd(), envFile);
 dotenv.config({ path: envPath });
 
 const getEnv = (key: string, defaultValue = ''): string => {
-  return process.env[key]?.trim() ?? defaultValue;
+  const value = process.env[key];
+  return value !== undefined ? value.trim() : defaultValue;
 };
 
 const getNumberEnv = (key: string, defaultValue: number): number => {
-  const value = process.env[key]?.trim();
-  return value !== undefined || value !== null ? Number(value) : defaultValue;
+  const value = process.env[key];
+  if (value === undefined) return defaultValue;
+
+  const num = Number(value);
+  return Number.isNaN(num) ? defaultValue : num;
 };
 
 const getBooleanEnv = (key: string, defaultValue = false): boolean => {
-  const value = process.env[key]?.trim();
-  return value === 'true' || value === '1' ? true : value === 'false' || value === '0' ? false : defaultValue;
+  const value = process.env[key]?.trim().toLowerCase();
+  if (value === 'true' || value === '1') return true;
+  if (value === 'false' || value === '0') return false;
+  return defaultValue;
 };
+
 
 export const ENV: EnvConfig = {
   CEO_PHONE_NUMBER: getEnv('CEO_PHONE_NUMBER', ''),
@@ -54,7 +62,7 @@ export const ENV: EnvConfig = {
   OTP_RESEND_ATTEMPS_TIMER: getNumberEnv('OTP_RESEND_ATTEMPS_TIMER', 120),
   FORGOT_PASSWORD_OTP_EXPIRE_TIMER: getNumberEnv('FORGOT_PASSWORD_OTP_EXPIRE_TIMER', 180),
   FORGET_PASSWORD_REQUESTED_ATTEMPT_MAX: getNumberEnv('FORGET_PASSWORD_REQUESTED_ATTEMPT_MAX', 5),
-  FOPGET_PASSWORD_REQUESTED_ATTEMPT_MAX_TIMER: getNumberEnv('FOPGET_PASSWORD_REQUESTED_ATTEMPT_MAX_TIMER', 120),
+  FORGET_PASSWORD_REQUESTED_ATTEMPT_MAX_TIMER: getNumberEnv('FORGET_PASSWORD_REQUESTED_ATTEMPT_MAX_TIMER', 120),
 
   DATABASE_DIALECT: getEnv('DATABASE_DIALECT', 'mysql'),
   DATABASE_HOST: getEnv('DATABASE_HOST', 'localhost'),
