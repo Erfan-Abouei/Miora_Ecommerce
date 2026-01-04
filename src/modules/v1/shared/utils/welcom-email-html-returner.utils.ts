@@ -92,7 +92,7 @@ export const welcomeEmailHtmlReturner = (dashboardCallbackRoute: string): string
             <table width="100%" cellpadding="0" cellspacing="0" style="margin:36px 0;">
               <tr>
                 <td align="center">
-                  <a href="${ENV.APP_URL}/public/redirect?redirect_url=${dashboardCallbackRoute}"
+                  <a href="${dashboardCallbackRoute}"
                      style="
                        display:inline-block;
                        padding:16px 42px;
