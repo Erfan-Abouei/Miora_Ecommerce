@@ -1,5 +1,5 @@
-import { type ErrorsResponse } from '@/types/error/error-response.type';
-import { type ZodError } from 'zod';
+import type { ErrorsResponse } from '@/types/error/error-response.type';
+import type { ZodError } from 'zod';
 
 export const zodIssuesToObject = (issues: ZodError['issues']): ErrorsResponse => {
   const result: ErrorsResponse = {};
