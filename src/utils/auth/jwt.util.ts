@@ -1,4 +1,4 @@
-import type { TokenPayload } from '@/types/common/basic.type';
+import type { TokenPayload } from '@/types';
 import type { Response } from 'express';
 import type { JwtPayload } from 'jsonwebtoken';
 import jwt, { type SignOptions } from 'jsonwebtoken';

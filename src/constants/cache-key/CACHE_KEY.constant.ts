@@ -1,6 +1,13 @@
 export enum CacheKey {
-  RATE_LIMIT = 'rate-limit',
+  // =========================Register User=========================
   REGISTER_USER = 'user:register',
+
+  // =========================Login User=========================
   LOGIN_USER = 'user:login',
-  FORGOT_PASSWORD_USER = 'user:forgot-password',
+
+  // =========================Forget Password=========================
+  FORGET_PASSWORD_USER = 'user:forget-password',
+
+  // =========================Other=========================
+  RATE_LIMIT = 'rate-limit',
 }

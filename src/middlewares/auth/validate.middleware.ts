@@ -1,9 +1,8 @@
 import type { ZodType } from 'zod';
 import type { Request, Response, NextFunction } from 'express';
-import { ErrorCode } from '@/constants';
-import { errorResponse } from '@/modules/v1/shared/utils/error/api-response-handler.util';
+import { ErrorCode, HttpStatus } from '@/constants';
+import { errorResponse } from '@/modules/v1/shared';
 import { ResponseMessage } from '@/constants';
-import { HttpStatus } from '@/constants';
 
 export const validate =
   (schema: ZodType) =>

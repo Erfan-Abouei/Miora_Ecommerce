@@ -1,5 +1,4 @@
-import type { CustomErrorProps } from '@/types/error/error-response.type';
-import type { ErrorsResponse } from '@/types/error/error-response.type';
+import type { CustomErrorProps, ErrorsResponse } from '@/types';
 import { ResponseMessage } from '@/constants';
 import { ErrorCode } from '@/constants';
 

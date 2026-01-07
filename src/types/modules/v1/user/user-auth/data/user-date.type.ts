@@ -12,8 +12,8 @@ export enum Gender {
 export interface UserData {
   id: string;
   user_name?: string | null;
-  email: string;
-  phone_number: string;
+  email: string | null;
+  phone_number: string | null;
   role: UserRole;
   gender?: Gender | null;
   birth_date?: Date | null;

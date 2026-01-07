@@ -1,46 +1,65 @@
-import type { RegisterUserConfirmDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
-import type { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
-import type { ErrorsResponse } from '@/types/error/error-response.type';
-import { throwValidationError } from '@/modules/v1/shared/utils/error/throw-validation-error.util';
+import type { UserData, RegisterUserConfirmDTO, ErrorsResponse } from '@/types';
+import bcrypt from 'bcryptjs';
+import { throwValidationError } from '@/modules/v1/shared';
 import { UserModel } from '@/database/models/v1/user';
-import { ErrorCode, HttpStatus, ResponseMessage, ValidationMessage } from '@/constants';
+import { ErrorCode, HttpStatus, ResponseMessage, ValidationMessage, CacheKey } from '@/constants';
 import { cacheDel, cacheGet } from '@/database/cache/cache.handler';
-import { cacheNameBuilder } from '@/utils/cache/cache-name-builder';
-import { CacheKey } from '@/constants';
+import { cacheNameBuilder } from '@/utils';
+import { ENV } from '@/config';
 
-export const registerUserConfirmRepository = async ({ phone_number, otp }: RegisterUserConfirmDTO): Promise<UserData | unknown> => {
+export const registerUserConfirmRepository = async ({ otp, register_session_id }: RegisterUserConfirmDTO): Promise<UserData> => {
   const errors: ErrorsResponse = {};
-  const phoneKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:phone`);
-  const emailKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:email`);
-  const passwordKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:password`);
-  const otpKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${phone_number}:otp`);
+  const phoneKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${register_session_id}:phone`);
+  const emailKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${register_session_id}:email`);
+  const otpKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${register_session_id}:otp`);
+  const passwordKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${register_session_id}:password`);
+  const attemptsKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${register_session_id}:resend_attempts`);
+  const blockKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${register_session_id}:blocked`);
 
-  const phoneNumber: string | null = await cacheGet(phoneKey);
-  const email: string | null = await cacheGet(emailKey);
-  const password: string | null = await cacheGet(passwordKey);
-  const cachedOtp: number | null = await cacheGet(otpKey);
+  const phoneNumber = await cacheGet<string>(phoneKey);
+  const email = await cacheGet<string>(emailKey);
+  const cachedOtp = await cacheGet<number>(otpKey);
+  const password = await cacheGet<string>(passwordKey);
+  const identifier: string = (phoneNumber ?? email) as string;
 
-  if (phoneNumber === null) errors.phone_number = [ValidationMessage.PHONE_NUMBER_INVALID_OR_EXPIRED];
-  if (email === null) errors.email = [ValidationMessage.EMAIL_INVALID_OR_EXPIRED];
-  if (password === null) errors.password = [ValidationMessage.PASSWORD_INVALID_OR_EXPIRED];
-  if (otp !== cachedOtp?.toString()) errors.otp = [ValidationMessage.OTP_INVALID_OR_EXPIRED];
+  if (phoneNumber === null && email === null) {
+    errors.error_message = [ValidationMessage.REGISTER_SESSION_INVALID_OR_EXPIRED];
+  }
 
-  if (Object.keys(errors).length > 0)
+  if (password === null) {
+    errors.password = [ValidationMessage.PASSWORD_INVALID_OR_EXPIRED];
+  }
+
+  if (otp !== cachedOtp?.toString()) {
+    errors.otp = [ValidationMessage.OTP_INVALID_OR_EXPIRED];
+  }
+
+  if (Object.keys(errors).length > 0) {
     throwValidationError({
       details: errors,
       errorCode: ErrorCode.DATA_CONFLICT,
       message: ResponseMessage.DATA_CONFLICT,
       statusCode: HttpStatus.CONFLICT,
     });
+  }
+
+  const hashedPassword: string = await bcrypt.hash(password as string, ENV.BCRYPT_SALT);
+
+  const isRegisterWithEmail: boolean = email !== null && email !== undefined;
+  const isRegisterWithPhoneNumber: boolean = phoneNumber !== null && phoneNumber !== undefined;
 
   const user = await UserModel.create({
-    phone_number: phoneNumber as string,
-    email: email as string,
-    password: password as string,
-    is_phone_verified: true,
+    password: hashedPassword,
+    email: isRegisterWithEmail ? (email as string) : undefined,
+    phone_number: isRegisterWithPhoneNumber ? (phoneNumber as string) : undefined,
+    is_phone_verified: !!isRegisterWithPhoneNumber,
+    is_email_verified: !!isRegisterWithEmail,
   });
 
-  await cacheDel([phoneKey, emailKey, passwordKey, otpKey]);
+  const activeRegisterKey = cacheNameBuilder(CacheKey.REGISTER_USER, `${identifier}:register_active`);
+
+  const keysToDelete: string[] = [phoneKey, emailKey, otpKey, passwordKey, attemptsKey, blockKey, activeRegisterKey];
+  await cacheDel(keysToDelete);
 
   return user.toJSON();
 };

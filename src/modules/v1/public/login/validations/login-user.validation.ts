@@ -13,4 +13,8 @@ export const loginUserSchema = z
   .refine((data) => (data.phone_number !== undefined && data.phone_number !== '') || (data.email !== undefined && data.email !== ''), {
     message: ValidationMessage.PHONE_OR_EMAIL_REQUIRED,
     path: ['error_message'],
+  })
+  .refine((data) => !(data.phone_number !== undefined && data.phone_number !== '' && data.email !== undefined && data.email !== ''), {
+    message: ValidationMessage.ONLY_ONE_CONTACT_METHOD_ALLOWED,
+    path: ['error_message'],
   });

@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from 'express';
-import type { AuthUserQueryType } from '@/types/modules/v1/user/user-auth/query/user-query.type';
+import type { AuthUserQueryType } from '@/types';
 import { HttpStatus, ResponseMessage } from '@/constants';
-import { clearTokens } from '@/utils/auth/jwt.util';
-import { successResponse } from '@/modules/v1/shared/utils/error/api-response-handler.util';
+import { clearTokens } from '@/utils';
+import { successResponse } from '@/modules/v1/shared';
 
 export const logoutUserController = (req: Request<unknown, unknown, unknown, AuthUserQueryType>, res: Response, next: NextFunction): void => {
   try {

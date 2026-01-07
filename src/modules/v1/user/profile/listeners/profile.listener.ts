@@ -1,4 +1,4 @@
-import type { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
+import type { UserData } from '@/types';
 import { eventEmitter } from '@/config';
 import { UserEventName } from '@/constants';
 

@@ -1,5 +1,5 @@
 export enum ErrorCode {
-  // Validation errors
+  // =========================Validation Errors=========================
   VALIDATION_ERROR = 'E1001',
   INVALID_EMAIL = 'E1002',
   INVALID_PASSWORD = 'E1003',
@@ -7,7 +7,7 @@ export enum ErrorCode {
   INVALID_QUERY_PARAMS = 'E1005',
   INVALID_BODY_PARAMS = 'E1006',
 
-  // Authentication & Authorization
+  // =========================Authentication & Authorization=========================
   UNAUTHORIZED = 'E1010',
   FORBIDDEN = 'E1011',
   TOKEN_EXPIRED = 'E1012',
@@ -15,36 +15,36 @@ export enum ErrorCode {
   USER_NOT_FOUND = 'E1014',
   INVALID_CREDENTIALS = 'E1015',
 
-  // Resource / Data errors
+  // =========================Resource / Data errors=========================
   NOT_FOUND = 'E1020',
   DATA_CONFLICT = 'E1021',
   RECORD_ALREADY_EXISTS = 'E1022',
   NO_DATA_RECEIVED = 'E1023',
 
-  // Database & Server errors
+  // =========================Database & Server errors=========================
   INTERNAL_SERVER_ERROR = 'E1030',
   DATABASE_ERROR = 'E1031',
   QUERY_FAILED = 'E1032',
   TRANSACTION_FAILED = 'E1033',
 
-  // Rate limiting / throttling
+  // =========================Rate limiting / Throttling=========================
   TOO_MANY_REQUESTS = 'E1040',
 
-  // File / Upload errors
+  // =========================File / Upload errors=========================
   FILE_UPLOAD_FAILED = 'E1050',
   FILE_TYPE_NOT_ALLOWED = 'E1051',
   FILE_TOO_LARGE = 'E1052',
 
-  // Payment / transaction errors (if relevant)
+  // =========================Payment / Transaction errors (if relevant)=========================
   PAYMENT_FAILED = 'E1060',
   PAYMENT_INVALID_DETAILS = 'E1061',
 
-  // External service / API errors
+  // =========================External service / API errors=========================
   EXTERNAL_SERVICE_ERROR = 'E1070',
   TIMEOUT_ERROR = 'E1071',
   SERVICE_UNAVAILABLE = 'E1072',
 
-  // Miscellaneous
+  // =========================Miscellaneous=========================
   BAD_REQUEST = 'E1080',
   UNKNOWN_ERROR = 'E1081',
 }

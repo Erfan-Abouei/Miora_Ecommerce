@@ -1,20 +1,18 @@
-import type { LoginUserDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
-import type { ErrorsResponse } from '@/types/error/error-response.type';
-import type { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
+import type { Model } from 'sequelize';
+import type { UserData, LoginUserDTO, ErrorsResponse } from '@/types';
 import bcrypt from 'bcryptjs';
 import { UserModel } from '@/database/models/v1/user';
-import { throwValidationError } from '@/modules/v1/shared/utils/error/throw-validation-error.util';
+import { throwValidationError, buildWhereConditions } from '@/modules/v1/shared';
 import { ResponseMessage, ErrorCode, HttpStatus, ValidationMessage } from '@/constants';
-import { buildWhereConditions } from '@/modules/v1/shared/utils/build-where-conditions.util';
 
-export const loginUserRepository = async ({ password, phone_number, email }: LoginUserDTO): Promise<UserData | unknown> => {
+export const loginUserRepository = async ({ password, phone_number, email }: LoginUserDTO): Promise<UserData> => {
   const errors: ErrorsResponse = {};
 
   const user = await UserModel.findOne({
     where: buildWhereConditions({ phone_number, email }),
   });
 
-  if (!user) {
+  if (user === null || user === undefined) {
     errors.error_message = [ValidationMessage.USER_NOT_FOUND];
 
     throwValidationError({
@@ -23,19 +21,17 @@ export const loginUserRepository = async ({ password, phone_number, email }: Log
       message: ResponseMessage.NOT_FOUND,
       errorCode: ErrorCode.NOT_FOUND,
     });
-    return;
   }
 
-  const isValidPassword = await bcrypt.compare(password, user.getDataValue('password'));
+  const isValidPassword = await bcrypt.compare(password, (user as Model<UserData>).getDataValue('password'));
 
-  if (!isValidPassword) {
+  if (isValidPassword === null || isValidPassword === undefined) {
     throwValidationError({
       details: { password: [ValidationMessage.PASSWORD_INCORRECT] },
       errorCode: ErrorCode.DATA_CONFLICT,
       message: ResponseMessage.DATA_CONFLICT,
       statusCode: HttpStatus.CONFLICT,
     });
-    return;
   }
-  return user.toJSON();
+  return (user as Model<UserData>).toJSON();
 };

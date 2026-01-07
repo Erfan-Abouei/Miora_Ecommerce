@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
-import { errorResponse } from '@/modules/v1/shared/utils/error/api-response-handler.util';
+import { errorResponse } from '@/modules/v1/shared';
 import { ErrorCode } from '@/constants';
 import { ResponseMessage } from '@/constants';
 import { ENV } from '../index';

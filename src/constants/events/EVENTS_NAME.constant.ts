@@ -1,5 +1,5 @@
 export enum EventName {
-  // User events
+  // =========================User Events=========================
   USER_CREATED = 'USER.CREATED',
   USER_UPDATED = 'USER.UPDATED',
   USER_DELETED = 'USER.DELETED',
@@ -7,24 +7,24 @@ export enum EventName {
   USER_LOGOUT = 'USER.LOGOUT',
   USER_PASSWORD_RESET = 'USER.PASSWORD_RESET',
 
-  // Order events
+  // =========================Order Events=========================
   ORDER_CREATED = 'ORDER.CREATED',
   ORDER_UPDATED = 'ORDER.UPDATED',
   ORDER_DELETED = 'ORDER.DELETED',
   ORDER_STATUS_CHANGED = 'ORDER.STATUS_CHANGED',
   ORDER_PAYMENT_COMPLETED = 'ORDER.PAYMENT_COMPLETED',
 
-  // Product events
+  // =========================Product Events=========================
   PRODUCT_CREATED = 'PRODUCT.CREATED',
   PRODUCT_UPDATED = 'PRODUCT.UPDATED',
   PRODUCT_DELETED = 'PRODUCT.DELETED',
   PRODUCT_STOCK_UPDATED = 'PRODUCT.STOCK_UPDATED',
 
-  // Notification events
+  // =========================Notification Events=========================
   NOTIFICATION_SENT = 'NOTIFICATION.SENT',
   NOTIFICATION_FAILED = 'NOTIFICATION.FAILED',
 
-  // Health check events
+  // =========================Health check Events=========================
   HEALTH_CHECK_PASSED = 'HEALTH_CHECK.PASSED',
   HEALTH_CHECK_FAILED = 'HEALTH_CHECK.FAILED',
 }

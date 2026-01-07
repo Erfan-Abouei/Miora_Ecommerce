@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import { successResponse } from '@/modules/v1/shared/utils/error/api-response-handler.util';
+import { successResponse } from '@/modules/v1/shared';
 import { HttpStatus } from '@/constants';
 
 export const authCheckController = (_: Request, res: Response, next: NextFunction): void => {

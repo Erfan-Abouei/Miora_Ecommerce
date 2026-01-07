@@ -1,9 +1,9 @@
 import type { Request, Response, NextFunction } from 'express';
-import type { RateLimitErrorResponse } from '@/types/error/rate-limit-error.type';
+import type { RateLimitErrorResponse } from '@/types';
 import { CacheKey, ErrorCode, HttpStatus, ResponseMessage } from '@/constants';
 import { cacheGet, cacheSet, cacheTtl } from '@/database/cache/cache.handler';
-import { errorResponse } from '@/modules/v1/shared/utils/error/api-response-handler.util';
-import { cacheNameBuilder } from '@/utils/cache/cache-name-builder';
+import { errorResponse } from '@/modules/v1/shared';
+import { cacheNameBuilder } from '@/utils';
 
 export const rateLimitMiddleWare = (maxRequest: number, blockDuration: number) => {
   return async (req: Request, res: Response, next: NextFunction) => {

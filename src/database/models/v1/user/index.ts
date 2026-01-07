@@ -1,6 +1,5 @@
 import type { Model } from 'sequelize';
-import type { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
-import type { CreateUserWithAdminAccessDTO, RegisterUserDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
+import type { UserData, CreateUserWithAdminAccessDTO, RegisterUserDTO } from '@/types';
 import sequelize from '@/database/database.config';
 import { ValidationMessage } from '@/constants';
 import { Pattern } from '@/constants';
@@ -31,19 +30,19 @@ export const UserModel = sequelize.define<Model<UserData, CreateUserWithAdminAcc
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
       unique: true,
       validate: {
-        notNull: { msg: `${ValidationMessage.EMAIL_REQUIRED} + Database Error !` },
         isEmail: { msg: `${ValidationMessage.EMAIL_INVALID} + Database Error !` },
       },
     },
     phone_number: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
       unique: true,
       validate: {
-        notNull: { msg: `${ValidationMessage.PHONE_REQUIRED} + Database Error !` },
         is: { args: new RegExp(Pattern.PHONE_NUMBER), msg: `${ValidationMessage.PHONE_INVALID} + Database Error !` },
       },
     },

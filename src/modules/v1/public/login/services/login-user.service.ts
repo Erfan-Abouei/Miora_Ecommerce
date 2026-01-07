@@ -1,5 +1,4 @@
-import type { LoginUserDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
-import type { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
+import type { UserData, LoginUserDTO } from '@/types';
 import { loginUserRepository } from '../repositories';
 import { eventEmitter } from '@/config';
 import { PublicEventName } from '@/constants';
@@ -9,5 +8,5 @@ export const loginUserService = async (userLoginCredential: LoginUserDTO): Promi
 
   eventEmitter.emit(PublicEventName.USER_LOGIN, userData);
 
-  return userData as UserData;
+  return userData;
 };

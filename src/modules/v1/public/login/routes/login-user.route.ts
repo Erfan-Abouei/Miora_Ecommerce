@@ -1,4 +1,4 @@
-import { validate } from '@/middlewares/auth/validate.middleware';
+import { validate } from '@/middlewares';
 import { Router } from 'express';
 import { loginUserSchema } from '../validations';
 import { loginUserController } from '../controllers';

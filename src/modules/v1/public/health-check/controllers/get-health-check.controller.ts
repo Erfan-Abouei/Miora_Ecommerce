@@ -1,7 +1,6 @@
-import type { HealthCheckQueryType } from '@/types/modules/v1/public/health-check/query/health-check-query.type';
-import type { HealthCheckData } from '@/types/modules/v1/public/health-check/data/health-check-data.type';
+import type { HealthCheckQueryType, HealthCheckData } from '@/types';
 import type { NextFunction, Request, Response } from 'express';
-import { successResponse } from '@/modules/v1/shared/utils/error/api-response-handler.util';
+import { successResponse } from '@/modules/v1/shared';
 import { getHealthCheckDataService } from '../services';
 import { HttpStatus } from '@/constants';
 

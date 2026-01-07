@@ -1,4 +1,4 @@
-import type { TokenPayload } from '@/types/common/basic.type';
+import type { TokenPayload } from '@/types';
 import { eventEmitter } from '@/config';
 import { UserEventName } from '@/constants';
 

@@ -1,5 +1,4 @@
-import type { AppError } from '@/types/common/basic.type';
-import type { ErrorsResponse } from '@/types/error/error-response.type';
+import type { AppError, ErrorsResponse } from '@/types';
 import { ResponseMessage } from '@/constants';
 
 export const appErrorToObject = (err: AppError | string): ErrorsResponse => {

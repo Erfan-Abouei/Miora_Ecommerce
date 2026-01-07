@@ -1,13 +1,8 @@
 import type { Request, Response, NextFunction } from 'express';
-import type { RegisterConfirmQueryType } from '@/types/modules/v1/user/user-auth/query/user-query.type';
-import type { AuthUserQueryType } from '@/types/modules/v1/user/user-auth/query/user-query.type';
-import type { RegisterUserConfirmDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
-import type { TokenPayload } from '@/types/common/basic.type';
-import type { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
-import { successResponse } from '@/modules/v1/shared/utils/error/api-response-handler.util';
-import { setTokens } from '@/utils/auth/jwt.util';
+import type { UserData, RegisterConfirmQueryType, AuthUserQueryType, RegisterUserConfirmDTO, TokenPayload } from '@/types';
+import { successResponse, removeSecureData } from '@/modules/v1/shared';
+import { setTokens } from '@/utils';
 import { registerUserConfirmService } from '../services';
-import { removeSecureData } from '@/modules/v1/shared/utils/remove-secure-data.util';
 import { HttpStatus } from '@/constants';
 
 export const registerUserConfirmController = async (req: Request<unknown, unknown, RegisterUserConfirmDTO, AuthUserQueryType & RegisterConfirmQueryType>, res: Response, next: NextFunction): Promise<void> => {

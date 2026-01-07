@@ -13,16 +13,32 @@
   ],
   "tags": [
     {
-      "name": "Public",
-      "description": "Public routes (no authentication required)"
+      "name": "Health Check",
+      "description": "Health Check routes (for test check server status)"
     },
     {
-      "name": "User",
-      "description": "Routes requiring user authentication"
+      "name": "Redirect",
+      "description": "Redirect routes (for redirect user to any callback)"
     },
     {
-      "name": "Admin",
-      "description": "Routes requiring admin access"
+      "name": "Register",
+      "description": "Register routes (for register user)"
+    },
+    {
+      "name": "Login",
+      "description": "Login routes (for login user)"
+    },
+    {
+      "name": "Profile",
+      "description": "Profile routes (for user profile)"
+    },
+    {
+      "name": "Logout",
+      "description": "Logout routes (for logout user)"
+    },
+    {
+      "name": "Auth Check",
+      "description": "Auth Check routes (for check login status in front side)"
     }
   ],
   "paths": {
@@ -30,7 +46,7 @@
       "get": {
         "summary": "System Health Check",
         "description": "Check server status. If `has_system_data=true` is provided, hardware information (CPU, memory, disk, network) will also be returned.",
-        "tags": ["Public"],
+        "tags": ["Health Check"],
         "parameters": [
           {
             "name": "has_system_data",
@@ -73,7 +89,7 @@
       "get": {
         "summary": "Redirect user",
         "description": "Redirects the user to the provided URL without returning a response body.",
-        "tags": ["Public"],
+        "tags": ["Redirect"],
         "parameters": [
           {
             "name": "redirect_url",
@@ -118,8 +134,8 @@
     "/public/register": {
       "post": {
         "summary": "User Registration (Send OTP)",
-        "description": "Initiate user registration process and send verification code to the phone number.",
-        "tags": ["Public"],
+        "description": "Initiate user registration by sending OTP. User must provide either email or phone_number (but not both) along with password.",
+        "tags": ["Register"],
         "requestBody": {
           "required": true,
           "content": {
@@ -144,8 +160,8 @@
                   "author": "Kara_Company",
                   "message": "عملیات با موفقیت انجام شد.",
                   "data": {
-                    "expire_otp_timer": 180,
-                    "otp": 58492
+                    "otp": 58492,
+                    "register_session_id": "91c92dfc-f45b-4366-bfdc-6bbbc187af6e"
                   },
                   "time_zone": "Asia/Tehran",
                   "version": "1.0.10"
@@ -154,7 +170,7 @@
             }
           },
           "409": {
-            "description": "Email or phone number already registered",
+            "description": "Active registration session exists or contact already registered",
             "content": {
               "application/json": {
                 "schema": {
@@ -167,11 +183,8 @@
                   "message": "داده ارسال شده با داده‌های موجود در تداخل است.",
                   "error_code": "E1021",
                   "errors": {
-                    "email": ["ایمیل ارسال شده قبلا ثبت شده است."],
-                    "phone_number": ["شماره تماس ارسال شده قبلا ثبت شده است."]
-                  },
-                  "time_zone": "Asia/Tehran",
-                  "version": "1.0.10"
+                    "error_message": ["کد تأیید قبلاً ارسال شده است."]
+                  }
                 }
               }
             }
@@ -185,11 +198,94 @@
         }
       }
     },
+    "/public/register/confirm": {
+      "post": {
+        "summary": "Confirm Registration",
+        "description": "Verify OTP using registration session ID and create user account.",
+        "tags": ["Register"],
+        "parameters": [
+          {
+            "name": "dashboard_callback_route",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Dashboard route for welcome email redirect (required)"
+          },
+          {
+            "name": "local",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["true", "false"]
+            },
+            "description": "If 'true', cookies will be set without Secure flag (for local testing)"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterUserConfirmRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully, tokens set in cookies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterUserSuccessResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Invalid/expired OTP or session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                },
+                "example": {
+                  "status": 409,
+                  "success": false,
+                  "author": "Kara_Company",
+                  "message": "داده ارسال شده با داده‌های موجود در تداخل است.",
+                  "error_code": "E1021",
+                  "errors": {
+                    "otp": ["کد تأیید نامعتبر یا منقضی شده است."]
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
     "/public/register/resend-otp": {
       "post": {
         "summary": "Resend OTP",
-        "description": "Resend verification code if the previous one was not received or has expired.",
-        "tags": ["Public"],
+        "description": "Resend verification code using the existing registration session ID.",
+        "tags": ["Register"],
         "requestBody": {
           "required": true,
           "content": {
@@ -224,7 +320,7 @@
             }
           },
           "409": {
-            "description": "User not in registration queue, OTP still valid, or other conflict",
+            "description": "Invalid or expired registration session",
             "content": {
               "application/json": {
                 "schema": {
@@ -237,10 +333,8 @@
                   "message": "داده ارسال شده با داده‌های موجود در تداخل است.",
                   "error_code": "E1021",
                   "errors": {
-                    "error_message": ["کاربری با این مشخصات در صف انتظار برای ثبت نام وجود ندارد."]
-                  },
-                  "time_zone": "Asia/Tehran",
-                  "version": "1.0.10"
+                    "error_message": ["جلسه ثبت‌نام معتبر نیست یا منقضی شده است."]
+                  }
                 }
               }
             }
@@ -258,9 +352,10 @@
                   "author": "Kara_Company",
                   "message": "بیش از سقف مجاز درخواست ارسال کرده‌اید، لطفا بعدا تلاش کنید.",
                   "error_code": "E429",
-                  "errors": {},
-                  "time_zone": "Asia/Tehran",
-                  "version": "1.0.10"
+                  "errors": {
+                    "error_message": ["لطفاً کمی صبر کنید و سپس دوباره درخواست کد دهید."],
+                    "block_time_remaining": ["120"]
+                  }
                 }
               }
             }
@@ -274,109 +369,11 @@
         }
       }
     },
-    "/public/register/confirm": {
-      "post": {
-        "summary": "Confirm Registration",
-        "description": "Verify OTP and finalize user registration in the database.",
-        "tags": ["Public"],
-        "parameters": [
-          {
-            "name": "dashboard_callback_route",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "required dashboard path. If provided, the welcome email button will redirect the user to this route after login."
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterUserConfirmRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "User successfully created and tokens set",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RegisterUserSuccessResponse"
-                },
-                "example": {
-                  "status": 201,
-                  "success": true,
-                  "author": "Kara_Company",
-                  "message": "مورد با موفقیت ایجاد شد.",
-                  "data": {
-                    "user_name": "erfan_abouei",
-                    "email": "erfan_abouei@example.com",
-                    "phone_number": "09123456789",
-                    "gender": "MALE",
-                    "birth_date": null,
-                    "profile_picture": null,
-                    "bank_card_number": null,
-                    "sheba_number": null,
-                    "is_subscribed_for_newsletter": false,
-                    "is_phone_verified": true,
-                    "is_email_verified": false,
-                    "created_at": "2025-12-26T10:00:00.000Z",
-                    "updated_at": "2025-12-26T10:00:00.000Z"
-                  },
-                  "time_zone": "Asia/Tehran",
-                  "version": "1.0.10"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid or expired OTP",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiErrorResponse"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "User data in cache has expired",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiErrorResponse"
-                },
-                "example": {
-                  "status": 409,
-                  "success": false,
-                  "author": "Kara_Company",
-                  "message": "داده ارسال شده با داده‌های موجود در تداخل است.",
-                  "error_code": "E1021",
-                  "errors": {
-                    "otp": ["کد ورود اشتباه است یا منقضی شده است."]
-                  },
-                  "time_zone": "Asia/Tehran",
-                  "version": "1.0.10"
-                }
-              }
-            }
-          },
-          "500": {
-            "$ref": "#/components/responses/ServerError"
-          }
-        }
-      }
-    },
     "/public/login": {
       "post": {
         "summary": "User Login",
         "description": "Login using email or phone number and password. JWT tokens are set in cookies.",
-        "tags": ["Public"],
+        "tags": ["Login"],
         "requestBody": {
           "required": true,
           "content": {
@@ -466,7 +463,7 @@
       "get": {
         "summary": "Get User Profile",
         "description": "Retrieve authenticated user's full profile information (excluding password and role).",
-        "tags": ["User"],
+        "tags": ["Profile"],
         "security": [
           {
             "cookieAuth": []
@@ -516,7 +513,7 @@
       "get": {
         "summary": "User Logout",
         "description": "Clear authentication tokens from cookies.",
-        "tags": ["User"],
+        "tags": ["Logout"],
         "security": [
           {
             "cookieAuth": []
@@ -552,7 +549,7 @@
       "get": {
         "summary": "Authentication Check",
         "description": "Check if the current user is authenticated.",
-        "tags": ["User"],
+        "tags": ["Auth Check"],
         "security": [
           {
             "cookieAuth": []
@@ -741,100 +738,84 @@
       },
       "RegisterUserRequest": {
         "type": "object",
-        "required": ["email", "password", "phone_number"],
+        "required": ["password"],
         "properties": {
           "email": {
             "type": "string",
             "format": "email",
-            "example": "user@example.com"
-          },
-          "password": {
-            "type": "string",
-            "minLength": 8,
-            "example": "MyStrongPass123"
+            "description": "Required if phone_number not provided"
           },
           "phone_number": {
             "type": "string",
             "pattern": "^09\\\\d{9}$",
-            "example": "09123456789"
+            "description": "Required if email not provided"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6
           }
-        }
+        },
+        "oneOf": [{ "required": ["email"] }, { "required": ["phone_number"] }],
+        "not": {
+          "required": ["email", "phone_number"]
+        },
+        "additionalProperties": false
       },
+
       "RegisterUserResponse": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ApiSuccessResponse"
-          }
-        ],
+        "allOf": [{ "$ref": "#/components/schemas/ApiSuccessResponse" }],
         "properties": {
           "data": {
             "type": "object",
-            "required": ["expire_otp_timer", "otp"],
+            "required": ["register_session_id"],
             "properties": {
-              "expire_otp_timer": {
-                "type": "integer",
-                "description": "Remaining time until OTP expires (seconds)",
-                "example": 180
-              },
-              "otp": {
-                "type": "integer",
-                "description": "OTP code (visible only in development environment)",
-                "example": 58492
-              }
+              "register_session_id": { "type": "string", "format": "uuid" },
+              "otp": { "type": "integer", "description": "Only visible in development" }
             }
           }
         }
       },
       "ResendOtpRequest": {
         "type": "object",
-        "required": ["phone_number"],
+        "required": ["register_session_id"],
         "properties": {
-          "phone_number": {
+          "register_session_id": {
             "type": "string",
-            "pattern": "^09\\\\d{9}$",
-            "example": "09123456789"
+            "format": "uuid"
           }
-        }
+        },
+        "additionalProperties": false
       },
+
       "ResendOtpResponse": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ApiSuccessResponse"
-          }
-        ],
+        "allOf": [{ "$ref": "#/components/schemas/ApiSuccessResponse" }],
         "properties": {
           "data": {
             "type": "object",
-            "required": ["expire_otp_timer", "otp"],
+            "required": ["expire_otp_timer"],
             "properties": {
-              "expire_otp_timer": {
-                "type": "integer",
-                "example": 180
-              },
-              "otp": {
-                "type": "integer",
-                "example": 73921
-              }
+              "expire_otp_timer": { "type": "integer", "example": 180 },
+              "otp": { "type": "integer", "description": "Only visible in development" }
             }
           }
         }
       },
       "RegisterUserConfirmRequest": {
         "type": "object",
-        "required": ["phone_number", "otp"],
+        "required": ["otp", "register_session_id"],
         "properties": {
-          "phone_number": {
-            "type": "string",
-            "pattern": "^09\\\\d{9}$",
-            "example": "09123456789"
-          },
           "otp": {
-            "type": "string",
+            "type": "integer",
             "minLength": 5,
             "maxLength": 5,
-            "example": "58492"
+            "example": 46546
+          },
+          "register_session_id": {
+            "type": "string",
+            "format": "uuid"
           }
-        }
+        },
+        "additionalProperties": false
       },
       "LoginUserRequest": {
         "type": "object",

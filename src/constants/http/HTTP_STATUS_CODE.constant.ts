@@ -1,10 +1,10 @@
 export enum HttpStatus {
-  // Success
+  // =========================Success=========================
   OK = 200, // Request succeeded
   CREATED = 201, // Resource created successfully
   NO_CONTENT = 204, // Request succeeded but no content to return
 
-  // Client errors
+  // =========================Client Errors=========================
   BAD_REQUEST = 400, // Invalid request
   UNAUTHORIZED = 401, // Authentication required or failed
   FORBIDDEN = 403, // Access denied
@@ -13,7 +13,7 @@ export enum HttpStatus {
   CONFLICT = 409, // Conflict in resource state
   TOO_MANY_REQUESTS = 429, // Rate limit exceeded
 
-  // Server errors
+  // =========================Server Errors=========================
   INTERNAL_SERVER_ERROR = 500, // General server error
   NOT_IMPLEMENTED = 501, // Feature not implemented
   SERVICE_UNAVAILABLE = 503, // Server temporarily unavailable

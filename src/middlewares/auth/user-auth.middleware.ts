@@ -1,11 +1,8 @@
-import type { TokenPayload } from '@/types/common/basic.type';
-import type { AuthUserQueryType } from '@/types/modules/v1/user/user-auth/query/user-query.type';
 import type { Request, Response, NextFunction } from 'express';
-import { createAccessToken, setAccessTokenCookie, verifyAccessToken, verifyRefreshToken } from '@/utils/auth/jwt.util';
-import { errorResponse } from '@/modules/v1/shared/utils/error/api-response-handler.util';
-import { ErrorCode } from '@/constants';
-import { ResponseMessage } from '@/constants';
-import { HttpStatus } from '@/constants';
+import type { TokenPayload, AuthUserQueryType } from '@/types';
+import { createAccessToken, verifyAccessToken, verifyRefreshToken, setAccessTokenCookie } from '@/utils';
+import { ErrorCode, ResponseMessage, HttpStatus } from '@/constants';
+import { errorResponse } from '@/modules/v1/shared';
 
 export const userAuthMiddleware = (req: Request<unknown, unknown, unknown, AuthUserQueryType>, res: Response, next: NextFunction): void => {
   const accessToken: string = req.cookies.access_token;

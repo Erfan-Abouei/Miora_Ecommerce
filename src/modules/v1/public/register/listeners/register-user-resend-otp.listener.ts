@@ -1,4 +1,4 @@
-import type { RegisterUserResendOtpServerDTO } from '@/types/modules/v1/user/user-auth/dto/user-dto.type';
+import type { RegisterUserResendOtpServerDTO } from '@/types';
 import { eventEmitter } from '@/config';
 import { PublicEventName } from '@/constants';
 

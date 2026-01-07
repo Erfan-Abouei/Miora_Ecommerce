@@ -1,5 +1,4 @@
-import type { TokenPayload } from '@/types/common/basic.type';
-import type { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
+import type { UserData, TokenPayload } from '@/types';
 import { profileRepository } from '../repositories/';
 import { eventEmitter } from '@/config';
 import { UserEventName } from '@/constants';

@@ -1,4 +1,4 @@
-import type { HealthCheckData } from '@/types/modules/v1/public/health-check/data/health-check-data.type';
+import type { HealthCheckData } from '@/types';
 import { eventEmitter } from '@/config';
 import { PublicEventName } from '@/constants';
 

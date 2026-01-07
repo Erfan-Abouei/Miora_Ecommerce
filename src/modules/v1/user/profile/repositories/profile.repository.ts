@@ -1,8 +1,7 @@
-import type { UserData } from '@/types/modules/v1/user/user-auth/data/user-date.type';
-import type { ErrorsResponse } from '@/types/error/error-response.type';
+import type { UserData, ErrorsResponse } from '@/types';
 import { ErrorCode, HttpStatus, ResponseMessage, ValidationMessage } from '@/constants';
 import { UserModel } from '@/database/models/v1/user';
-import { throwValidationError } from '@/modules/v1/shared/utils/error/throw-validation-error.util';
+import { throwValidationError } from '@/modules/v1/shared';
 
 export const profileRepository = async (userId: string): Promise<UserData | null> => {
   const errors: ErrorsResponse = {};
