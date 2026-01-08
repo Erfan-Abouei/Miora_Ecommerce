@@ -1,5 +1,5 @@
 import type { ErrorsResponse, RegisterUserDTO, RegisterUserServerDTO } from '@/types';
-import { throwValidationError } from '@/modules/v1/shared/utils/error/throw-validation-error.util';
+import { throwValidationError } from '@/modules/v1/shared';
 import { UserModel } from '@/database/models/v1/user';
 import { ErrorCode, HttpStatus, ResponseMessage, ValidationMessage, CacheKey } from '@/constants';
 import { buildWhereConditions } from '@/modules/v1/shared';
